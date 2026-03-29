@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WayToAGI 直播笔记站</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F0EDE8;--ink:#2D2926;--pink:#E91E63;--green:#B8D8BE;--yellow:#FFF200;--grid:#D8D4CE;--sidebar:280px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans SC',sans-serif;min-height:100vh;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.coord{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;opacity:.45;text-transform:uppercase}
+/* HEADER */
+header{border-bottom:2px solid var(--ink);padding:20px 24px 16px;display:flex;align-items:flex-end;justify-content:space-between;background:var(--bg);position:relative;z-index:10}
+.site-title{display:flex;flex-direction:column;gap:4px}
+.site-title h1{font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1}
+.site-title h1 span{color:var(--pink)}
+.site-title .sub{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;opacity:.6;margin-top:4px}
+.header-meta{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 8px;border:1px solid var(--ink);letter-spacing:.08em}
+.pill-pink{background:var(--pink);color:#fff;border-color:var(--pink)}
+/* LAYOUT */
+.shell{display:flex;height:calc(100vh - 73px)}
+/* SIDEBAR */
+aside{width:var(--sidebar);min-width:var(--sidebar);border-right:2px solid var(--ink);display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.sidebar-head{padding:12px 16px;border-bottom:1px solid var(--ink);display:flex;align-items:center;justify-content:space-between}
+.sidebar-head span{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em}
+#burger{display:none;background:none;border:none;cursor:pointer;padding:0}
+.sidebar-body{overflow-y:auto;flex:1;padding-bottom:16px}
+.cat-group{border-bottom:1px solid var(--grid)}
+.cat-group-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none;transition:background .15s}
+.cat-group-head:hover{background:rgba(0,0,0,.04)}
+.cat-label{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em}
+.cat-en{font-family:'IBM Plex Mono',monospace;font-size:9px;opacity:.5;display:block;margin-top:1px}
+.arrow{font-size:10px;transition:transform .2s;opacity:.5}
+.cat-group.open .arrow{transform:rotate(90deg)}
+.cat-items{display:none;padding:4px 0}
+.cat-group.open .cat-items{display:block}
+.cat-item{display:flex;align-items:center;justify-content:space-between;padding:7px 16px 7px 26px;cursor:pointer;font-size:13px;transition:background .15s;border-left:3px solid transparent}
+.cat-item:hover{background:rgba(0,0,0,.04)}
+.cat-item.active{border-left-color:var(--pink);background:rgba(233,30,99,.06);font-weight:500}
+.cat-item .count{font-family:'IBM Plex Mono',monospace;font-size:9px;opacity:.4;background:var(--ink);color:var(--bg);padding:1px 5px}
+/* MAIN */
+main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.main-top{padding:16px 24px 12px;border-bottom:1px solid var(--ink);display:flex;align-items:center;gap:12px;background:var(--bg);position:sticky;top:0;z-index:5}
+.search-wrap{flex:1;position:relative}
+#search{width:100%;padding:9px 12px 9px 36px;border:1.5px solid var(--ink);background:transparent;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);outline:none}
+#search:focus{border-color:var(--pink)}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.4;pointer-events:none}
+.result-count{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.5;white-space:nowrap}
+.ep-list{padding:12px 24px 32px}
+.ep-item{display:grid;grid-template-columns:110px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--grid);text-decoration:none;color:var(--ink);transition:background .12s}
+.ep-item:hover{background:rgba(255,242,0,.25);margin:0 -8px;padding-left:8px;padding-right:8px}
+.ep-left{display:flex;flex-direction:column;gap:5px}
+.date-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;padding:2px 6px;border:1px solid var(--ink);display:inline-block;width:fit-content}
+.cat-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;display:inline-block;width:fit-content;white-space:nowrap}
+.ep-mid{display:flex;flex-direction:column;gap:3px}
+.ep-title{font-size:14px;font-weight:500;line-height:1.4}
+.ep-guest{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.55}
+.ep-arrow{font-size:16px;opacity:.3;transition:opacity .15s;flex-shrink:0}
+.ep-item:hover .ep-arrow{opacity:1;color:var(--pink)}
+.no-results{padding:60px 0;text-align:center;opacity:.4;font-family:'IBM Plex Mono',monospace;font-size:13px}
+/* Category colors */
+.badge-silicon{background:#2D2926;color:#F0EDE8}
+.badge-luyv{background:var(--pink);color:#fff}
+.badge-agent{background:#7B68EE;color:#fff}
+.badge-miaoda{background:var(--yellow);color:var(--ink)}
+.badge-shrimp{background:var(--green);color:var(--ink)}
+.badge-dumate{background:#FF6B35;color:#fff}
+.badge-drama{background:#9C27B0;color:#fff}
+.badge-geo{background:#00BCD4;color:#fff}
+.badge-camp{background:#4CAF50;color:#fff}
+.badge-evening{background:var(--ink);color:var(--bg)}
+/* MOBILE */
+@media(max-width:700px){
+  :root{--sidebar:280px}
+  .shell{position:relative}
+  aside{position:fixed;left:0;top:73px;height:calc(100vh - 73px);z-index:50;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.12)}
+  aside.open{transform:translateX(0)}
+  main{width:100%}
+  #burger{display:flex;flex-direction:column;gap:4px;width:22px}
+  #burger span{display:block;height:2px;background:var(--ink);border-radius:1px}
+  .ep-item{grid-template-columns:1fr auto}
+  .ep-left{flex-direction:row;flex-wrap:wrap;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">
+    <div class="coord">MOD-A01 / ARCHIVE-INDEX / V2.0</div>
+    <h1>WayToAGI <span>直播笔记站</span></h1>
+    <div class="sub">POWERED BY 元子 &amp; HAPPYCAPY — CHINESE AI COMMUNITY</div>
+  </div>
+  <div class="header-meta">
+    <span class="coord">SEC-01 / LIVE-NOTES</span>
+    <span class="pill pill-pink">LIVE ARCHIVE</span>
+    <span class="pill">150+ SESSIONS</span>
+  </div>
+</header>
+
+<div class="shell">
+
+<aside id="sidebar">
+  <div class="sidebar-head">
+    <span>CATEGORIES / 分类导航</span>
+    <button id="burger" onclick="toggleSidebar()" aria-label="关闭侧栏">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="sidebar-body">
+
+    <div class="cat-item active" style="padding-left:16px;border-left:3px solid var(--pink);background:rgba(233,30,99,.06);font-weight:700;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:.06em" onclick="filterCat('all',this)">
+      ALL SESSIONS <span class="count" style="margin-left:auto">150+</span>
+    </div>
+
+    <div class="cat-group open">
+      <div class="cat-group-head" onclick="toggleGroup(this.parentElement)">
+        <div><div class="cat-label">系列节目 <span style="font-size:10px;opacity:.5">▸ Series</span></div><span class="cat-en">SERIES PROGRAMS</span></div>
+        <span class="arrow">▶</span>
+      </div>
+      <div class="cat-items">
+        <div class="cat-item active" onclick="filterCat('silicon',this)">未来硅世界<span class="count">13</span></div>
+        <div class="cat-item" onclick="filterCat('luyv',this)">鹿演 Vol<span class="count">8+</span></div>
+        <div class="cat-item" onclick="filterCat('agent',this)">Agent Talk 系列<span class="count">12</span></div>
+        <div class="cat-item" onclick="filterCat('miaoda',this)">秒哒变现系列<span class="count">6+</span></div>
+        <div class="cat-item" onclick="filterCat('shrimp',this)">养虾经验谈<span class="count">8</span></div>
+        <div class="cat-item" onclick="filterCat('dumate',this)">DuMate 实战系列<span class="count">5</span></div>
+        <div class="cat-item" onclick="filterCat('drama',this)">AI 短剧训练营<span class="count">4</span></div>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group-head" onclick="toggleGroup(this.parentElement)">
+        <div><div class="cat-label">训练营 <span style="font-size:10px;opacity:.5">▸ Camps</span></div><span class="cat-en">TRAINING CAMPS</span></div>
+        <span class="arrow">▶</span>
+      </div>
+      <div class="cat-items">
+        <div class="cat-item" onclick="filterCat('camp',this)">n8n / AI 训练营<span class="count">10</span></div>
+        <div class="cat-item" onclick="filterCat('camp',this)">AI 智能体训练营第二期<span class="count">8</span></div>
+        <div class="cat-item" onclick="filterCat('camp',this)">Skills 爆改训练营<span class="count">6</span></div>
+        <div class="cat-item" onclick="filterCat('camp',this)">AIPO 校园训练营<span class="count">5</span></div>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group-head" onclick="toggleGroup(this.parentElement)">
+        <div><div class="cat-label">专题大会 <span style="font-size:10px;opacity:.5">▸ Events</span></div><span class="cat-en">SPECIAL EVENTS</span></div>
+        <span class="arrow">▶</span>
+      </div>
+      <div class="cat-items">
+        <div class="cat-item" onclick="filterCat('geo',this)">GEO 专题<span class="count">5</span></div>
+        <div class="cat-item" onclick="filterCat('geo',this)">比赛 / 赛事解读<span class="count">4</span></div>
+        <div class="cat-item" onclick="filterCat('geo',this)">年度回顾<span class="count">3</span></div>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <div class="cat-group-head" onclick="toggleGroup(this.parentElement)">
+        <div><div class="cat-label">晚8点共学 <span style="font-size:10px;opacity:.5">▸ Evening</span></div><span class="cat-en">EVENING STUDY SESSIONS</span></div>
+        <span class="arrow">▶</span>
+      </div>
+      <div class="cat-items">
+        <div class="cat-item" onclick="filterCat('evening',this)">2026 年 (Jan–Mar)<span class="count">18</span></div>
+        <div class="cat-item" onclick="filterCat('evening',this)">2025 年 (Jul–Dec)<span class="count">42</span></div>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+<main>
+  <div class="main-top">
+    <button id="burger" onclick="toggleSidebar()" style="display:none;flex-direction:column;gap:4px;width:22px;background:none;border:none;cursor:pointer" aria-label="菜单">
+      <span style="display:block;height:2px;background:var(--ink)"></span>
+      <span style="display:block;height:2px;background:var(--ink)"></span>
+      <span style="display:block;height:2px;background:var(--ink)"></span>
+    </button>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input id="search" type="text" placeholder="搜索节目标题、嘉宾、系列…" oninput="filterSearch()">
+    </div>
+    <span class="result-count" id="result-count">15 SESSIONS</span>
+  </div>
+
+  <div class="ep-list" id="ep-list">
+
+    <a class="ep-item" href="#" data-cat="miaoda">
+      <div class="ep-left"><span class="date-badge">2026-03-27</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI x 秒哒 "秒哒-让创意变生意"应用变现第六期</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="geo">
+      <div class="ep-left"><span class="date-badge">2026-03-26</span><span class="cat-badge badge-geo">GEO 专题</span></div>
+      <div class="ep-mid"><div class="ep-title">中国第一届GEO大会重磅预告</div><div class="ep-guest">嘉宾: 向阳乔木 / 姚金刚</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="dumate">
+      <div class="ep-left"><span class="date-badge">2026-03-25</span><span class="cat-badge badge-dumate">DuMate 系列</span></div>
+      <div class="ep-mid"><div class="ep-title">搭子DuMate实战：能文也能武，复杂任务一肩挑</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="dumate">
+      <div class="ep-left"><span class="date-badge">2026-03-24</span><span class="cat-badge badge-dumate">DuMate 系列</span></div>
+      <div class="ep-mid"><div class="ep-title">DuMate实战：内容生产一条龙</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="dumate">
+      <div class="ep-left"><span class="date-badge">2026-03-23</span><span class="cat-badge badge-dumate">DuMate 系列</span></div>
+      <div class="ep-mid"><div class="ep-title">AI搭子上班记：你思考，DuMate干活</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="shrimp">
+      <div class="ep-left"><span class="date-badge">2026-03-18</span><span class="cat-badge badge-shrimp">养虾经验谈</span></div>
+      <div class="ep-mid"><div class="ep-title">养虾经验谈：我睡觉，虾剪片</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="geo">
+      <div class="ep-left"><span class="date-badge">2026-03-17</span><span class="cat-badge badge-geo">GEO 专题</span></div>
+      <div class="ep-mid"><div class="ep-title">从概念到实操｜GEO 生成式搜索优化指南</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="miaoda">
+      <div class="ep-left"><span class="date-badge">2026-03-13</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">秒哒全球首发应用生成Skill</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="shrimp">
+      <div class="ep-left"><span class="date-badge">2026-03-11</span><span class="cat-badge badge-shrimp">养虾经验谈</span></div>
+      <div class="ep-mid"><div class="ep-title">养虾经验谈：我睡觉，虾赚钱</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="evening">
+      <div class="ep-left"><span class="date-badge">2026-03-07</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">营销增长与SEO优化全攻略</div><div class="ep-guest">嘉宾: Kostja</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="evening">
+      <div class="ep-left"><span class="date-badge">2026-03-05</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="evening">
+      <div class="ep-left"><span class="date-badge">2026-03-04</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">OpenClaw该上班了！千帆养虾进阶实战</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="silicon">
+      <div class="ep-left"><span class="date-badge">2026-02-28</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
+      <div class="ep-mid"><div class="ep-title">未来硅世界第12期：CC Switch背后的故事</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="silicon">
+      <div class="ep-left"><span class="date-badge">2026-01-31</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
+      <div class="ep-mid"><div class="ep-title">未来硅世界第11期：AI 审美浪潮下的哲学追问</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="#" data-cat="silicon">
+      <div class="ep-left"><span class="date-badge">2026-01-17</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
+      <div class="ep-mid"><div class="ep-title">未来硅世界第10期：对话「闪电说」创始人</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <div class="no-results" id="no-results" style="display:none">NO RESULTS / 未找到匹配节目</div>
+  </div>
+</main>
+
+</div>
+
+<script>
+var currentCat='all';
+
+function toggleGroup(el){
+  el.classList.toggle('open');
+}
+
+function filterCat(cat,el){
+  currentCat=cat;
+  document.querySelectorAll('.cat-item').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+  applyFilters();
+  if(window.innerWidth<=700)toggleSidebar();
+}
+
+function filterSearch(){applyFilters()}
+
+function applyFilters(){
+  var q=document.getElementById('search').value.toLowerCase();
+  var items=document.querySelectorAll('.ep-item');
+  var shown=0;
+  items.forEach(function(item){
+    var catMatch=currentCat==='all'||item.dataset.cat===currentCat;
+    var text=(item.textContent||'').toLowerCase();
+    var qMatch=!q||text.includes(q);
+    var vis=catMatch&&qMatch;
+    item.style.display=vis?'':'none';
+    if(vis)shown++;
+  });
+  document.getElementById('result-count').textContent=shown+' SESSION'+(shown!==1?'S':'');
+  document.getElementById('no-results').style.display=shown===0?'block':'none';
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Mobile burger init
+(function(){
+  var b=document.querySelectorAll('#burger');
+  if(window.innerWidth<=700)b.forEach(function(btn){btn.style.display='flex'});
+  window.addEventListener('resize',function(){
+    var show=window.innerWidth<=700;
+    b.forEach(function(btn){btn.style.display=show?'flex':'none'});
+  });
+})();
+</script>
+</body>
+</html>
