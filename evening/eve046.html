@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>千问APP众测体验分享 | 多模态能力全面对标GPT-5 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVE001/2025-11-18/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">千问APP众测体验分享 <span class="hl">| 多模态能力全面对标GPT-5</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">WaytoAGI晚8点共学</span>
+    <span class="hero-meta">2025年11月18日</span>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section class="data-block" data-coord="SEC-001">
+  <h2 class="sec-header">千问模型核心优势</h2>
+  <div class="sec-coord">一泽Eze、许键深度评测</div>
+  
+  <p><span class="hl-yellow">综合性最强</span>：许键认为千问是国内综合性最强的模型，在各方面表现出色。虽回答偏中规中矩，但开启思维模式或处理复杂题目时答案更标准准确，<span class="hl-yellow">幺幻觉率低</span>。</p>
+  
+  <p><span class="hl-yellow">对标GPT-5的模型家族</span>：一泽Eze指出千问是开源模型家族，包含Coder、Max、升图的Image等众多模型，在全球榜单上表现出色。</p>
+  
+  <p><span class="hl-yellow">移动端简洁设计</span>：为提供更好的C端服务，千问在手机端取消模型选择，仅有一个输入框，用户可定向打开深度思考、修图、翻译等功能。</p>
+  
+  <p><span class="hl-yellow">All-in-One入口</span>：千问APP能在大部分场景替代OpenAI使用，涵盖视觉、编程、图像生成等多模态能力，是真正的一站式解决方案。</p>
+</section>
+
+<section class="data-block" data-coord="SEC-002">
+  <h2 class="sec-header">实测应用场景亮点</h2>
+  <div class="sec-coord">一泽Eze、考拉对标测试</div>
+  
+  <div class="quote">
+    <p>「在夫妻吵架分析任务中，千问表现领先Gemini和DeepSeek，具有前景提要、排版清晰、结论建议完善的特点」</p>
+    <p class="quote-author">— 考拉（与ChatGPT对标裁判结果）</p>
+  </div>
+  
+  <p><span class="hl-yellow">游戏战绩图生成</span>：用户可按开源提示词生成王者荣耀结算画面，并根据需求定制提示词实现差异化效果。</p>
+  
+  <p><span class="hl-yellow">图片风格转换</span>：千问的Image模型在线稿转换、拼豆图纸生成等任务中表现稳定，相比其他模型更少出现格子变形、颜色混乱问题。</p>
+  
+  <p><span class="hl-yellow">音视频全能</span>：Qwen音视频通话模型已上移动端，支持自动字幕展示；录音纪要功能支持中英日、粤语，可用手机麦克风收音或录制内部音频，在小红书有情侣吵架复盘、游戏复盘等创意用法。</p>
+  
+  <p><span class="hl-yellow">虚拟陪伴应用</span>：提供人设信息后，千问的拟人化回应效果出色，可从人设一致性、个性化回应维度评估。</p>
+</section>
+
+<section class="data-block" data-coord="SEC-003">
+  <h2 class="sec-header">众测活动与功能特性</h2>
+  <div class="sec-coord">巴斯、一泽Eze协作运营</div>
+  
+  <p><span class="hl-yellow">众测加入方式</span>：用户可加入微推圈众测群，填写报名信息，后台审核通过后获得邀请码。</p>
+  
+  <p><span class="hl-yellow">联动活动流程</span>：参与者需下载APP、根据教程定制战绩图、在小红书发布并带上千问话题、填写问卷完成闭环。</p>
+  
+  <p><span class="hl-yellow">功能支持情况</span>：电脑端智能体手机端理论支持但功能未完全同步；千问目前无生成音频和视频功能；播客功能已上线；可将会议录音/录屏进行音视频解读或作为插件在飞书/Teams中做翻译。</p>
+</section>
+
+<section class="data-block" data-coord="SEC-004">
+  <h2 class="sec-header">深度测试与迭代建议</h2>
+  <div class="sec-coord">物理教学图生成、提示词优化</div>
+  
+  <p>在参会者要求下，一泽Eze测试用千问生成物理实验教学图，成功生成光折射现象的HTML演示界面，手机端具有预览功能。虽存在反射错误问题，但展示了千问在教育领域的探索潜力。</p>
+  
+  <p><span class="hl-yellow">待办事项</span>：整理AI修图提示词库并考虑扩展定制维度（修改服饰、视角等）；明确物理实验图生成的技术类型（AI Coding应用vs HTML图），后续进行专业审查。</p>
+</section>
+
+<div class="golden-quote">
+  <p>「千问是All-in-One的入口，涵盖视觉、编程、图像生成等多模态能力，简洁的手机端设计让用户可快速定向打开各类深度功能，真正做到了模型能力与产品体验的统一」</p>
+  <p class="quote-author">— 会议共识</p>
+</div>
+
+<div class="takeaways">
+  <h3>核心收获（Takeaways）</h3>
+  <ul>
+    <li><strong>综合性最强的国产模型</strong> - 千问在各方面表现出色，尤其在复杂题目和幻觉率上领先，成为To B场景的优选方案</li>
+    <li><strong>真正的多模态All-in-One</strong> - 集成Coder、Image、音视频、编程等模态，能在大部分场景替代OpenAI</li>
+    <li><strong>移动端交互体验创新</strong> - 简洁设计只保留一个输入框，用户可定向打开各类深度功能，降低学习成本</li>
+    <li><strong>内容创作场景领先</strong> - 游戏战绩图、图片风格转换、虚拟陪伴等应用中表现稳定且易定制</li>
+    <li><strong>音视频能力完善</strong> - 支持多语言录音纪要、实时字幕展示、会议录音解读等功能，创意用法丰富</li>
+    <li><strong>众测-小红书联动运营** - 通过APP下载→定制创意内容→社交分享→问卷反馈的闭环，形成社区驱动增长</li>
+    <li><strong>教育场景探索初显成效</strong> - 物理实验教学图生成展示了千问在垂直领域的应用潜力，待优化完善</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI晚8点共学</span>
+    <span>2025-11-18</span>
+    <span>AI生成纪要</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
