@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能体训练营二期 第七节 · 精雕细琢：     性能提速 & 体验翻倍 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<nav class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-coord">CAMP / CAMP-02-07 / 2025-11-19 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">
+    精雕细琢：<br>
+    <span class="hl">性能提速 & 体验翻倍</span>
+  </h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">讲师：薛临风</span>
+    <span class="hero-meta">形式：工作坊</span>
+    <span class="hero-meta">19:55 - 22:29</span>
+  </div>
+  <div class="hero-rule">AI智能体训练营 · 2025.11.19</div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <h2>落地思考框架</h2>
+    <span class="sec-coord">SEC-01</span>
+  </div>
+  
+  <div class="data-block" data-coord="FRAMEWORK-001">
+    <h3>智能体落地「三问」</h3>
+    <p>薛临风老师提出系统化的产品思考方法，帮助学员将AI技能真正转化为实用应用：</p>
+    <ul>
+      <li><strong>寻找痛点</strong>：聚焦日常重复、跨多网页、高门槛延迟的任务（如自动定时阅读公众号、爬取特定博主文章）</li>
+      <li><strong>判断可行性</strong>：核心难点是技术能力、逻辑推理还是模糊生成？手中原料数据充分吗？</li>
+      <li><strong>评估实用性</strong>：成果是「止痛药」还是「维生素」？容错率如何？低容错需求需加审核节点</li>
+    </ul>
+  </div>
+
+  <div class="quote">
+    <p>「从产品经理视角思考，学会用分治法将复杂性从逻辑转向接口」</p>
+    <span class="quote-author">—— 薛临风</span>
+  </div>
+
+  <div class="data-block" data-coord="FRAMEWORK-002">
+    <h3>WHSI 结构体系</h3>
+    <p>从宏观到微观的工作流设计方法论：</p>
+    <ul>
+      <li><strong>What</strong>（业务流）：明确整体目标流程</li>
+      <li><strong>How</strong>（工作模式）：选择路由、编排者、执行者等模式</li>
+      <li><strong>Structure</strong>（逻辑结构）：循环、条件判断等结构设计</li>
+      <li><strong>Instance</strong>（节点细节）：具体的API、参数配置</li>
+    </ul>
+    <p class="hl-yellow">💡 建议学员从微观到宏观逐步构建，避免陷入专有词汇的泥潭</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>实战操作演示</h2>
+    <span class="sec-coord">SEC-02</span>
+  </div>
+
+  <div class="data-block" data-coord="DEMO-001">
+    <h3>公众号文章智能爬取</h3>
+    <p>详细讲解插件配置的三个核心数据获取方式：</p>
+    <ul>
+      <li><strong>Cookies</strong>：在公众号后台抓包获取</li>
+      <li><strong>Fake ID</strong>：在文章中搜索提取</li>
+      <li><strong>TOKEN</strong>：接口认证所需</li>
+    </ul>
+    <p><strong>⚠️ 维护提示</strong>：Cookie可能变化导致插件失效，建议添加输入节点定期维护</p>
+    <p><strong>📈 后续拓展</strong>：循环爬取所有文章 → 存储到飞书多维表 → 定时检查更新</p>
+  </div>
+
+  <div class="golden-quote">
+    <p>「复杂的系统不是一次性构建的，而是通过不断的测试、优化和迭代，将容错率低的环节补充审核节点，才能真正提升体验」</p>
+  </div>
+
+  <div class="data-block" data-coord="DEMO-002">
+    <h3>应用搭建与UI交互</h3>
+    <p>从设计工具到交互体验的完整链路：</p>
+    <ul>
+      <li><strong>工具选择</strong>：推荐Figma、Master Go等原型设计工具，与Coze应用搭建思路相通</li>
+      <li><strong>交互设计</strong>：按钮点击效果（页面跳转、调用工作流）、悬浮效果（位置偏移实现推牌等）</li>
+      <li><strong>案例参考</strong>：MBTI人格测试、小红书创作应用等</li>
+    </ul>
+    <p class="hl-yellow">💡 初学者建议先从PC端应用开始，便于快速掌握逻辑</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>知识拓展与关键难点</h2>
+    <span class="sec-coord">SEC-03</span>
+  </div>
+
+  <div class="data-block" data-coord="KNOWLEDGE-001">
+    <h3>JSON入门与数据绑定</h3>
+    <p>社群内优质资源分享——宋昊同学的JSON入门教程：</p>
+    <ul>
+      <li>从简单到复杂的循序渐进讲解</li>
+      <li>飞书多维表对接的实践案例</li>
+      <li>推荐学员收藏学习，提升数据处理能力</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="KNOWLEDGE-002">
+    <h3>常见技术对接难点</h3>
+    <ul>
+      <li><strong>文本处理</strong>：LLM生成与数据清洗</li>
+      <li><strong>日报生成</strong>：从数据库提取→LLM编排→定时发送</li>
+      <li><strong>数据库应用</strong>：存储查询、多表关联等高级用法</li>
+      <li><strong>API接入</strong>：包含挂起节点的工作流需程序员配置（难度★★★）</li>
+      <li><strong>图片获取</strong>：公众号多媒体资源抓取的特殊处理</li>
+    </ul>
+    <p class="hl-yellow">💡 API对接存在复杂度，建议复杂流程与技术团队合作</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>学员作业与后续规划</h2>
+    <span class="sec-coord">SEC-04</span>
+  </div>
+
+  <div class="data-block" data-coord="ASSIGNMENT-001">
+    <h3>分层作业体系</h3>
+    <ul>
+      <li><strong>初学者</strong>：复现课程演示流程，完成公众号文章爬取任务</li>
+      <li><strong>进阶学员</strong>：基于文章爬取流程设计完整产品，或独立表达需求的UI界面</li>
+      <li><strong>设计师学员</strong>：创作独立表达需求的应用界面，与工作流同学合流展示信息</li>
+    </ul>
+    <p class="hl-yellow">💡 鼓励跨角色协作，设计师与开发者配对完成项目</p>
+  </div>
+
+  <div class="data-block" data-coord="ROADMAP-001">
+    <h3>后续学习方向</h3>
+    <ul>
+      <li>深化应用落地：期待薛临风老师对应用设计的进一步讲解</li>
+      <li>拓展爬取场景：小红书、抖音等平台数据采集</li>
+      <li>系统能力构建：完整的数据流→处理→展示的闭环设计</li>
+      <li>实战项目孵化：将所学转化为可交付的智能体产品</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3 class="takeaways-header">核心收获 Key Takeaways</h3>
+  <ul>
+    <li><span class="label">设计思想</span>智能体落地的「三问框架」（痛点→可行性→实用性）是产品思考的基础，比技术细节更重要</li>
+    <li><span class="label">方法论</span>WHSI结构将复杂工作流从逻辑分解到节点，避免盲目复杂化，降低容错风险需加审核</li>
+    <li><span class="label">实操技能</span>公众号爬取涉及Cookies、Token等多源数据整合，Cookie变化需定期维护，后续可链接多维表存储</li>
+    <li><span class="label">UI/UX</span>应用交互设计与原型工具相通，初学者从PC端入手，设计师可用Figma/Master Go快速实现</li>
+    <li><span class="label">团队协作</span>复杂项目建议设计、前端、后端分工，API接入存在难度需专业程序员参与</li>
+    <li><span class="label">资源整合</span>社群内JSON教程、多维表对接等优质资源是学习加速器，做好知识沉淀和分享</li>
+    <li><span class="label">迭代升级</span>从单点爬取→批量采集→多平台→自动化→数据分析，逐步构建完整的智能体生态</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 回到首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>AI智能体训练营·第二期·第七节</p>
+    <p>2025-11-19 · 19:55-22:29 (GMT+08)</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
