@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndexTTS 2.0：让声音更有温度的情感语音合成 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回首页</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/SPEECH/2025-10-22/INDEXTS → STRUCTURED</div>
+  <h1 class="hero-title">IndexTTS 2.0：<span class="hl">让声音更有温度的情感语音合成</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">讲师：思毅（bilibili IndexTTS首席算法专家）/ 紫泽（bilibili语音大模型产品运营专家）</div>
+    <div class="hero-meta">时间：2025年10月22日 19:55-21:26</div>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<section>
+  <div class="sec-header">
+    <h2>模型架构突破：从平淡到情感复刻</h2>
+    <div class="sec-coord">Section 1/4 - Architecture Evolution</div>
+  </div>
+  <p>IndexTTS从第一代到2.0版本经历了三个关键迭代。<span class="hl-yellow">第一代模型采用Acoustic TOKEN直接包含声学信息，去掉扩散模型层，通过字符-拼音混合建模支持任意语种参考音频</span>，但存在情感表现平淡和无法控制语速的局限。</p>
+  <p>2.0版本构建了全新的自回归架构，核心由<span class="hl-yellow">T-to-S模块（文本到语义）、S-to-Mel模块、BigVGAN V2声码器和T-to-E模块</span>组成。其中T-to-S模块采用GPT-2结构，通过三阶段训练（全量数据→加入情感特征→冻结参数全量训练）实现音色与情感的精准解耦，使情感向量能独立控制而不损伤音色。</p>
+  <div class="quote">
+    <p>"在AI和语音技术飞速发展的今天，TTS已成为内容创作中不可或缺的基础能力。"</p>
+    <div class="quote-author">— 思毅</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>三大情感控制方式：灵活适配创作需求</h2>
+    <div class="sec-coord">Section 2/4 - Emotion Control</div>
+  </div>
+  <p>IndexTTS 2.0提供三种递进式情感控制方案。<span class="hl-yellow">参考音频模式</span>通过上传音色和情绪参考音频，支持分别调节情感权重；<span class="hl-yellow">情感向量模式</span>提供预设情绪标签供创作者直接选择；<span class="hl-yellow">自然语言模式</span>通过输入情感描述（如"高兴惊喜，特别开心"）触发模型生成对应情感。</p>
+  <p>时长控制功能采用句级别粒度，创作者可设定目标时长实现快慢语速调节，结合标点符号控制可实现节奏微调。该方案完全解决了第一代模型需要后期信号变速的痛点，在影视配音中实现精准的音画卡位。</p>
+  <div class="data-block" data-coord="Emotion-Control-Methods">
+    <strong>三层控制体系：</strong>
+    <ul>
+      <li>参考音频 → 保留原始表现力但可微调权重</li>
+      <li>情感向量 → 预设标签快速选择</li>
+      <li>自然语言 → 灵活描述复杂情感组合</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>应用场景实战：从专业制作到创意还原</h2>
+    <div class="sec-coord">Section 3/4 - Real-world Applications</div>
+  </div>
+  <p>IndexTTS 2.0已在多个高端制作中验证效果。<span class="hl-yellow">影视原声翻译</span>可保留原片角色情绪的愤怒、消极等细微差异，支持中英混合生成，仅需参考音频即可精准还原；<span class="hl-yellow">名场面复刻</span>通过替换声线完成台词和语气的完整转换，如用丁真/王媛声线改演《让子弹飞》片段；<span class="hl-yellow">专业内容制作</span>包括2025年BML大会全程口播和首部AI纪录片《太阳系》配音，均获得业界好评。</p>
+  <p>在生僻字和方言适配上，模型支持拼音输入方案（如"zhōu guó"表示"周国"），能正确处理发音歧义。对接近普通话的方言如北京话、东北话通过韵律调节可支持，但粤语、吴语等差异较大的方言仍需后续迭代。</p>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>部署与限制：开源生态与商业合规</h2>
+    <div class="sec-coord">Section 4/4 - Deployment & Compliance</div>
+  </div>
+  <p>IndexTTS 2.0提供多层级获取方式：GitHub完整开源版支持本地部署与Web UI使用；Hugging Face/ModelScope平台提供在线推理无需配置。硬件要求为显存12GB及以上（与显卡代数无关），目前仅支持NVIDIA显卡。</p>
+  <p>生成内容长度方面，150字左右生成效果最优，长文本可通过拆短句方案解决；笑声/哭声生成需提供相应情绪的参考音频；句级时长控制无字级细粒度，需要精准控制时需配合后期剪辑。</p>
+  <div class="golden-quote">
+    <p>"商用作品使用真人样音需要真人授权。关于模型推理出来的音频的商用问题，可到GitHub查看主页的法律介绍。"</p>
+    <div class="quote-author">— 紫泽（关键合规提示）</div>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3>核心要点（Takeaways）</h3>
+  <ol>
+    <li><span class="hl-yellow">架构创新</span>：2.0版本通过T-to-S自回归模块和三阶段训练实现音色-情感完全解耦，解决第一代平淡和无法控制时长的核心痛点</li>
+    <li><span class="hl-yellow">多维控制</span>：参考音频、情感向量、自然语言三层递进式情感控制满足从专业到创意的全链路需求</li>
+    <li><span class="hl-yellow">影视级应用</span>：已在原声翻译、名场面复刻、专业纪录片配音中验证可用性，表现力接近真人配音</li>
+    <li><span class="hl-yellow">开源生态</span>：支持多平台部署（本地/云端），GitHub完全开源降低创作者门槛，但需注意商用授权和显卡兼容性限制</li>
+    <li><span class="hl-yellow">实用建议</span>：长文本通过拆短句处理，音画卡位需结合时长控制+标点符号，复杂情感可通过情感权重渐变实现平滑过渡</li>
+    <li><span class="hl-yellow">方言支持</span>：普通话及接近方言可通过韵律调节，粤语等差异大方言仍需等待后续版本迭代</li>
+    <li><span class="hl-yellow">未来规划</span>：自定义标签、字级时长控制、更多语言混合支持在规划中，开发者社区可参与共创优化</li>
+  </ol>
+</div>
+
+<div class="hero-rule"></div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>会议纪要 | IndexTTS 2.0 语音合成 | 2025-10-22</p>
+    <p>来源：WaytoAGI晚8点共学 | 主持：许键</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
