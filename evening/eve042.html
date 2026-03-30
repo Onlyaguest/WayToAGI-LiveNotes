@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP插件召集令 插件开发大赛攻略 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVE-MCP/2025-11-25/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">MCP插件召集令 <span class="hl">插件开发大赛攻略</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">🏆 16万巨额现金激励</span>
+    <span class="hero-meta">📅 2025年11月25日</span>
+    <span class="ep-badge">MCP开发</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<section data-coord="EVE/EVE-MCP/2025-11-25/SEC-01">
+  <h2 class="sec-header">MCP开发全流程体系</h2>
+  <div class="sec-coord">从0到1构建MCP产品的完整路线图</div>
+  
+  <div class="data-block" data-coord="MCP-FLOW-OVERVIEW">
+    <p><span class="hl-yellow">四阶段构建流程</span>：前期准备 → Demo开发 → 正式开发 → 技巧分享</p>
+    <p>前期准备是后续开发的基础，确保开发环境和工具正确配置，能避免后续流程问题。</p>
+  </div>
+
+  <div class="data-block" data-coord="PREPARATION-CHECKLIST">
+    <strong>前期准备核心要点</strong>
+    <ul>
+      <li><span class="hl-yellow">Node.js环境</span>：版本 &lt; V22.21.0（满足阿里百宝箱部署要求）</li>
+      <li><span class="hl-yellow">开发工具</span>：推荐通义灵码，支持VS Code、Visual Studio等IDE集成</li>
+      <li><span class="hl-yellow">NPM账号</span>：国内邮箱即可注册，用于发布代码到NPM仓库</li>
+      <li><span class="hl-yellow">FastMCP框架</span>：必备依赖框架</li>
+    </ul>
+  </div>
+</section>
+
+<section data-coord="EVE/EVE-MCP/2025-11-25/SEC-02">
+  <h2 class="sec-header">Demo开发实战指南</h2>
+  <div class="sec-coord">五步流程从代码到应用的完整演示</div>
+  
+  <div class="data-block" data-coord="DEMO-FIVE-STEPS">
+    <strong>Demo开发五步骤</strong>
+    <ol>
+      <li>开发代码 - 在通义灵码中用自然语言描述需求</li>
+      <li>打包MCP - 生成MCP Server配置文件</li>
+      <li>验证功能 - 在灵码中添加MCP服务进行本地验证</li>
+      <li>发布到阿里百宝箱 - 登录平台新建插件选择MCP服务</li>
+      <li>构建应用智能体 - 在工作空间应用中添加插件完成编排</li>
+    </ol>
+  </div>
+
+  <div class="data-block" data-coord="DEMO-KEY-POINTS">
+    <p><strong>关键操作要点</strong>：</p>
+    <ul>
+      <li>安装FastMCP包后，左侧资源管理器会显示相关文件</li>
+      <li>创建demo工具时关注代码视图授权提示和右下角变更文件提示</li>
+      <li>首次发布NPM需先登录，有效期内后续只需发布</li>
+      <li>发布后需进行功能调试，通过后点击发布完成</li>
+    </ul>
+  </div>
+</section>
+
+<section data-coord="EVE/EVE-MCP/2025-11-25/SEC-03">
+  <h2 class="sec-header">正式开发与商业场景</h2>
+  <div class="sec-coord">企业级应用与虚拟试衣案例深度解析</div>
+  
+  <div class="data-block" data-coord="DEVELOPMENT-THINKING">
+    <p><span class="hl-yellow">核心思考方向</span>：从企业级流程和工作痛点出发</p>
+    <ul>
+      <li>思考大模型和代码功能的组合可能性</li>
+      <li>从官方参考场景入手，由简单到复杂开发</li>
+      <li>MCP通过自然语言调用，降低普通用户使用难度</li>
+      <li>能整合复杂链路中的多个环节，实现场景化交付</li>
+    </ul>
+  </div>
+
+  <div class="quote" data-coord="INVOICE-CASE">
+    <p class="quote-author">📋 发票识别助手案例</p>
+    <p><strong>功能定义</strong>：输入多张图片URL → 调用大模型识别 → 输出指定格式JSON</p>
+    <p><strong>开发步骤</strong>：准备大模型(阿里百炼) → 创建API key → 在模型广场测试提示词 → 获取API参考代码 → 在灵码中描述需求开发 → 打包验证发布</p>
+  </div>
+
+  <div class="data-block" data-coord="VIRTUAL-FITTING-IMPL">
+    <strong>虚拟试衣场景核心实现</strong>
+    <ul>
+      <li><span class="hl-yellow">技术方案</span>：火山引擎即梦4.0图生图能力 + FastMCP框架包装</li>
+      <li><span class="hl-yellow">工作原理</span>：通过API接入实现多图融合，将服装图片换到模特身上</li>
+      <li><span class="hl-yellow">费用处理</span>：将API key作为入参暴露给用户，用户传入自己的key避免费用扣除</li>
+    </ul>
+  </div>
+</section>
+
+<section data-coord="EVE/EVE-MCP/2025-11-25/SEC-04">
+  <h2 class="sec-header">部署方式与商业变现</h2>
+  <div class="sec-coord">两种部署路径与未来商业生态</div>
+  
+  <div class="data-block" data-coord="DEPLOYMENT-COMPARISON">
+    <strong>两种部署方式对比</strong>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr style="border-bottom:1px solid #ddd;">
+        <th style="text-align:left;padding:8px;">一键部署</th>
+        <th style="text-align:left;padding:8px;">自部署</th>
+      </tr>
+      <tr style="border-bottom:1px solid #ddd;">
+        <td style="padding:8px;">✓ 新手友好<br/>✓ 无需准备服务器<br/>✓ NPX方式快速部署</td>
+        <td style="padding:8px;">✓ 高度自定义<br/>✗ 需准备服务器<br/>✗ 需配置环境与依赖<br/>✗ 需开放端口</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="golden-quote">
+    <p class="quote-author">💰 商业变现规划</p>
+    <p><strong>"百宝箱2026年推出自定义定价功能，开发者可通过MCP服务实现商业变现"</strong> — 何铠帆</p>
+  </div>
+
+  <div class="data-block" data-coord="MONETIZATION-STRATEGY">
+    <p><strong>后续关键行动</strong>：</p>
+    <ul>
+      <li>👉 按流程完成Demo开发，确保技术路线跑通</li>
+      <li>👉 开发复杂功能MCP产品，积累商业应用案例</li>
+      <li>👉 留意百宝箱2026年定价模式推出，提前准备</li>
+      <li>👉 开发有商业价值的插件，与平台协商定价</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3>💡 核心要点速记</h3>
+  <ol>
+    <li><span class="hl-yellow">不写代码快速启动</span>：用通义灵码+FastMCP框架，自然语言描述需求即可生成代码</li>
+    <li><span class="hl-yellow">环境配置关键</span>：Node.js版本&lt;22.21.0、NPM账号、通义灵码缺一不可</li>
+    <li><span class="hl-yellow">五步发布流程</span>：代码→打包→验证→百宝箱→应用编排完整闭环</li>
+    <li><span class="hl-yellow">场景驱动开发</span>：从企业痛点和工作流程出发，结合大模型能力</li>
+    <li><span class="hl-yellow">虚拟试衣示范</span>：API调用+MCP包装+用户key输入=完整方案</li>
+    <li><span class="hl-yellow">部署选择灵活</span>：新手一键部署最快，自部署满足定制需求</li>
+    <li><span class="hl-yellow">2026年商机</span>：自定义定价功能上线，开发者可参与商业变现</li>
+  </ol>
+</div>
+
+<div class="hero-rule"></div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 回到首页</a>
+  </div>
+  <div class="footer-stamp">
+    <small>MCP 插件开发大赛 | 2025-11-25 | WaytoAGI</small>
+  </div>
+</div>
+</div>
+</body>
+</html>
