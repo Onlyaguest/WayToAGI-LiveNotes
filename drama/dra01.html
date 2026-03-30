@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRA-01 · Lovart/Tapnow 实操课：批量出片 + 动态分层全拿捏 | AI短剧 WayToAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="ep-badge">第三期 AI短剧训练营</div>
+
+<div class="hero">
+  <div class="hero-coord">DRAMA/TAPNOW/2025-12-28/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Lovart/Tapnow 实操课：<span class="hl">批量出片 + 动态分层全拿捏</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">🎙️ 周鹏｜AIGC广告/短剧/动画导演</div>
+    <div class="hero-meta">📅 2025年12月28日 19:54-22:14</div>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">
+    <span class="sec-coord">[1]</span>
+    训练营时间节点与作业要求
+  </h2>
+  <p>第三期AI短剧训练营设置了明确的时间节点与质量标准。学员需在<span class="hl-yellow">12月31日前提交优秀学员作业</span>参评，于<span class="hl-yellow">1月4日12点前完成8次作业并达到及格标准</span>方可获得结业证书。结营典礼将于1月5日8点举行，邀请优秀学员、助教和优秀团长分享成果。</p>
+  <p>作业提交支持飞书和Word两种方式，学员报名后至少需提交一次作业，否则将进入"小黑屋"，影响后续课程报名。回放已逐步放出，明天加餐将由大鹏老师讲解AI视频工具技巧。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">
+    <span class="sec-coord">[2]</span>
+    Lovart平台：从资产到分镜的创意流程
+  </h2>
+  <p>周鹏老师以国漫风格的"小帅和小梅"故事为案例，展示Lovart平台的完整创作流程。</p>
+  
+  <div class="data-block" data-coord="LOVART-ASSET">
+    <strong>第一步：资产生成</strong><br>
+    通过Gemini等大语言模型编写AI提示词，生成中国风动漫风格人物图片，提炼风格提示词确保人物风格一致性，为后续创作打下基础。
+  </div>
+
+  <div class="data-block" data-coord="LOVART-STORYBOARD">
+    <strong>第二步：分镜设计</strong><br>
+    利用正反打概念设计对话镜头，借助Gemini生成秒级精细分镜表，导入Lovart无限画布结合人物资产生成分镜。强调虽自动化分镜可助初学者快速上手，但需发挥创造力对不满意的分镜进行单独修改。
+  </div>
+
+  <div class="data-block" data-coord="LOVART-EDITING">
+    <strong>第三步：改图与分层</strong><br>
+    平台改图功能便捷，支持去除人物武器、调整动作等。利用分层功能将复杂图片元素剥离单独处理后再合成，如让人物做出特定武功动作，显著提高创作效率。
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">
+    <span class="sec-coord">[3]</span>
+    Typenow平台：节点驱动的无限可能
+  </h2>
+  <p>Typenow采用基于节点的无限画布设计，操作逻辑与Lovart差异较大。新建项目后可利用多镜头电影分镜应用导入资产，通过在文本节点、搜索节点等位置填写提示词实现多维生成。</p>
+  
+  <div class="data-block" data-coord="TYPENOW-NODE">
+    <strong>节点优势</strong><br>
+    将风格提示词单独设置为节点，生成不同图片时可直接拉线调用，大幅节省重复工作。平台整合多种图片生成模型（如Flux等）和视频生成模型（海螺、VO3.1、Sora 2 Pro等），用户充值平台积分即可调用，并可查看历史提示词、下载素材。
+  </div>
+
+  <p>图片节点满足要求后，直接拉线至视频生成节点选择主流模型，无缝完成从分镜到成片的全流程。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">
+    <span class="sec-coord">[4]</span>
+    比赛策略与账号运营
+  </h2>
+  
+  <div class="data-block" data-coord="CONTEST-STRATEGY">
+    <strong>参赛建议</strong><br>
+    选择<span class="hl-yellow">公开公正的赛事（如AGI等）</span>，避免存在黑幕的小地区文旅比赛。认真阅读赛事规则，分析主办方调性和竞争对手情况，如车企比赛需理解其品牌表达诉求。作品需紧扣主题而非纯自我表达，将比赛视为命题作文精心构思。
+  </div>
+
+  <div class="data-block" data-coord="ACCOUNT-OPERATION">
+    <strong>账号运营思路</strong><br>
+    优先选择<span class="hl-yellow">小红书和视频号</span>，这两平台甲方资源丰富，做出数据后易获得商业合作。内容核心为<span class="hl-yellow">视觉奇观</span>——创作大家未见过的独特内容，如搞笑、精美或脑洞大开的作品，快速提升流量和影响力。
+  </div>
+</section>
+
+<div class="golden-quote">
+  <p>"作品要与赛事主题契合，避免纯自我表达。将比赛视为命题作文，准确把握主题要求，精心构思内容，才能在众多参赛作品中脱颖而出。"</p>
+  <div class="quote-author">—— 周鹏</div>
+</div>
+
+<div class="takeaways">
+  <h3>💡 核心要点</h3>
+  <ul>
+    <li><strong>时间管理</strong>：12月31日前提交优秀学员作业、1月4日12点前完成所有作业，把握训练营结业窗口</li>
+    <li><strong>Lovart流程</strong>：资产生成→分镜设计→改图分层，通过AI提示词+手工调整实现高效批量出片</li>
+    <li><strong>Typenow优势</strong>：节点式设计可复用风格资产，整合多模型接口，一站式完成分镜到视频生成</li>
+    <li><strong>赛事选择</strong>：优选公开公正大赛（如AGI），分析主办方需求后紧扣主题创作，提高获奖概率</li>
+    <li><strong>账号变现</strong>：小红书+视频号为首选平台，以视觉奇观为核心吸引甲方合作</li>
+    <li><strong>避坑指南</strong>：报名后必须至少提交一次作业，否则进入小黑屋影响后续报名资格</li>
+    <li><strong>创意平衡</strong>：虽然AI自动化分镜便捷，但需发挥个人创造力对不满意之处进行单独修改，打造差异化作品</li>
+  </ul>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI 晚8点共学</span>
+    <span class="footer-date">2025-12-28</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
