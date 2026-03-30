@@ -11,7 +11,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:'Noto Sans SC',sans-serif;min-height:100vh;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
 .coord{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;opacity:.45;text-transform:uppercase}
-/* HEADER */
 header{border-bottom:2px solid var(--ink);padding:20px 24px 16px;display:flex;align-items:flex-end;justify-content:space-between;background:var(--bg);position:relative;z-index:10}
 .site-title{display:flex;flex-direction:column;gap:4px}
 .site-title h1{font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1}
@@ -20,9 +19,7 @@ header{border-bottom:2px solid var(--ink);padding:20px 24px 16px;display:flex;al
 .header-meta{text-align:right;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
 .pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 8px;border:1px solid var(--ink);letter-spacing:.08em}
 .pill-pink{background:var(--pink);color:#fff;border-color:var(--pink)}
-/* LAYOUT */
 .shell{display:flex;height:calc(100vh - 73px)}
-/* SIDEBAR */
 aside{width:var(--sidebar);min-width:var(--sidebar);border-right:2px solid var(--ink);display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
 .sidebar-head{padding:12px 16px;border-bottom:1px solid var(--ink);display:flex;align-items:center;justify-content:space-between}
 .sidebar-head span{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em}
@@ -41,7 +38,6 @@ aside{width:var(--sidebar);min-width:var(--sidebar);border-right:2px solid var(-
 .cat-item:hover{background:rgba(0,0,0,.04)}
 .cat-item.active{border-left-color:var(--pink);background:rgba(233,30,99,.06);font-weight:500}
 .cat-item .count{font-family:'IBM Plex Mono',monospace;font-size:9px;opacity:.4;background:var(--ink);color:var(--bg);padding:1px 5px}
-/* MAIN */
 main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 .main-top{padding:16px 24px 12px;border-bottom:1px solid var(--ink);display:flex;align-items:center;gap:12px;background:var(--bg);position:sticky;top:0;z-index:5}
 .search-wrap{flex:1;position:relative}
@@ -50,7 +46,7 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.4;pointer-events:none}
 .result-count{font-family:'IBM Plex Mono',monospace;font-size:10px;opacity:.5;white-space:nowrap}
 .ep-list{padding:12px 24px 32px}
-.ep-item{display:grid;grid-template-columns:110px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--grid);text-decoration:none;color:var(--ink);transition:background .12s}
+.ep-item{display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--grid);text-decoration:none;color:var(--ink);transition:background .12s}
 .ep-item:hover{background:rgba(255,242,0,.25);margin:0 -8px;padding-left:8px;padding-right:8px}
 .ep-left{display:flex;flex-direction:column;gap:5px}
 .date-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;padding:2px 6px;border:1px solid var(--ink);display:inline-block;width:fit-content}
@@ -61,18 +57,15 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 .ep-arrow{font-size:16px;opacity:.3;transition:opacity .15s;flex-shrink:0}
 .ep-item:hover .ep-arrow{opacity:1;color:var(--pink)}
 .no-results{padding:60px 0;text-align:center;opacity:.4;font-family:'IBM Plex Mono',monospace;font-size:13px}
-/* Category colors */
 .badge-silicon{background:#2D2926;color:#F0EDE8}
 .badge-luyv{background:var(--pink);color:#fff}
-.badge-agent{background:#7B68EE;color:#fff}
 .badge-miaoda{background:var(--yellow);color:var(--ink)}
-.badge-shrimp{background:var(--green);color:var(--ink)}
-.badge-dumate{background:#FF6B35;color:#fff}
 .badge-drama{background:#9C27B0;color:#fff}
-.badge-geo{background:#00BCD4;color:#fff}
-.badge-camp{background:#4CAF50;color:#fff}
+.badge-skills{background:#FF6B35;color:#fff}
+.badge-n8n{background:#4CAF50;color:#fff}
+.badge-agent2{background:#7B68EE;color:#fff}
+.badge-aipo{background:#00BCD4;color:#fff}
 .badge-evening{background:var(--ink);color:var(--bg)}
-/* MOBILE */
 @media(max-width:700px){
   :root{--sidebar:280px}
   .shell{position:relative}
@@ -90,14 +83,14 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 
 <header>
   <div class="site-title">
-    <div class="coord">MOD-A01 / ARCHIVE-INDEX / V2.0</div>
+    <div class="coord">MOD-A01 / ARCHIVE-INDEX / V3.0</div>
     <h1>WayToAGI <span>直播笔记站</span></h1>
     <div class="sub">POWERED BY 元子 &amp; HAPPYCAPY — CHINESE AI COMMUNITY</div>
   </div>
   <div class="header-meta">
     <span class="coord">SEC-01 / LIVE-NOTES</span>
     <span class="pill pill-pink">LIVE ARCHIVE</span>
-    <span class="pill">150+ SESSIONS</span>
+    <span class="pill">156 SESSIONS</span>
   </div>
 </header>
 
@@ -113,7 +106,7 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
   <div class="sidebar-body">
 
     <div class="cat-item active" style="padding-left:16px;border-left:3px solid var(--pink);background:rgba(233,30,99,.06);font-weight:700;font-size:12px;font-family:'IBM Plex Mono',monospace;letter-spacing:.06em" onclick="filterCat('all',this)">
-      ALL SESSIONS <span class="count" style="margin-left:auto">150+</span>
+      ALL SESSIONS <span class="count" style="margin-left:auto">156</span>
     </div>
 
     <div class="cat-group open">
@@ -122,49 +115,33 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
         <span class="arrow">▶</span>
       </div>
       <div class="cat-items">
-        <div class="cat-item active" onclick="filterCat('silicon',this)">未来硅世界<span class="count">11</span></div>
-        <div class="cat-item" onclick="filterCat('luyv',this)">鹿演 Vol<span class="count">8+</span></div>
-        <div class="cat-item" onclick="filterCat('agent',this)">Agent Talk 系列<span class="count">12</span></div>
-        <div class="cat-item" onclick="filterCat('miaoda',this)">秒哒变现系列<span class="count">6+</span></div>
-        <div class="cat-item" onclick="filterCat('shrimp',this)">养虾经验谈<span class="count">8</span></div>
-        <div class="cat-item" onclick="filterCat('dumate',this)">DuMate 实战系列<span class="count">5</span></div>
-        <div class="cat-item" onclick="filterCat('drama',this)">AI 短剧训练营<span class="count">4</span></div>
+        <div class="cat-item" onclick="filterCat('silicon',this)">未来硅世界<span class="count">11</span></div>
+        <div class="cat-item" onclick="filterCat('luyv',this)">鹿演 Vol<span class="count">7</span></div>
+        <div class="cat-item" onclick="filterCat('miaoda',this)">秒哒变现<span class="count">9</span></div>
+        <div class="cat-item" onclick="filterCat('drama',this)">AI 短剧训练营<span class="count">2</span></div>
       </div>
     </div>
 
-    <div class="cat-group">
+    <div class="cat-group open">
       <div class="cat-group-head" onclick="toggleGroup(this.parentElement)">
         <div><div class="cat-label">训练营 <span style="font-size:10px;opacity:.5">▸ Camps</span></div><span class="cat-en">TRAINING CAMPS</span></div>
         <span class="arrow">▶</span>
       </div>
       <div class="cat-items">
-        <div class="cat-item" onclick="filterCat('camp',this)">n8n / AI 训练营<span class="count">10</span></div>
-        <div class="cat-item" onclick="filterCat('camp',this)">AI 智能体训练营第二期<span class="count">8</span></div>
-        <div class="cat-item" onclick="filterCat('camp',this)">Skills 爆改训练营<span class="count">6</span></div>
-        <div class="cat-item" onclick="filterCat('camp',this)">AIPO 校园训练营<span class="count">5</span></div>
+        <div class="cat-item" onclick="filterCat('n8n',this)">AI 训练营·n8n<span class="count">5</span></div>
+        <div class="cat-item" onclick="filterCat('agent2',this)">Agent 训练营·二期<span class="count">9</span></div>
+        <div class="cat-item" onclick="filterCat('skills',this)">Skills 爆改训练营<span class="count">2</span></div>
+        <div class="cat-item" onclick="filterCat('aipo',this)">AIPO 校园<span class="count">7</span></div>
       </div>
     </div>
 
-    <div class="cat-group">
-      <div class="cat-group-head" onclick="toggleGroup(this.parentElement)">
-        <div><div class="cat-label">专题大会 <span style="font-size:10px;opacity:.5">▸ Events</span></div><span class="cat-en">SPECIAL EVENTS</span></div>
-        <span class="arrow">▶</span>
-      </div>
-      <div class="cat-items">
-        <div class="cat-item" onclick="filterCat('geo',this)">GEO 专题<span class="count">5</span></div>
-        <div class="cat-item" onclick="filterCat('geo',this)">比赛 / 赛事解读<span class="count">4</span></div>
-        <div class="cat-item" onclick="filterCat('geo',this)">年度回顾<span class="count">3</span></div>
-      </div>
-    </div>
-
-    <div class="cat-group">
+    <div class="cat-group open">
       <div class="cat-group-head" onclick="toggleGroup(this.parentElement)">
         <div><div class="cat-label">晚8点共学 <span style="font-size:10px;opacity:.5">▸ Evening</span></div><span class="cat-en">EVENING STUDY SESSIONS</span></div>
         <span class="arrow">▶</span>
       </div>
       <div class="cat-items">
-        <div class="cat-item" onclick="filterCat('evening',this)">2026 年 (Jan–Mar)<span class="count">18</span></div>
-        <div class="cat-item" onclick="filterCat('evening',this)">2025 年 (Jul–Dec)<span class="count">42</span></div>
+        <div class="cat-item" onclick="filterCat('evening',this)">全部共学笔记<span class="count">104</span></div>
       </div>
     </div>
 
@@ -182,86 +159,122 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
       <span class="search-icon">⌕</span>
       <input id="search" type="text" placeholder="搜索节目标题、嘉宾、系列…" oninput="filterSearch()">
     </div>
-    <span class="result-count" id="result-count">23 SESSIONS</span>
+    <span class="result-count" id="result-count">156 SESSIONS</span>
   </div>
 
   <div class="ep-list" id="ep-list">
 
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/SuxtdGDkXoCOmXxsRfJc6Eysn2d" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/SuxtdGDkXoCOmXxsRfJc6Eysn2d</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/UK8hdlfLdo6kBUxEtVRc7BoCnef" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/UK8hdlfLdo6kBUxEtVRc7BoCnef</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/WVf2dGpjQovIlDxbLN7c5ZA1n3b" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/WVf2dGpjQovIlDxbLN7c5ZA1n3b</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/TPtAdMmnjoIClCxlMD7cBIgXnXc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/TPtAdMmnjoIClCxlMD7cBIgXnXc</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/DRuFdLLTJoc0YPxdLZIcOIsTn9e" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/DRuFdLLTJoc0YPxdLZIcOIsTn9e</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/BoTud7TScoBh2fx8JWLcW4NsnLg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/BoTud7TScoBh2fx8JWLcW4NsnLg</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/JQ2qd2XGJoLLaXx9ERBcTuh7nLe" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/JQ2qd2XGJoLLaXx9ERBcTuh7nLe</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/AhQZd7Ztuo3NTtxv2AecYEArn4c" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/AhQZd7Ztuo3NTtxv2AecYEArn4c</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/RPzvdeN9yonQ9XxuV9zciKSNnpg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/RPzvdeN9yonQ9XxuV9zciKSNnpg</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/MwEpdNLNBovPFxxwZZ1c7AOvnad" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/MwEpdNLNBovPFxxwZZ1c7AOvnad</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/FBDedwo69orDWxx3hPyck3Mqn4b" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/FBDedwo69orDWxx3hPyck3Mqn4b</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/RBExdcElWo9d1Jx2crHcNdLznft" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/RBExdcElWo9d1Jx2crHcNdLznft</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/QnUJdjGpfoNq4mxcbYvcRim3nmd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/QnUJdjGpfoNq4mxcbYvcRim3nmd</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/XhHjdliqwoNQiixivaEchsCknrc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/XhHjdliqwoNQiixivaEchsCknrc</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/RF73d6i6Zoj9l0xLtZRcfo9jnIf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/RF73d6i6Zoj9l0xLtZRcfo9jnIf</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/VwyHdHq6eowX4Ax9Sy4cF4csngc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/VwyHdHq6eowX4Ax9Sy4cF4csngc</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/HQHOdKfcFolubcxlceycBpvgnAh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">https://waytoagi.feishu.cn/docx/HQHOdKfcFolubcxlceycBpvgnAh</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Y3god8XgLoUprHxAlDIc1MFKnoc" data-cat="aipo" target="_blank">
+      <div class="ep-left"><span class="date-badge">unknown</span><span class="cat-badge badge-aipo">AIPO 校园</span></div>
+      <div class="ep-mid"><div class="ep-title">第三届AIPO启动会</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
     <a class="ep-item" href="silicon/ep013.html" data-cat="silicon">
       <div class="ep-left"><span class="date-badge">2026-03-28</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
       <div class="ep-mid"><div class="ep-title">未来硅世界第13期：从创意到推广，Happycapy 创始人的心路历程</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="miaoda">
-      <div class="ep-left"><span class="date-badge">2026-03-27</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
-      <div class="ep-mid"><div class="ep-title">WaytoAGI x 秒哒 "秒哒-让创意变生意"应用变现第六期</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="geo">
-      <div class="ep-left"><span class="date-badge">2026-03-26</span><span class="cat-badge badge-geo">GEO 专题</span></div>
-      <div class="ep-mid"><div class="ep-title">中国第一届GEO大会重磅预告</div><div class="ep-guest">嘉宾: 向阳乔木 / 姚金刚</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="dumate">
-      <div class="ep-left"><span class="date-badge">2026-03-25</span><span class="cat-badge badge-dumate">DuMate 系列</span></div>
-      <div class="ep-mid"><div class="ep-title">搭子DuMate实战：能文也能武，复杂任务一肩挑</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="dumate">
-      <div class="ep-left"><span class="date-badge">2026-03-24</span><span class="cat-badge badge-dumate">DuMate 系列</span></div>
-      <div class="ep-mid"><div class="ep-title">DuMate实战：内容生产一条龙</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="dumate">
-      <div class="ep-left"><span class="date-badge">2026-03-23</span><span class="cat-badge badge-dumate">DuMate 系列</span></div>
-      <div class="ep-mid"><div class="ep-title">AI搭子上班记：你思考，DuMate干活</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="shrimp">
-      <div class="ep-left"><span class="date-badge">2026-03-18</span><span class="cat-badge badge-shrimp">养虾经验谈</span></div>
-      <div class="ep-mid"><div class="ep-title">养虾经验谈：我睡觉，虾剪片</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="geo">
-      <div class="ep-left"><span class="date-badge">2026-03-17</span><span class="cat-badge badge-geo">GEO 专题</span></div>
-      <div class="ep-mid"><div class="ep-title">从概念到实操｜GEO 生成式搜索优化指南</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="miaoda">
-      <div class="ep-left"><span class="date-badge">2026-03-13</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
-      <div class="ep-mid"><div class="ep-title">秒哒全球首发应用生成Skill</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="shrimp">
-      <div class="ep-left"><span class="date-badge">2026-03-11</span><span class="cat-badge badge-shrimp">养虾经验谈</span></div>
-      <div class="ep-mid"><div class="ep-title">养虾经验谈：我睡觉，虾赚钱</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="evening">
-      <div class="ep-left"><span class="date-badge">2026-03-07</span><span class="cat-badge badge-evening">晚8点共学</span></div>
-      <div class="ep-mid"><div class="ep-title">营销增长与SEO优化全攻略</div><div class="ep-guest">嘉宾: Kostja</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="evening">
-      <div class="ep-left"><span class="date-badge">2026-03-05</span><span class="cat-badge badge-evening">晚8点共学</span></div>
-      <div class="ep-mid"><div class="ep-title">OpenClaw高玩分享！从扣子养虾到 Vibe Coding大趋势</div></div>
-      <span class="ep-arrow">→</span>
-    </a>
-
-    <a class="ep-item" href="#" data-cat="evening">
-      <div class="ep-left"><span class="date-badge">2026-03-04</span><span class="cat-badge badge-evening">晚8点共学</span></div>
-      <div class="ep-mid"><div class="ep-title">OpenClaw该上班了！千帆养虾进阶实战</div></div>
       <span class="ep-arrow">→</span>
     </a>
 
@@ -271,9 +284,105 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
       <span class="ep-arrow">→</span>
     </a>
 
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/CyPJdaYrMoPUNTxDes3cm30KnCh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-02-12</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">用阿里百炼制作拜年视频</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/K9rSdEr29oO1k7xXCc0cXkXWnPb" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-02-10</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">玩转新春 · 年味开始了</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/HNsgd8vVEoxC04xWUBQcMnBQn8d" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-02-08</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">带你深度解析AI硬件 x AI应用开发</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Ecm8d9pwmoawuOx3pZtcg5C1nKc" data-cat="luyv" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-02-05</span><span class="cat-badge badge-luyv">鹿演 Vol</span></div>
+      <div class="ep-mid"><div class="ep-title">鹿演Vol.009：QVeris</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
     <a class="ep-item" href="silicon/ep011.html" data-cat="silicon">
       <div class="ep-left"><span class="date-badge">2026-01-31</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
       <div class="ep-mid"><div class="ep-title">未来硅世界第11期：AI美学的边界，汗青与虚拟歌手 Yuri</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/LDrZdzD0sodux7xn7ZVcmd98nuj" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-30</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">happycapy.ai 普通小白也能使用的云端clawdbot</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/SMHkdH9f6oOxS0xhygBcH4jvnAb" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-29</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">ListenHub 2.0上新</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/MuQzdzcuPou2iMxSEb9cWV0wnFh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-28</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">文心5.0 +千帆：零门槛玩转Agent开发</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/UynsdgOZGoIJazxyx3IcrnFxnvd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-27</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Clawdbot手把手部署指南</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/MFY9daZ0NoIUyQxlytxcRK2Pnwf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-26</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI时代下如何快速开发3D游戏</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Y1rsdSuZmogHzGx1EbvcGfREndg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-25</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">手把手带你玩转开源版Claude Code——Kode Agent</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/MMCbdvmARoaxoJxAup9cNLTQnnh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-24</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">深度解析 Claude Code 原理&机制设计</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/JahNdzgGwoTL16xOoycc6wdvnSf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-23</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">MiniMax Agent 2.0深度实测</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/XjEgd3dC1oRyjZxdYlCc6qqpnQh" data-cat="skills" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-22</span><span class="cat-badge badge-skills">Skills 爆改</span></div>
+      <div class="ep-mid"><div class="ep-title">Skills爆改训练营（两日连播）</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/ItSQdAM0Zo1G6vxOrCGcLEU6ngd" data-cat="skills" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-21</span><span class="cat-badge badge-skills">Skills 爆改</span></div>
+      <div class="ep-mid"><div class="ep-title">Skills爆改训练营（两日连播）</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/J6UCdlvCtoTJbBxvMeZcnM6WnQg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-20</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Coze2.0 到底更新了什么</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/HQ7PdaXsxodUrNxQPzZcMriinag" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-19</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">职场AI，就用扣子——新功能Coze Skill上线</div></div>
       <span class="ep-arrow">→</span>
     </a>
 
@@ -283,9 +392,69 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
       <span class="ep-arrow">→</span>
     </a>
 
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/BdGedkTTaoApahx5JlmcnQqNnrI" data-cat="luyv" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-13</span><span class="cat-badge badge-luyv">鹿演 Vol</span></div>
+      <div class="ep-mid"><div class="ep-title">鹿演Vol.008：AOE：不只是Claude Cowork</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/I6EEdyn2ZoyeNfxa9hPc2IhPn3c" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-10</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">开年重磅！海辛&阿文AI工作流分享</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/XlKydZj0OogkvAxDuLUcZGDen3d" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-10</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">2026CES热乎情报速递，具身智能与无人驾驶</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Rn7HdCytOo0pJSxToHtcCCA2n6d" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2026-01-08</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">秒哒应用变现第五期·开放麦圆桌会</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
     <a class="ep-item" href="silicon/ep009.html" data-cat="silicon">
       <div class="ep-left"><span class="date-badge">2026-01-03</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
-      <div class="ep-mid"><div class="ep-title">未来硅世界第9期：让我们回到提示词和 X</div></div>
+      <div class="ep-mid"><div class="ep-title">未来硅世界第9期：揭秘X平台流量密码，提示词与爆款技巧</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/FTP6d5jsyoe0tNxRA7McTKaWnJc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-30</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/C3s5dJDhaoK8gHxl3UncPTfjnoe" data-cat="drama" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-29</span><span class="cat-badge badge-drama">AI 短剧</span></div>
+      <div class="ep-mid"><div class="ep-title">AI短剧训练营加餐课：AI视频工具实操技巧</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/SZuqdh7AYoshUEx3vPqcM3oNnwf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-28</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Lovart/Tapnow 实操课：批量出片+动态分层</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/ElyndMeXsoKOAExWr7lcrOemnyf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-27</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">解锁AI影视广告创作新玩法</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/JiY0dkSFEopDYIxRwW4c85J1nnh" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-24</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">秒哒应用变现第四期</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/H3r3dPbiFoOCpPxrOdicHoWonJ7" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-22</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Medeo-AI智能助手聊出好视频</div></div>
       <span class="ep-arrow">→</span>
     </a>
 
@@ -295,15 +464,213 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
       <span class="ep-arrow">→</span>
     </a>
 
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/JfgGdCdNTo90iWxJrdWcPGRanVh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-18</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">千问APP上线AI小剧场功能</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/J4YhdCDr8o1UQqxnuS3cF8orn4W" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-18</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">秒哒应用变现教学第三期</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/WoCYdTV02oJYqUxhyemcbfY0nHd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-17</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Claude Code 进阶教程：MCP、Skills</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/YoNAdA8tqoYReMxwL7Ecb74PnIh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-16</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Claude Code/CodeX+Skills安装配置全攻略</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/I1BXdwWmPonkXaxrFAucMj5InCd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-15</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Yee s AI调香和背后的故事</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/KswKdRVt6oyd2vxAsREcl1AsnXd" data-cat="luyv" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-13</span><span class="cat-badge badge-luyv">鹿演 Vol</span></div>
+      <div class="ep-mid"><div class="ep-title">鹿演 Vol.007：Mulan.pro：从家庭主妇到AI公司创始人</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/HIWydVj4UoAloMxg6hRcveSmnOc" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-11</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">秒哒应用变现教学第二期</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/TEpWdBDk6ooiBWxEP6QcIChTn30" data-cat="luyv" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-10</span><span class="cat-badge badge-luyv">鹿演 Vol</span></div>
+      <div class="ep-mid"><div class="ep-title">鹿演 Vol.006：Refly.AI 公测</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/HtZ3dOuqCoR20nxiy5QcTvvFnug" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-09</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">如何用AI做IP形象</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/CA97d6LlkomM2JxmiyecsxcznNf" data-cat="drama" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-08</span><span class="cat-badge badge-drama">AI 短剧</span></div>
+      <div class="ep-mid"><div class="ep-title">AI短剧训练营第1课</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
     <a class="ep-item" href="silicon/ep007.html" data-cat="silicon">
       <div class="ep-left"><span class="date-badge">2025-12-06</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
       <div class="ep-mid"><div class="ep-title">未来硅世界第7期：教育+AI，聊不尽的教育</div></div>
       <span class="ep-arrow">→</span>
     </a>
 
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/YSPddx9EMoQg27xUw2Pcm3uln5c" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-05</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI音乐零基础入门之Suno实操</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/JZqVdN4sNoqwtpxzxGmcHumpnZe" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-04</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">秒哒应用变现教学第一期</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Hn14dG7Epof4CfxbAhlckPsanqc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-12-02</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">MCP插件召集令开发大赛冲刺</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Ys9ZdbtzLoY8bgxpmvUcdjdwnrc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-28</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">百度×乐华娱乐×WaytoAGI AI星企划启动</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/JIdedGKIWo8LWQxubpqcAhrlnCc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-27</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/MdewdVthaoG7QBx6VxccL8CqnHA" data-cat="luyv" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-26</span><span class="cat-badge badge-luyv">鹿演 Vol</span></div>
+      <div class="ep-mid"><div class="ep-title">鹿演Vol.005：Creaibo——专为优质内容而生的AI</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/SRZXdfihsoyDsxxflzTcz9utnmg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-26</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">千问APP众测</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/GmxJdUzF2oGUvmxZLKfckFR2nAd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-25</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">MCP插件召集令开发大赛攻略</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/HfJTdjPM1oNth3xZe2Ocbn5vnqf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-24</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">豆包应用创作零门槛创作赛进阶攻略</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/PdsadEoQNou769xpzrDcQcE3nDe" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-23</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Nano Banana Pro众测</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
     <a class="ep-item" href="silicon/ep006.html" data-cat="silicon">
       <div class="ep-left"><span class="date-badge">2025-11-22</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
-      <div class="ep-mid"><div class="ep-title">未来硅世界第6期：AI 与未来生活·续，科幻、共鸣与普通人的路</div></div>
+      <div class="ep-mid"><div class="ep-title">未来硅世界第6期：AI 与未来生活·续，科幻共鸣与普通人的路</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/DYTpdwC9QoTly5xTVJdckigQncg" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-21</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期第八节：Demo Day</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Y7t0dbEUnoSsOMxTJGbc6T83noh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-20</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">MCP插件召集令开发大赛启动</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Wbd0d63Nco7p9pxy7EVcA0PWn0c" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-19</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期第七节：性能提速&体验翻倍</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/QH7JdCVJ1oF2yYxdmylcRZDznGd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-18</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">千问app众测</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/KskOdLGmYo6hTCxe8hvcQLBDnkf" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-17</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期第六课：多元交互</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/IU0cdwpmWoHqa6x3m13cK59DnFd" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-15</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期第五课：知识库x记忆</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Arp2daQhwo7Sw6xaB2tcpklMn3f" data-cat="aipo" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-14</span><span class="cat-badge badge-aipo">AIPO 校园</span></div>
+      <div class="ep-mid"><div class="ep-title">AIPO校园AI创投活动</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/H8QwdB6lCowGhrx8p84cgaoXnWf" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-13</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期第四节：工作流进阶</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/N2oBd71nIowGZ2xcLYSc3Pbonwe" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-12</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">豆包应用创作挑战赛攻略</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/SNIddyY2No8dMSxnRQXc8MAwnlc" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-11</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期第三节：零代码工作流</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/PdqkdbT6Zof0YjxA1pxcS4IPnue" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-10</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI也过双十一</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/S6Zvd651aoDokFxpeHhcBZrEndc" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-09</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期第二节：Prompt魔法</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/SI8ydLqGDoQdNfxkYyWcwcKsnmh" data-cat="aipo" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-08</span><span class="cat-badge badge-aipo">AIPO 校园</span></div>
+      <div class="ep-mid"><div class="ep-title">第三届AIPO校园AI创投活动全国路演</div></div>
       <span class="ep-arrow">→</span>
     </a>
 
@@ -313,15 +680,423 @@ main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
       <span class="ep-arrow">→</span>
     </a>
 
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/OqOedUAXyokVQZxdr4lcsrg8nxf" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-07</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体训练营第二期开营仪式</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Q5u9d4hEVolut2xMCKZcdfhJnac" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-06</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">秒哒又双叒叕上新</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/ICh8d4NV1oGfBPx9DyccVzlpnxd" data-cat="aipo" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-05</span><span class="cat-badge badge-aipo">AIPO 校园</span></div>
+      <div class="ep-mid"><div class="ep-title">校园AIPO猫叔讲提示词</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/XzZMddVwkoGrugxGjutcOX77nSe" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-04</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">剪映AI模板创想季赛事</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Vr95dGuA2oUkHbxsIqdcSfL5nEf" data-cat="aipo" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-03</span><span class="cat-badge badge-aipo">AIPO 校园</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI校园AIPO训练营</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/TJ2xdqyXsowBVTxALGsc6GNAnVh" data-cat="agent2" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-02</span><span class="cat-badge badge-agent2">Agent 训练营·二期</span></div>
+      <div class="ep-mid"><div class="ep-title">AI训练营第二期：Agent智能体实战训练营</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Gewqd9uBgoQqLvxPuIlc4Jtbndd" data-cat="aipo" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-11-01</span><span class="cat-badge badge-aipo">AIPO 校园</span></div>
+      <div class="ep-mid"><div class="ep-title">AIPO训练营Part2</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/IaVLdZ1uSoLfhZxnZzhcfAkKnBe" data-cat="n8n" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-31</span><span class="cat-badge badge-n8n">AI 训练营·n8n</span></div>
+      <div class="ep-mid"><div class="ep-title">AI训练营第一期: n8n训练营结营</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/CVMldWTpgobPg2xETticLZtXnAg" data-cat="aipo" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-30</span><span class="cat-badge badge-aipo">AIPO 校园</span></div>
+      <div class="ep-mid"><div class="ep-title">AIPO训练营</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/LblrdJqrEoDveTxPm5ecAFP6nYg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-29</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI智能体项目实战分享</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/VuIwdrORSoE4EhxjU5ycl6bjnof" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-28</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">海外最大AI视频比赛Chroma Awards解读</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/U4UvduveEogv4lxZ5mucDWhfnch" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-24</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI编程实战技巧：Vibe Coze扣子AI挑战赛</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/P0a3dhqB2otmQVxQzd2cxqZZnPf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-23</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/WPXAdrlnlorEnPx76Ayc3tq3nld" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-22</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">IndexTTS：让声音更有温度</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/EZxpdyOfMowvFfxNFzqcFbtvnIb" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-21</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">拆解100万美金AI工具权益+Chroma Awards</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/XpN5d5mproZqdqxbSRMcGou5nVd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-20</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI编程&AI自媒体：避坑脱口秀</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/NrrsdBzhjoGMXtx0ZYJcPRFynqe" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-18</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">提示未来赛事解读</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/YwMbdwmXMoI78bxE0z2cfnCOn6d" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-17</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI社区第一本书AI绘画极简入门</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Q0l0dXIlBo3XBdxqrKecCrThnlh" data-cat="n8n" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-16</span><span class="cat-badge badge-n8n">AI 训练营·n8n</span></div>
+      <div class="ep-mid"><div class="ep-title">n8n主题赛</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/F3ArdaUfto8MQ9xRUaUctVb6nwh" data-cat="n8n" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-15</span><span class="cat-badge badge-n8n">AI 训练营·n8n</span></div>
+      <div class="ep-mid"><div class="ep-title">AI训练营第一期第三课：n8n商单case拆解</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/U2KodCy4PoB291xdxixcQKjCnhd" data-cat="n8n" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-14</span><span class="cat-badge badge-n8n">AI 训练营·n8n</span></div>
+      <div class="ep-mid"><div class="ep-title">AI训练营第二课：n8n自动化工作流案例</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/CPIPdDNF2oQdeYxdqjxcCrbgnDg" data-cat="n8n" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-13</span><span class="cat-badge badge-n8n">AI 训练营·n8n</span></div>
+      <div class="ep-mid"><div class="ep-title">AI训练营第一期开营</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
     <a class="ep-item" href="silicon/ep004.html" data-cat="silicon">
       <div class="ep-left"><span class="date-badge">2025-10-11</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
       <div class="ep-mid"><div class="ep-title">未来硅世界第4期：AI Agent 时代，搜索不再为人而生</div></div>
       <span class="ep-arrow">→</span>
     </a>
 
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Dd5ZdFBaVosgvZx1tr4cCuG2nUh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-10</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">我的AI创业收入清单和AI创业故事</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/UExSdYEgao8QYBxJbSVcC4SAn6d" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-09</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/KTfwd60B3o3IhMxIpBnc7GAOnlf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-07</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">拆解AI时代的学习路径与信息差</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/QP5ZdRFHWoZFtyxLlAqcdBWjnvb" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-04</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">0-1极速入门AI绘画篇</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/EAdudKR8FoauyOxhTZHcq1TGnLb" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-03</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">如何和大语言模型进行对话？</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/G0Fpd2VlLoOrGdxZMSkcx0vjnid" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-02</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Sora2短剧大赛：现场编写现场投稿</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/WvvMdhwOAorVc7xWKSqcjS1Rnag" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-10-01</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Sora2实测，邀请码接力</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/ImCSds3e3o8hRbxKIqocpJPdnVg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-27</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">切磋大会全国会议</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/P2TldJYyho0lIYxr7fUcSsRwnmg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-25</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI导演大赛创作分享</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/J3n9dKt20oefcJxzwnucmsArnXg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-24</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">百度AI追热季视频挑战赛</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/ZOJsdf0SYotFjTxgVFecMpz1nkd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-23</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">TrickleAI编程赛</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/N4Uwdg70CoRqa1xGXl6cgU3hn7b" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-22</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI导演大赛工程师拆解百度智能视频创作</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/GLqHd3UtwovThJxqcaxc7jECnlh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-20</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
     <a class="ep-item" href="silicon/ep003.html" data-cat="silicon">
       <div class="ep-left"><span class="date-badge">2025-09-20</span><span class="cat-badge badge-silicon">未来硅世界</span></div>
       <div class="ep-mid"><div class="ep-title">未来硅世界第3期：知识付费的故事，AI 时代的商业重构</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/W9tUdO6TaoK0M0xn1N7ccMRtnqe" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-19</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/P8lRdIAKSowG76xOVrBcu7kQnIh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-18</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">飞书多维表格接入即梦4.0</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Z9aUdNuzGoUM1Pxhuc5czM99npg" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-17</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">百度世界×秒哒黑客松大赛</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Seh9dB7d4odEBJxfikkcglxGnoh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-16</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">从0到1部署正式网站，零基础AI编程</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/TYY6dKNCzoMduQxAkayckaRQn3b" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-11</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">用Cursor+Zion搭建AI应用MVP</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/OpuHdlwI6ow6fkx4wuUcPCw5nAf" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-10</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/H7dXdBnncoxaQ0xOsNEcVKRpnze" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-09</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">智能体工作流设计模式教学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/MXtGdVlBJoVV6KxFEhSc4QFvnnU" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-08</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">拆解AI摆摊实验，商业落地金字塔框架</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/GVdZdQ3A1oPFojxjXglcO9dRngg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-07</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Qoder食用说明书：从入门到惊艳</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/AT8NdO0umoNyRLxMnQEc6BDFn4g" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-06</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/AHZedY7p5oyIq2xVVodcfroVnxg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-05</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">阿里云百炼AI Agent创客开发实战课</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/L1bSdEePVo2orIxDMJ1cHihXn4b" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-04</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Zho：X百万流量，最全NanoBanana指南</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/ZWpZd39GIoAkrJxErm0cIOWYnsc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-03</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/BgC6dWOUlojFrPxGvOEcXfOFnNh" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-09-02</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/XcjYdPaisoQ1wZxPUBzcwylqnId" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-29</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">全面盘点Vibe Coding工具</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/KHnLdSXXSonlOdxN7ATcpx1hntJ" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-28</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">解锁Qwen-Image技术秘籍</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/O6HZdD2XHo4g60xJJ6ucHf05nje" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-27</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/SD8hdy9U7oLzLzxblPOcuyE7n8e" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-26</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">最强生图模型？nano banana实测</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Tl13d2fYGoGBOmx8YGQcsVvUnEd" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-22</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">社区伦敦亮相+workshop直播</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/XXoDdSQ2toVDMNxcIqmcxPHknHf" data-cat="luyv" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-21</span><span class="cat-badge badge-luyv">鹿演 Vol</span></div>
+      <div class="ep-mid"><div class="ep-title">鹿演Vol.004：OpenCreator</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Z0i1dhrgNolZEZx6CIBc72dXn5g" data-cat="luyv" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-19</span><span class="cat-badge badge-luyv">鹿演 Vol</span></div>
+      <div class="ep-mid"><div class="ep-title">鹿演Vol.003：ListenHub：能帮创作者赚钱的AI嘴替</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/EdVDdVOfloPnqZxpwZjcV1Ofnxc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-18</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">娜乌斯佳：AI视频最新教程</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/LW3Gd7QiboMDZbxcs7UchO1snVK" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-13</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">一句话让创意到变现，秒哒使用指南</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/LDJKdKe3GoQildx1DzKcjf2UnAL" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-11</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">一个人如何用AI完成一部动画</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/RmuDdeKZDoSoHDxH1Zfc5zfZngb" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-06</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Coze开源第二波商业化红利</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/S0kCd96kuotqIyxHHqsc5rkMnjg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-08-02</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Vibe Coding迷你黑客松</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/G0ELdRHtmoDy2ZxsfJycdK9unYc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-07-31</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">月入万刀的Agent开发者经验分享</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/NvgTdMuaKocifhxu3Cfc0KmQnFh" data-cat="miaoda" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-07-23</span><span class="cat-badge badge-miaoda">秒哒变现</span></div>
+      <div class="ep-mid"><div class="ep-title">AI+应用创作第一课：百度秒哒</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Dbx6deKbjoYCVPxBtkrctnR3n2e" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-07-22</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">玩转扣子空间网页设计新功能</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/ChRDdd7QyoXgyUxkiW0cJmainsg" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-07-16</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">Jaaz - 开源多模态Agent工具首发</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/Waf2dwKawohm87xCUxbccsp0n6e" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-07-15</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">AI助手数据分析，通义灵码保姆级教学</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/DyYEdCzZYoX2kMxJF3OcXTLenlc" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-07-09</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">智能纪要：WaytoAGI晚8点共学 2025年7月9日</div></div>
+      <span class="ep-arrow">→</span>
+    </a>
+
+    <a class="ep-item" href="https://waytoagi.feishu.cn/docx/TkipdT62joarTixz5ECcAqb2nGe" data-cat="evening" target="_blank">
+      <div class="ep-left"><span class="date-badge">2025-07-07</span><span class="cat-badge badge-evening">晚8点共学</span></div>
+      <div class="ep-mid"><div class="ep-title">WaytoAGI晚8点共学</div></div>
       <span class="ep-arrow">→</span>
     </a>
 
@@ -368,7 +1143,6 @@ function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('open');
 }
 
-// Mobile burger init
 (function(){
   var b=document.querySelectorAll('#burger');
   if(window.innerWidth<=700)b.forEach(function(btn){btn.style.display='flex'});
