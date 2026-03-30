@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrickleAI 编程赛火热开启 大奖iPhone 17 Pro Max | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WaytoAGI/2025-09-23/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">TrickleAI 编程赛火热开启 <span class="hl">大奖iPhone 17 Pro Max</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">📅 2025年9月23日 19:55-22:06</span>
+    <span class="hero-meta">👥 歸藏/乔向阳/郭浩 主讲</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">Trickle AI 核心优势</h2>
+  <div class="sec-coord">功能定位 | 多模态无缝衔接</div>
+  
+  <div class="data-block" data-coord="功能1">
+    <strong>永久上下文 + 数据库管理</strong><br>
+    相比Lovable，Trickle具备永久上下文功能，重要知识永久记录。即使超出限制也不影响网站运行；数据库操作便捷，支持自动处理CSV数据、增删改查等操作。
+  </div>
+
+  <div class="data-block" data-coord="功能2">
+    <strong>可视化多模态操作</strong><br>
+    丰富组件库+动效支持，鼠标交互反馈实时预览。支持数据录入（姓名/Email/电话/消息等），并可直接调用API与个性化域名绑定。
+  </div>
+
+  <div class="data-block" data-coord="功能3">
+    <strong>代码下载 + 画布模式</strong><br>
+    DEV模式可下载代码至IDE继续编码。画布模式支持网站预览、素材库管理、与数据库对话生成后端。
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">实战案例拆解</h2>
+  <div class="sec-coord">应用场景 | 从个人工具到企业网站</div>
+
+  <div class="data-block" data-coord="案例:乔向阳">
+    <strong>🔧 番茄钟网站</strong><br>
+    通过自然语言对话一句话生成，调用Web Audio API模拟声音，融合网络音频实现白噪音组合+倒计时——适配学习工作场景。
+  </div>
+
+  <div class="data-block" data-coord="案例:个人博客">
+    <strong>📝 带Webhook的博客系统</strong><br>
+    集前台展示+后台发布+流量统计，支持自然语言迭代优化。第三方API调用（七牛云）实现封面/音频上传+Markdown编辑。
+  </div>
+
+  <div class="data-block" data-coord="案例:郭浩">
+    <strong>📰 资讯网站后台</strong><br>
+    CSV文件自动入库，支持搜索/懒加载/数据统计。融入3D动态地球组件与卡片设计，无需外接Google Analytics。相比Lovable部署更便捷。
+  </div>
+
+  <blockquote class="quote">
+    <p>"Trickle降低了营销成本——直接搭建官网、调用API、绑定域名，无需前期高投入。"</p>
+    <div class="quote-author">—— 🌈AJ</div>
+  </blockquote>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">一句话编程挑战赛详情</h2>
+  <div class="sec-coord">赛事规则 | 零门槛参与</div>
+
+  <div class="data-block" data-coord="奖励">
+    <strong class="hl-yellow">🏆 丰厚奖励体系</strong><br>
+    • 大奖：iPhone 17 Pro Max<br>
+    • 最佳传播奖：1000元（1名）<br>
+    • 优秀奖：500元（4名）<br>
+    • 额外福利：专属链接注册+350积分；进群抢10刀优惠
+  </div>
+
+  <div class="data-block" data-coord="参赛">
+    <strong>参赛要求</strong><br>
+    用简单自然语言一句话描述项目，通过逐步对话引导AI开发。无域名限制，支持微信小游戏、网页游戏等多种形态。作品提交到指定链接，发布可获商单与积分奖励。
+  </div>
+
+  <div class="data-block" data-coord="生态">
+    <strong>开放市场 + 模板共享</strong><br>
+    完成作品可上传至开放市场交易，他人使用获得积分/金钱奖励。Marketplace即将上线，促进资源共享生态建设。
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">开发技巧与注意事项</h2>
+  <div class="sec-coord">最佳实践 | 提升开发效率</div>
+
+  <div class="data-block" data-coord="设计技巧">
+    <strong>✨ 提示词 + 设计系统</strong><br>
+    • 分享通用设计提示词库，"夸奖AI"可获多个设计方案<br>
+    • 提供参考截图/设计风格链接给AI遵循<br>
+    • 引用外部组件库（含复杂3D动效组件），一处修改多处生效
+  </div>
+
+  <div class="data-block" data-coord="多媒体">
+    <strong>🎨 图像/视频/3D应用</strong><br>
+    • 提示词生成+修改图片样式/比例；视频无限循环效果<br>
+    • 素材库集中管理，Edit模式快速替换<br>
+    • Split网页版3D工具获取炫酷3D展示，打包成组件在Trickle市场售卖
+  </div>
+
+  <div class="data-block" data-coord="安全">
+    <strong>⚠️ 安全 & 版权</strong><br>
+    • 勿将敏感信息放前端（密码等安全风险）<br>
+    • 部署上线时移除后台页面<br>
+    • 开源资源/设计稿需标注版权，避免侵权
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<div class="golden-quote">
+  <p><strong>"Trickle是无缝衔接多模态生成的Vibe Coding工具——好上手、足够强大，让零基础用户一句话就能构建专业级网站与应用。"</strong></p>
+</div>
+
+<section class="takeaways">
+  <h3>💡 核心收获（7条）</h3>
+  <ol>
+    <li><strong>永久上下文 vs 传统工具：</strong>Trickle的永久上下文功能解决Lovable"超出限制遗忘"痛点，知识库永久可用。</li>
+    <li><strong>低代码快速上线：</strong>一句话自然语言即可驱动开发，番茄钟→个人博客→资讯网站全流程可视化迭代。</li>
+    <li><strong>数据库 + 第三方API无缝融合：</strong>CSV自动入库、七牛云API调用、Webhook发布——企业级功能触手可及。</li>
+    <li><strong>设计系统 + 组件库降低成本：</strong>复用通用设计提示词和外部组件，TOKEN节省+视觉统一，开发效率翻倍。</li>
+    <li><strong>开放市场生态激励：</strong>模板/组件可交易获利，专属链接注册送350积分+10刀优惠，参赛门槛极低。</li>
+    <li><strong>3D/多媒体增强吸引力：</strong>split 3D工具+图像视频生成，轻松实现炫酷展示效果，可打包成组件复用。</li>
+    <li><strong>iPhone 17 Pro Max大奖 + 生态激励：</strong>一句话编程赛鼓励创意，最佳传播/优秀奖+积分返利+商单机会全覆盖。</li>
+  </ol>
+</section>
+
+<footer class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议库</a>
+  </div>
+  <div class="footer-stamp">
+    WaytoAGI | 2025-09-23 | Trickle AI 编程赛启动大会
+  </div>
+</footer>
+</div>
+</body>
+</html>
