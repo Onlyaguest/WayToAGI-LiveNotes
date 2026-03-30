@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vol.009 · 让你的 AI Agent用一个接口调用上万种数据和工具 | 鹿演 WayToAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<nav class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回目录</a>
+  <span class="ep-badge">鹿演 Vol.009</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-coord">LUYV / VOL-009 / 2026-02-05 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">让你的 AI Agent<br>用<span class="hl">一个接口</span><br>调用<span class="hl">上万种</span>数据和工具</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">嘉宾：曲东奇 · QVeris合伙人</span>
+    <span class="hero-meta">主持：张蔚 · WaytoAGI孵化负责人</span>
+    <span class="hero-meta">时长：55 min</span>
+  </div>
+  <div class="hero-rule">鹿演 Vol.009 · 2026.02.05</div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    产品核心：一个接口，万种能力
+  </div>
+
+  <div class="data-block" data-coord="D-01">
+    <span class="hl-yellow">QVeris 是什么？</span> 一个统一的 AI Agent 数据与工具聚合平台，将 <span class="hl-yellow">1万+个 API</span> 标准化后封装为单一接入点，覆盖金融、电商、社交媒体、科研、SEO 等多个垂直领域。开发者无需逐一阅读 API 文档、处理格式差异——QVeris 负责清洗、标准化与动态运维。
+  </div>
+
+  <div class="quote">
+    不会编程的小白也能运行，用户不用自己查 API 文档，直接问 QVeris 可以帮我做什么。
+    <div class="quote-author">—— 曲东奇</div>
+  </div>
+
+  <div class="data-block" data-coord="D-02">
+    <strong>动态运维机制：</strong>AI 每天对 1 万多个 API 自动排查故障、修复异常、接入新接口并评分迭代。<br>
+    <strong>数据来源：</strong>公开数据经清洗标准化 + 商务合作专有金融数据 + 用户自有数据上传（含数据保护协议）。<br>
+    <strong>延迟表现：</strong>大部分数据<span class="hl-yellow">实时</span>，金融数据<span class="hl-yellow">分钟级延迟</span>。
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    效果验证：GPT-5 + QVeris 的任务完成率跃升
+  </div>
+
+  <div class="golden-quote">接入 QVeris 后，任务完成率从 68% 提升至 92%</div>
+
+  <div class="data-block" data-coord="D-03">
+    现场演示对比实验：同样使用 GPT-5 作为底座，<span class="hl-yellow">裸 GPT-5</span> 任务完成率 68%，<span class="hl-yellow">GPT-5 + QVeris</span> 任务完成率 92%。实测场景包括：加密货币行情分析网站、黄金价格追踪、A股涨停板行情、亚马逊爆款商品监控。
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    应用场景全景：从金融到科研
+  </div>
+
+  <div class="data-block" data-coord="D-04">
+    <strong>💹 金融领域</strong><br>
+    加密货币分析、金融市场套利、实时行情网站、黄金/A股涨停板追踪
+  </div>
+
+  <div class="data-block" data-coord="D-05">
+    <strong>🛒 跨境电商</strong><br>
+    亚马逊数据补货、选品系统、竞品价格监控机器人、爆款追踪
+  </div>
+
+  <div class="data-block" data-coord="D-06">
+    <strong>📊 营销增长</strong><br>
+    SEO 竞品与关键词趋势分析、社交媒体（X / YouTube）监控与自动化营销、<span class="hl-yellow">@qverisbot 自动回复</span>
+  </div>
+
+  <div class="data-block" data-coord="D-07">
+    <strong>🔬 科研领域</strong><br>
+    接入 arXiv 等论文数据库，每日自动推送相关领域最新论文；可在 Cursor 中直接调用
+  </div>
+
+  <div class="quote">
+    有人用 QVeris 的 MCP 实现了"附近肛肠医院查找"——产品能帮用户快速补齐找不到的 API 功能。
+    <div class="quote-author">—— 曲东奇（举例说明长尾需求覆盖能力）</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    接入方式、定价与合作
+  </div>
+
+  <div class="data-block" data-coord="D-08">
+    <strong>平台兼容性：</strong>支持 Cursor、Claude Code、Telegram、企业微信、Discord、飞书等主流平台接入，飞书群已接 OpenClaw 实现个人助理。<br><br>
+    <strong>定价方案：</strong><br>
+    · 免费用户：<span class="hl-yellow">1,000 credits</span>（够初步体验）<br>
+    · Pro 版本：<span class="hl-yellow">$19/月，10,000 credits</span><br>
+    · 企业端：单独定制价格<br><br>
+    <strong>API 授权：</strong>允许用户基于 API 构建自己的商业产品；高级金融数据通过 QVeris 获取成本远低于直接采购。
+  </div>
+
+  <div class="data-block" data-coord="D-09">
+    <strong>黑客松案例（QVeris FRIENDS）：</strong>10+ 精品项目，包括滑雪姿势分析、金融市场套利系统等，将发布至社区供参考。<br><br>
+    <strong>社区合作：</strong>欢迎各城市黑客松联合举办，提供赞助与技术支持；拉新朋友体验可获奖励积分。
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-05</span>
+    核心 Takeaways
+  </div>
+
+  <div class="golden-quote">数据和工具的碎片化，是 AI Agent 落地最隐性的成本</div>
+
+  <div class="takeaways">
+    <div class="takeaways-header">本期精华提炼</div>
+    <ul>
+      <li><span class="label">核心价值</span>QVeris 把 1 万+ API 聚合为单一接入口，彻底消除 Agent 开发中的数据接入摩擦</li>
+      <li><span class="label">效果验证</span>任务完成率 68% → 92%，GPT-5 加持 QVeris 的实测数据说话</li>
+      <li><span class="label">数据质量</span>自动清洗标准化 + 动态运维 + 内部 API 评分机制，保证数据可用性</li>
+      <li><span class="label">长尾覆盖</span>用户无需查文档，直接问"QVeris 能帮我做什么"——从医院查找到金融套利全覆盖</li>
+      <li><span class="label">商业场景</span>跨境电商选品、SEO分析、社交媒体监控、科研论文推送，每个方向都有成熟案例</li>
+      <li><span class="label">数据安全</span>用户上传数据受协议保护，不用于训练；数据通过官方接口获取，合规可靠</li>
+      <li><span class="label">低门槛入门</span>免费 1000 credits 可试玩，Pro 版 $19/月，小白也能运行完整 AI 数据应用</li>
+      <li><span class="label">生态合作</span>支持 MCP、Cursor、Claude Code 等主流开发工具，欢迎开发者与 B 端合作</li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← WaytoAGI 鹿演系列</a><br>
+    嘉宾：曲东奇 · QVeris合伙人 &nbsp;|&nbsp; 主持：张蔚
+  </div>
+  <div class="footer-stamp">鹿演 Vol.009 · 2026.02.05</div>
+</div>
+</div>
+</body>
+</html>
