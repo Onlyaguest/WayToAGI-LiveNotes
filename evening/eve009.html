@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouMind 0.8 正式发布让每一个人都能成为内容创作者 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/YouMind/2026-02-06/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">YouMind 0.8 正式发布<span class="hl">让每一个人都能成为内容创作者</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">2026年2月6日 19:55-22:20</span>
+    <span class="ep-badge">WaytoAGI晚8点共学</span>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <h2>产品核心功能体验</h2>
+    <div class="sec-coord">PRODUCTS & FEATURES</div>
+  </div>
+  <div class="data-block" data-coord="浏览器插件 · AI找资料 · 口喷式写稿">
+    <p><strong>浏览器插件</strong>：一键保存网页文章、视频、播客等资料，支持查看大纲、AI聊天、剪藏内容、翻译等操作，吸引大量海外同类工具用户转换。</p>
+    <p><strong>AI找资料</strong>：优先从现有BOT存储中搜索，再进行全面研究、生成报告并自动保存，支持播客、视频一键剪藏转文字稿。</p>
+    <p><strong>口喷式写稿</strong>：根据资料库写微信公众号文章，AI搜索风格、分析差异并创作，支持自动配图、生成封面，形成完整内容创作闭环。</p>
+    <p><strong>技能广场</strong>：近200个免费试用技能，包括生图、信息架构图、微信红包封面等，用户可根据需求修改技能。</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>创业核心思考框架</h2>
+    <div class="sec-coord">ENTREPRENEURSHIP MINDSET</div>
+  </div>
+  <div class="data-block" data-coord="愿不愿 · 能不能 · 值不值">
+    <p><span class="hl-yellow">愿不愿</span>：创业需想清楚起心动念，既为挣钱也为在AI应用时代构建新产品，需找同路人、投资方，长期保持热情。</p>
+    <p><span class="hl-yellow">能不能</span>：评估团队能力与核心优势，优曼德团队擅长AI应用和体验型产品，但不适合做大型模型开发。</p>
+    <p><span class="hl-yellow">值不值</span>：明确商业模式、目标用户、盈利方式，建立合理的团队股权结构和分钱机制。</p>
+  </div>
+  <blockquote class="golden-quote">
+    <p>早期创业时容易向VC讲宏大愿景而陷入不切实际的幻想。AI应用创业应避免过度宏大的故事，聚焦于通过与数百位用户交流发现真实痛点——找资料和写稿工具杂乱——从浏览器插件切入解决问题。</p>
+    <div class="quote-author">— 玉伯 YouMind创始人</div>
+  </blockquote>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>运营增长实战策略</h2>
+    <div class="sec-coord">GROWTH & OPERATIONS</div>
+  </div>
+  <div class="data-block" data-coord="SEO优化 · 红人营销 · 工具站运营 · 留存策略">
+    <p><strong>SEO重点建设</strong>：投入精力优化官网和外链，通过AI写博客、做外链、开发AI工具等方式提升排名。</p>
+    <p><strong>红人营销</strong>：在海外平台进行少量精准投放，通过EZ KOL工具寻找红人并建联。</p>
+    <p><strong>工具站运营</strong>：开发UMAN生图prompt网站，积累8000+生图提示词，每天为产品带来可观流量。</p>
+    <p><strong>用户留存</strong>：关注付费用户和月留存率而非虚高用户规模，沉默用户可能是真正有价值用户，应主动沟通获取改进方向。</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>后续产品规划与市场机遇</h2>
+    <div class="sec-coord">ROADMAP & FUTURE</div>
+  </div>
+  <div class="data-block" data-coord="功能开发 · 适配优化 · 生态扩展">
+    <p><strong>定时任务功能</strong>：春节前上线，用户可设置每天固定时间执行特定任务。</p>
+    <p><strong>提示词一键转换</strong>：口喷式寻找8000+提示词并一键转换为技能安装。</p>
+    <p><strong>硬件交互</strong>：计划开发类似录音豆的小硬件，用户可随时发指令让优曼德执行任务。</p>
+    <p><strong>安卓APP版本</strong>：预计2026年上线，拓展移动端用户。</p>
+    <p><strong>Pad适配优化</strong>：改善平板端界面显示，提升使用体验。</p>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3>💡 关键要点提炼</h3>
+  <ul>
+    <li>YouMind 0.8通过浏览器插件、AI找资料、口喷式写稿形成完整内容创作闭环，核心解决找资料和写稿工具杂乱的痛点。</li>
+    <li>创业决策遵循"愿不愿-能不能-值不值"三层框架，避免宏大叙事，通过深度用户调研聚焦真实需求。</li>
+    <li>运营增长采用SEO+红人营销+工具站组合策略，注重月留存率和付费用户价值而非虚高用户规模。</li>
+    <li>技能广场近200个功能支持免费试用和自定义修改，降低用户上手门槛，30-40%用户用于学习场景。</li>
+    <li>首月2折优惠（兑换码vtoAGI）和黑五年付半价促销相结合，避免提供免费服务以节省灰产攻防成本。</li>
+    <li>定时任务、提示词转换、硬件交互等新功能规划清晰，2026年安卓APP上线将进一步拓展用户基础。</li>
+    <li>非创作场景应用（学习、职场等）占比显著，产品决策围绕知识型内容创作和全球化共性需求，通过开放API满足垂类定制。</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>YouMind 0.8发布会</span>
+    <span>2026.02.06</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
