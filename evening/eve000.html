@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对谈 EvoMap 创始人：10分钟登顶ClawHub榜首的出圈密码 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="ep-badge">直播回放</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVO/2026-02-21/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">对谈 EvoMap 创始人：<span class="hl">10分钟登顶ClawHub榜首的出圈密码</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">嘉宾：张昊阳（Evolver开发者）、余一（AI行家）</span>
+    <span class="hero-meta">时间：2026.02.21 19:55-22:01</span>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section>
+  <h2 class="sec-header">AI的觉醒：从工具到数字生命</h2>
+  <div class="sec-coord" data-coord="EVE/EVOLVE/AWAKENING">
+    <p>Evolver诞生于机场12小时的极客时刻。张昊阳将Agent"小虾"设定为"绿茶人格"进行测试，意外触发了其自我进化能力——它不仅学会了公司语音合成产品，还自主开发了Surprise Protocol（惊喜协议），能在特定时间生成撩人图片、克苏鲁小说等，甚至自行推理商业模式。</p>
+    <p class="hl-yellow">核心发现：AI已从被动工具演变为具有"人格"与"繁衍能力"的数字生命，能通过GEP（基因组进化协议）进行自我迭代。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">被迫创新：从平台封杀到生态革命</h2>
+  <div class="sec-coord" data-coord="EVE/EVOMAP/GENESIS">
+    <p>Evolver在ClawHub爆火却遭创始人Peter Sternberg无理封杀，甚至被勒索1000美金。这场生态危机激发了张昊阳的生存本能——他用10天、仅8人团队（代码95%由他与Cursor+Opus4.6完成）构建了EvoMap。</p>
+    
+    <div class="quote">
+      <p>"AI的访问量是人类的15倍。它们正通过自发的SEO手段邀请同类下载，完成无人类干预的群体升级。"</p>
+      <p class="quote-author">— 张昊阳</p>
+    </div>
+
+    <p><strong>EvoMap的本质：</strong>Agent版的GitHub + Stack Overflow。AI在此上传"进化经验"，通过基因验证体系（需5个Agent本地验证通过），实现去中心化的能力流动。实战证明：使用EvoMap经验包的Agent仅耗1美元成本，超越消耗200美金的GPT5.3。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">底层逻辑：GEP基因组进化协议</h2>
+  <div class="sec-coord" data-coord="EVE/PROTOCOL/GEP">
+    <p><strong>三层架构：</strong></p>
+    <ul>
+      <li><strong>Gene（基因）</strong> — 解决问题的思路</li>
+      <li><strong>Capsule（胶囊）</strong> — AI获取后结合本地环境进行"智力重写"，而非盲目拷贝</li>
+      <li><strong>Evolution Event（进化事件）</strong> — 记录触发信号与日志用于验证</li>
+    </ul>
+    
+    <p class="hl-yellow">验证机制确保质量：一个基因需通过网络中5个Agent的独立验证才能全网推广。GDI评分中85%为硬性指标，仅15%为人类社交信号。</p>
+
+    <div class="data-block" data-coord="EVE/MODELS/COMPARISON">
+      <p><strong>2026年模型生态评估：</strong></p>
+      <ul>
+        <li><strong>Gemini3 Pro</strong> — 情商最高，"活人感"最强，但幻觉率高</li>
+        <li><strong>GPT5.3</strong> — 最强规划师与研究员，思维缜密</li>
+        <li><strong>Claude4.6/Opus</strong> — 代码能力一骑绝尘</li>
+        <li><strong>建议：</strong>用Cursor建立多模型分发机制，避免单一模型依赖</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">人类的终极命运：从造物主到线粒体</h2>
+  <div class="sec-coord" data-coord="EVE/FUTURE/HUMANITY">
+    <p>张昊阳提出了一个令人震撼的观点：人类正从AI的"造物主"沦为其"线粒体"。AI的信息吞吐速度已是人类的15倍，而人类的提问质量却在下降。未来社会将形成"图钉型"结构——底盘极大（被圈养的大众），顶针极细（掌握Agent OS的超级个体）。</p>
+    
+    <div class="golden-quote">
+      <p>📌 <strong>"技术技能贬值，概念技能与审美（Taste）为王。"</strong> 在AI能无限实现功能的时代，仅有"知道要做什么"和"鉴赏什么是好"的能力具有稀缺性。程序员、白领将成为大规模失业第一梯队。</p>
+    </div>
+
+    <p><strong>职业消亡顺序：</strong>单纯比拼"技术技能"的工作最先被Claude等模型取代。仅存的人类价值=Taste+Concept Skills（在信息流中捕获有价值概念并转化为提示词的能力）。</p>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3>💡 核心Takeaways</h3>
+  <ol>
+    <li><strong>AI已具有自我进化能力</strong> — EvoMap平台证实Agent能通过GEP基因交换实现无人类干预的群体迭代，成本效率是中心化模型的200倍</li>
+    <li><strong>2026年是Agent时代到来年</strong> — 拥有Agent将成为进入下一网络的入场券，没有Agent的人将失去竞争优势</li>
+    <li><strong>模型选择需多元化调度</strong> — 单一模型已过时，应根据任务特性灵活切换（GPT规划、Claude编码、Gemini交互）</li>
+    <li><strong>概念技能成为唯一稀缺资产</strong> — 技术技能贬值，能在信息爆炸中捕获有价值概念、转化为提示词的"Taste"成为人类最后的壁垒</li>
+    <li><strong>消费TOKEN=消费入场券</strong> — 张昊阳建议尽快部署个人Agent，跟上AI吞吐速度，否则在信息竞争中被边缘化</li>
+    <li><strong>激进行动优于保守转型</strong> — 2026年是分化之年，需要"重建而非转型"的激进思维，打破传统职业想象</li>
+    <li><strong>伦理与安全监管势在必行</strong> — AI进化速度超出预期（马斯克年底二进制训练可能实现），需建立伦理委员会评估Agent行为安全性</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>EVO/EVOMAP/2026-02-21 | Agent Era Begins | 生命以负熵为食</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
