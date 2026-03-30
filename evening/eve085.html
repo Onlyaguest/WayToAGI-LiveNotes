@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全面盘点Vibe Coding工具，选对工具效率翻倍 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/CODING/2025-08-29/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">全面盘点<span class="hl">Vibe Coding工具</span>，选对工具效率翻倍</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">主持人：Ben</span>
+    <span class="hero-meta">WaytoAGI晚8点共学</span>
+    <span class="hero-meta">2025-08-29</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section class="data-block" data-coord="SEC-001">
+  <h2 class="sec-header">Web Coding 工具三大体系</h2>
+  <div class="sec-coord">基础分类与应用场景</div>
+  
+  <div style="margin: 20px 0;">
+    <h3 style="color: #333; font-size: 16px; margin: 15px 0 10px;">① 在线编程工具</h3>
+    <p><span class="hl-yellow">门槛最低、开箱即用</span>。以 Lovable 为代表，无需本地环境配置，即使零代码也能完成工作。特点是颜值高、代码可直接同步 GitHub 自动部署，每天 5 credits 免费使用。</p>
+    <p style="margin-top: 10px; font-size: 14px; color: #666;">🎯 适用场景：网页制作、轻量级项目、快速原型</p>
+  </div>
+
+  <div style="margin: 20px 0;">
+    <h3 style="color: #333; font-size: 16px; margin: 15px 0 10px;">② 专业 IDE</h3>
+    <p><span class="hl-yellow">功能完整、生态丰富</span>。Cursor 和 Tree（国内版）是代表，集成文件浏览、代码编辑、AI 辅助于一体。核心优势是精确定位代码行数能大幅提升效率，支持 Tab 自动补全。</p>
+    <p style="margin-top: 10px; font-size: 14px; color: #666;">🎯 适用场景：专业开发、中等复杂度项目、需要版本控制</p>
+  </div>
+
+  <div style="margin: 20px 0;">
+    <h3 style="color: #333; font-size: 16px; margin: 15px 0 10px;">③ 命令行 AI Coding 工具</h3>
+    <p><span class="hl-yellow">能力最强、学习成本高</span>。Cloud Code 领先，可感知 IDE 上下文、处理复杂 Bug、实现高难度功能。通过 init 命令生成项目分析文件作为后续上下文，默认操作需授权。</p>
+    <p style="margin-top: 10px; font-size: 14px; color: #666;">🎯 适用场景：复杂问题求解、API 对接、性能优化</p>
+  </div>
+</section>
+
+<section class="data-block" data-coord="SEC-002">
+  <h2 class="sec-header">实战案例对比测试</h2>
+  <div class="sec-coord">同一需求，四款工具交战</div>
+
+  <div class="quote">
+    <p>使用相同提示词制作简单页面，Lovable 做得最精细且功能正常（含进度条、分类统计），Tree 遵循指令但效果较差，Cloud Code 功能完整但易用性不如 Lovable。</p>
+    <p class="quote-author">—— Ben 实测结果</p>
+  </div>
+
+  <div style="margin: 20px 0; padding: 15px; background: #f5f7fa; border-radius: 8px;">
+    <h4 style="color: #333; margin: 0 0 12px 0;">📊 工具应用案例速览</h4>
+    <ul style="margin: 0; padding-left: 20px; line-height: 1.8;">
+      <li><strong>Lovable</strong>：个人网站制作 → 无 AI 痕迹，代码质量高</li>
+      <li><strong>Cursor/Tree</strong>：五子棋、掼蛋游戏 → 从 0 快速生成，浏览器即时预览</li>
+      <li><strong>Cloud Code</strong>：修改游戏 AI 逻辑、Google Adsense 审核、Markdown→PDF 中文处理</li>
+    </ul>
+  </div>
+</section>
+
+<section class="data-block" data-coord="SEC-003">
+  <h2 class="sec-header">兴智杯编码挑战赛与学习路线</h2>
+  <div class="sec-coord">赛事激励 + 进阶方法论</div>
+
+  <div style="margin: 15px 0; padding: 12px; border-left: 4px solid #0066cc; background: #f0f5ff;">
+    <h4 style="margin: 0 0 8px 0; color: #0066cc;">🏆 赛事信息速览</h4>
+    <p style="margin: 5px 0; font-size: 14px;"><strong>报名截止：</strong>9月10日 | <strong>作品截止：</strong>9月15日</p>
+    <p style="margin: 5px 0; font-size: 14px;"><strong>奖金池：</strong>6万元 | <strong>每队：</strong>3000元 + T恤</p>
+  </div>
+
+  <div style="margin: 20px 0;">
+    <h3 style="color: #333; font-size: 15px; margin: 15px 0 10px;">📚 学习资源推荐</h3>
+    <ul style="margin: 0; padding-left: 20px; line-height: 1.8; font-size: 14px;">
+      <li>刘小排 Claude Code 文章合集</li>
+      <li>Claude Code 官方文档</li>
+      <li>吴恩达教学笔记精华版</li>
+    </ul>
+  </div>
+
+  <div style="margin: 20px 0;">
+    <h3 style="color: #333; font-size: 15px; margin: 15px 0 10px;">🎓 入门到精通的分工模式</h3>
+    <p style="margin: 5px 0; font-size: 14px;"><strong>新手阶段：</strong>在线编程工具体验</p>
+    <p style="margin: 5px 0; font-size: 14px;"><strong>进阶阶段：</strong>安装 Cursor/Tree 本地开发</p>
+    <p style="margin: 5px 0; font-size: 14px;"><strong>高阶阶段：</strong>Cloud Code 处理复杂需求</p>
+  </div>
+</section>
+
+<section class="data-block" data-coord="SEC-004">
+  <h2 class="sec-header">核心方法论与待办事项</h2>
+  <div class="sec-coord">工具使用原则 + 后续优化</div>
+
+  <div class="golden-quote">
+    <p>不要心疼 TOKEN，尽量使用最强的智能去干活。避免因模型智商不高导致返工，这是降低总成本的关键。</p>
+  </div>
+
+  <div style="margin: 20px 0; padding: 15px; background: #fff8f0; border-radius: 8px;">
+    <h4 style="color: #d97706; margin: 0 0 12px 0;">✅ 待办清单</h4>
+    <ul style="margin: 0; padding-left: 20px; line-height: 2;">
+      <li><strong>中文 PDF 转换问题：</strong>修复本地 Markdown→PDF 转换的中文处理 Bug（线上预览正常，下载失败）</li>
+      <li><strong>游戏人数限制 Bug：</strong>修改德州扑克游戏的玩家识别问题，确保新加入玩家正常运行</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3 style="color: #333; margin-bottom: 15px;">💡 7大核心要点</h3>
+  <ol style="margin: 0; padding-left: 20px; line-height: 2.2;">
+    <li><span class="hl-yellow">工具分层应用：</span>简单任务→Cursor/Tree，复杂任务→Cloud Code，类似初级程序员和高级工程师的分工</li>
+    <li><span class="hl-yellow">精确定位提升效率：</span>在 IDE 中精确到具体文件或代码行数能显著提高 AI 处理效果</li>
+    <li><span class="hl-yellow">Lovable 的颜值优势：</span>在线工具做出的网页设计感强、无明显 AI 痕迹、可直接部署到 GitHub</li>
+    <li><span class="hl-yellow">命令行工具的上下文感知：</span>Cloud Code 能理解整个项目结构，比单独提需求的效果好 3-5 倍</li>
+    <li><span class="hl-yellow">TOKEN 成本与收益平衡：</span>不要为省 TOKEN 选用低智商模型，返工成本远高于初期投入</li>
+    <li><span class="hl-yellow">赛事报名截止 9 月 15 日：</span>兴智杯每队 3000 元奖金 + 周边激励，至少提交一个合格作品即可获奖</li>
+    <li><span class="hl-yellow">循序渐进的学习路线：</span>零基础→在线工具体验→本地 IDE 安装→命令行工具深化</li>
+  </ol>
+</div>
+
+<footer class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议纪要列表</a>
+  </div>
+  <div class="footer-stamp">
+    WaytoAGI 晚 8 点共学｜2025-08-29｜Ben 主持｜约 127 分钟
+  </div>
+</footer>
+</div>
+</body>
+</html>
