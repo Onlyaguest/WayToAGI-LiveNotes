@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListenHub 2.0 上新：一站式 AI 创作平台手把手教学 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVEXX/2026-01-29/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">ListenHub 2.0 上新：<span class="hl">一站式 AI 创作平台</span>手把手教学</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">🎤 主讲嘉宾：国荣（ListenHub 内容负责人）</span>
+    <span class="hero-meta">📅 2026年1月29日 19:55-21:31</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<!-- Section 1: 产品功能全景 -->
+<section>
+  <h2 class="sec-header">产品架构与核心功能</h2>
+  <div class="sec-coord">ListenHub 2.0 六大功能模块介绍</div>
+  
+  <p>ListenHub 2.0 是创业一年后推出的创作平台，集六大主要功能于一身。用户通过浏览器访问 listenhub 即可进入平台，左侧显示所有产品模块，右侧展示具体能力与模板库，并提供邀请好友、设置和会员购买等服务入口。</p>
+  
+  <p><span class="hl-yellow">平台核心覆盖：解说视频、PPT 生成、AI 播客、音色克隆、AI 生图、音乐创作</span>，每个模块都具备从基础到高阶的多层级用法。</p>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- Section 2: 视频与演示能力 -->
+<section>
+  <h2 class="sec-header">解说视频与 PPT：知识内容的智能转化</h2>
+  <div class="sec-coord">市场热需求功能实操展示</div>
+  
+  <div class="quote">
+    <p>"知识类视频在各大平台愈发流行，用简单提示词和两张参考图，选择风格和音色，2分钟即可生成小约翰可汗风格的解说视频。"</p>
+    <div class="quote-author">— 国荣老师</div>
+  </div>
+
+  <p><strong>解说视频功能特性：</strong></p>
+  <ul>
+    <li>支持知识图解和故事演绎两种模式</li>
+    <li>支持中文、英文、日语三种语言及跨语言音色尝试</li>
+    <li>提示词可框定主体形象和视频主题，未来将拓展西班牙语、法语</li>
+    <li>生成内容既可为图表丰富的知识类，也可为绘本形式的故事类</li>
+  </ul>
+
+  <p><strong>PPT 制作三层级控制策略：</strong></p>
+  <ul>
+    <li><span class="hl-yellow">几乎无控制提示词</span>：仅需创作诉求、受众和参考图，AI 自由发散生成内容</li>
+    <li><span class="hl-yellow">半控制提示词</span>：规定内容大纲，生成 PPT 更有条理性</li>
+    <li><span class="hl-yellow">精准控制提示词</span>：用 DeepSeek 辅助详细列出目标、内容、插画要求，实现一致性高的输出</li>
+  </ul>
+
+  <p><strong>成本与功能扩展：</strong>制作 PPT 约花费 150-230 积分，会员可导出音频、视频、PDF 和 PPTX 格式。<span class="hl">PPT 和解说视频图片修改功能即将上线</span>，以满足用户微调需求。</p>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- Section 3: 音频与创意内容矩阵 -->
+<section>
+  <h2 class="sec-header">音频与创意生态：从音色克隆到内容转化</h2>
+  <div class="sec-coord">音色、播客、生图、音乐一体化创作</div>
+
+  <p><strong>音色克隆与 TTS 功能：</strong>提供上传音色和对话式克隆两种方式，适配不同场景。TTS 功能设计了联想声音特征的文字提示，支持上传链接、图片或 PDF 让其自动朗读，可选择 AI 润色使长文本更口语化。</p>
+
+  <p><strong>AI 播客模式：</strong>支持速听和深度两种模式，语言覆盖中文、英文、日语，生成时间仅需 1-3 分钟。例如选择罗永浩声音生成当日重点新闻播客，展示了内容的多模态灵活性。</p>
+
+  <div class="data-block" data-coord="内容转化灵活性">
+    <p><strong>站内内容可互相转化的完整链路：</strong></p>
+    <ul>
+      <li>视频 ↔ 播客（可选择自己或他人声音）</li>
+      <li>PPT ↔ 播客（任意演示文件均可转化）</li>
+      <li>所有内容逻辑上可无缝互转，最大化内容价值</li>
+    </ul>
+  </div>
+
+  <p><strong>AI 生图与批量化生成：</strong>支持简单生成和 scale 批量生成，可一键生成 16 张 1:1 比例的拜年图片。通过 JSON 提示词模板精细控制参数，英文提示词因 Nano 巴拉 Pro 模型优化而识别效果更佳。用户可根据场景选择 1:1（表情包）、16:9（照片）、3:4（海报）等比例。</p>
+
+  <p><strong>音乐创作双层级：</strong>简单用法直接输入风格场景（如"城市流行，80年代日本街头"）即可生成；高阶用法可自定义标题、风格参数。平台还提供视频和翻唱功能，可将 GIF 配音乐生成传播视频，或根据提示词改编上传歌曲。</p>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- Section 4: 案例与运营策略 -->
+<section>
+  <h2 class="sec-header">新年案例与平台生态运营</h2>
+  <div class="sec-coord">创始人拜年视频的完整创作链路</div>
+
+  <p><strong>综合案例展示：</strong>制作创始人橘子的拜年视频，<span class="hl-yellow">至少调用音色克隆、AI 生图、解说视频三个功能模块</span>：克隆橘子声音 → 合成拜年主题图片 → 选择拜年风格模板 → 生成最终视频。该案例充分展示了 ListenHub 各功能的协同创作能力。</p>
+
+  <p><strong>春节活动与用户激励：</strong></p>
+  <ul>
+    <li>购买页面折扣活动（春节期间启动）</li>
+    <li>连续 11 天打卡活动，每日打卡可获积分赠送礼包</li>
+    <li>春节期间推出表情包合集，通过微推荐和用户群分享</li>
+  </ul>
+
+  <p><strong>平台持续优化计划：</strong></p>
+  <ul>
+    <li>尽快上线 PPT 和解说视频的图片修改功能</li>
+    <li>年内拓展西班牙语、法语等多语言支持</li>
+    <li>排查 PDF 转 PPT 失败问题（推测涉及安全拦截词触发）</li>
+    <li>整理演示案例的模板和提示词到群内分享</li>
+  </ul>
+
+  <p><strong>问题反馈机制：</strong>用户可通过官网 support 邮箱反馈问题，或在群内实时反馈由平台及时处理。本次课程有完整回放，后续订阅折扣也将在群内同步公布。</p>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- Golden Quote -->
+<div class="golden-quote">
+  <p>"一个人 + ListenHub = 一个内容创作小团队。无论是 PPT 教学、解说视频、播客节目还是音乐创作，所有内容形式在这个平台上都能无缝转化和升级。"</p>
+</div>
+
+<!-- Takeaways -->
+<div class="takeaways">
+  <h3>💡 5 大核心要点</h3>
+  <ol>
+    <li><span class="hl">六大功能模块集成化</span>：ListenHub 2.0 整合解说视频、PPT、音色克隆、播客、生图、音乐创作，形成完整内容生态。</li>
+    
+    <li><span class="hl">三层级提示词控制策略</span>：从"几乎无控制"到"精准控制"，满足不同用户从快速生成到精细定制的需求梯度。</li>
+    
+    <li><span class="hl">内容跨模态转化</span>：视频、播客、PPT、图片可互相转化，单份内容可产生多个下游产品，最大化内容价值。</li>
+    
+    <li><span class="hl">多语言与参数灵活性</span>：支持中英日三语，JSON 提示词模板精控，图片比例与品质可任意组合，适配全球化创意需求。</li>
+    
+    <li><span class="hl">春节运营激励体系</span>：折扣活动+11天打卡赠礼+案例模板共享，形成完整的用户激励与转化闭环。</li>
+  </ol>
+</div>
+
+<div class="hero-rule"></div>
+
+<footer class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回纪要列表</a>
+  </div>
+  <div class="footer-stamp">
+    <p>📌 会议时间：2026年1月29日 | 主题：ListenHub 2.0 一站式 AI 创作平台 | 来源：WaytoAGI 社区</p>
+  </div>
+</footer>
+</div>
+</body>
+</html>
