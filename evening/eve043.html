@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>豆包应用创作赛进阶攻略实战指南 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/豆包应用创作赛/2025-11-24/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">豆包应用创作赛<span class="hl">进阶攻略</span>实战指南</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">⏱️ 2025年11月24日 19:55-21:57</span>
+    <span class="hero-meta">👤 主讲：axshui</span>
+    <span class="hero-meta ep-badge">直播回放</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section data-coord="创作灵感与应用方向">
+  <h2 class="sec-header">
+    <span class="sec-coord">#1</span>
+    创作灵感与应用方向
+  </h2>
+  
+  <p><strong>热门趋势与新方向</strong></p>
+  <ul>
+    <li>房贷计算器类应用竞争加剧，优质想法需尽快实施</li>
+    <li>五险一金相关应用成为新兴创作方向</li>
+  </ul>
+
+  <p><strong>游戏与娱乐类灵感</strong></p>
+  <ul>
+    <li>功德类游戏、单词消消看、五子棋、女巫毒药游戏</li>
+    <li>怪物吃单词游戏（可双投乡村教育赛道）、滑板挑战、跑酷游戏</li>
+    <li>技术限制时换思路：宠物打分难实现 → 做记录宠物日常的网站</li>
+  </ul>
+
+  <p><strong>公益赛道创作方向</strong></p>
+  <ul>
+    <li><span class="hl-yellow">乡村教育：</span>学音标网页（带字母读音+卡通图）、历史人物解说、天文/化学/物理公式网站、植物/昆虫百科、答题积分兑换</li>
+    <li><span class="hl-yellow">银发群体：</span>退休倒计时、药品查询、防诈指南、听障辅助、老年痴呆防护应用</li>
+    <li><span class="hl-yellow">情绪解压：</span>树洞匿名发泄、梦境解析、烦恼清理网站</li>
+  </ul>
+
+  <p><strong>灵感获取方法</strong></p>
+  <p>生活中随时记录想法到备忘录 → 积累后用AI工具或豆包优化提炼</p>
+</section>
+
+<section data-coord="创作与优化技巧">
+  <h2 class="sec-header">
+    <span class="sec-coord">#2</span>
+    应用创作与优化的核心技巧
+  </h2>
+
+  <p><strong>标准创作流程</strong></p>
+  <ol>
+    <li>进入创作页面 → 点击"立即创作" → 输入想法</li>
+    <li>点击"优化指令" → 豆包优化提示词 → 根据需求修改</li>
+    <li>点击"发送" → 豆包生成作品</li>
+  </ol>
+
+  <p><strong>自然语言修改与优化</strong></p>
+  <ul>
+    <li>通过自然语言描述需求（修改标题、添加动画效果等）</li>
+    <li>关键技巧：在指令后加上<span class="hl-yellow">"确保完成修改后再检查一遍，没问题了再发给我"</span>，让AI自查避免bug</li>
+  </ul>
+
+  <p><strong>UI设计优化方案</strong></p>
+  <ul>
+    <li>使用豆包内置模板，或从Figma、Framer等网站截图参考样式</li>
+    <li>让豆包按照目标风格进行设计制作</li>
+  </ul>
+
+  <p><strong>音频功能实现</strong></p>
+  <p>在网上查找在线音频资源链接 → 让豆包添加到应用中 → 若链接无法播放，让豆包重新查找可用链接</p>
+
+  <blockquote class="quote">
+    <p>处理功能问题的黄金法则：让AI在完成修改后自我检查一遍，这样能大幅降低替换操作未生效等问题的发生</p>
+    <footer class="quote-author">— axshui</footer>
+  </blockquote>
+</section>
+
+<section data-coord="比赛规则与投稿流程">
+  <h2 class="sec-header">
+    <span class="sec-coord">#3</span>
+    比赛规则与投稿完全指南
+  </h2>
+
+  <p><strong>比赛赛道设置</strong></p>
+  <ul>
+    <li><span class="hl-yellow">常规赛道：</span>可创作任何类型应用</li>
+    <li><span class="hl-yellow">公益赛道：</span>导航页、工具、游戏网页、网站等</li>
+  </ul>
+
+  <p><strong>关键限制条件</strong></p>
+  <ul>
+    <li>每个账号每天投稿次数为3次</li>
+    <li>公益奖评选要求：进入榜单前30或前100才有资格进入评委评选环节</li>
+  </ul>
+
+  <p><strong>完整投稿流程</strong></p>
+  <ol>
+    <li>进入投稿页面 → 点击"立即创作"完成作品</li>
+    <li>点击"投稿" → 选择应用名称、填写应用描述、上传封面图、选择分类</li>
+    <li>阅读参赛信息并确认后点击"确定投稿"</li>
+    <li>点击"我的投稿" → 查看详情并复制链接</li>
+    <li>填写表单：豆包投稿昵称、联系方式、邮箱、应用名称、应用描述、应用封面图</li>
+  </ol>
+
+  <p><strong>时间提醒</strong></p>
+  <p>参会者需在<span class="hl-yellow">12月8日前</span>完成作品投稿</p>
+</section>
+
+<section data-coord="作品点评与优化案例">
+  <h2 class="sec-header">
+    <span class="sec-coord">#4</span>
+    典型作品点评与优化建议
+  </h2>
+
+  <p><strong>童心天空</strong> — 语音功能优化</p>
+  <ul>
+    <li>问题：语音功能存在循环播放问题</li>
+    <li>建议：调整为只播放一次，或点击空白处停止</li>
+  </ul>
+
+  <p><strong>情绪绘本共育平台</strong> — 名称+视觉升级</p>
+  <ul>
+    <li>名称缺乏吸引力 → 使用提示词模板修改为更温馨有趣的名字</li>
+    <li>背景优化 → 添加星空和闪耀颜色，增强情绪感受</li>
+  </ul>
+
+  <p><strong>龙哥的房门</strong> — 功能与动效提升</p>
+  <ul>
+    <li>功能简单 → 增加动画效果（会动的钟、SVG动画）</li>
+    <li>完成倒计时后 → 给出带图片的卡片反馈</li>
+  </ul>
+
+  <p><strong>诗词大咖挑战赛</strong> — 名称创意+赛道选择</p>
+  <ul>
+    <li>改为更有梗、好玩的名称提高吸引力</li>
+    <li>推荐投稿公益赛道，适合乡村教育</li>
+  </ul>
+
+  <p><strong>方言守护者</strong> — 声音功能优化</p>
+  <ul>
+    <li>声音功能存在问题 → 使用后端模型（如Trae）优化声音识别和播放</li>
+  </ul>
+
+  <p><strong>生肖捉迷藏</strong> — 多维度优化</p>
+  <ul>
+    <li>声音效果不佳 → 考虑更换声音模型</li>
+    <li>增加鼠标移动时的图案动效，提升观感</li>
+    <li>添加迷宫背景图，增强游戏趣味性</li>
+  </ul>
+
+  <p><strong>长篇小说上传分析</strong> — 功能完成度提升</p>
+  <ul>
+    <li>增加模板或文字输入框方便用户测试</li>
+    <li>优化删除和更改功能</li>
+    <li>使用提示词模板修改名称，使其更有吸引力</li>
+  </ul>
+
+  <p><strong>躺平计算器</strong> — 内容丰富度</p>
+  <ul>
+    <li>功能简单 → 增加内容使其更丰富</li>
+    <li>使用Figma或Framer优化UI界面，提高美观度</li>
+  </ul>
+
+  <p><strong>凯格尔运动训练</strong> — 创意肯定</p>
+  <ul>
+    <li>创意和功能获得肯定，鼓励参赛</li>
+    <li>期待未来接入更好听的声音模型</li>
+  </ul>
+</section>
+
+<div class="golden-quote">
+  <p>💡 <span class="hl">好想法的时间窗口有限</span>——房贷计算器已经出现竞争，五险一金是新机会。记住：优质创意不是你有，而是你<span class="hl-yellow">快速执行</span>的时间优势。</p>
+</div>
+
+<div class="takeaways">
+  <h3>📌 核心要点速记</h3>
+  <ol>
+    <li><strong>灵感来源最大化：</strong>生活→备忘录→AI优化→作品，建立持续的想法积累机制，不要期望灵感突然降临</li>
+    <li><strong>优化指令必备技巧：</strong>每次修改后加上"自检确认"指令，让AI主动查漏补缺，减少人工返工</li>
+    <li><strong>公益赛道的双投机会：</strong>某些应用（如教育游戏）可同时投稿常规+公益赛道，扩大曝光和获奖概率</li>
+    <li><strong>UI设计不用从零开始：</strong>参考Figma/Framer等设计网站截图，让豆包按样式复制，省时高效</li>
+    <li><strong>音频链接失效的解决方案：</strong>不要换工具，让豆包重新查找可用链接，保持应用完整性</li>
+    <li><strong>投稿前的三重检查：</strong>功能完整度→UI美观度→文案吸引力，缺一不可，决定初筛通过率</li>
+    <li><strong>时间节点硬约束：</strong>12月8日前投稿，给优化和评审留出充足时间，不要踩线提交</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <p>📚 相关资源</p>
+    <ul>
+      <li>直播回放与完整资料将同步至微信社群</li>
+      <li>豆包应用创作官方入口：<a href="#">点击进入</a></li>
+      <li>参赛表单：<a href="#">投稿表单链接</a></li>
+    </ul>
+  </div>
+  <div class="footer-stamp">
+    <p>✅ 会议类型：<strong>实操教学</strong></p>
+    <p>🎯 适合人群：零基础应用创作者、赛事参与者</p>
+    <p>📅 信息时效：2025年11月24日</p>
+    <p>🔗 来源：WaytoAGI晚8点共学</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
