@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happycapy：普通小白也能使用的云端Agent电脑 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/HAPPYCAPY/2026-01-30/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Happycapy：<span class="hl">普通小白也能使用的云端Agent电脑</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">WaytoAGI晚8点共学</span>
+    <span class="hero-meta">2026年1月30日</span>
+    <span class="ep-badge">Early Preview</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<section data-coord="PRODUCT-OVERVIEW">
+  <h2 class="sec-header">产品核心定位</h2>
+  <div class="sec-coord">产品背景与架构</div>
+  
+  <p>Happycapy是一款<span class="hl-yellow">agent native的云端电脑产品</span>，旨在让用户如同拥有一台额外的电脑。相比Croco和Clawball的复杂安装要求，Happycapy无需本地部署，在浏览器中即可直接运行。</p>
+  
+  <div class="data-block" data-coord="SANDBOX-ARCHITECTURE">
+    <strong>沙盒配置体系：</strong>
+    <ul>
+      <li>每个用户在settings中拥有独立沙盒</li>
+      <li>配置CPU、容量和存储内存等资源</li>
+      <li>沙盒自带Agent，支持所有市面上的技能（skill）</li>
+      <li>技能类似APP，可在技能商店获取，如同APP Store下载模式</li>
+    </ul>
+  </div>
+</section>
+
+<section data-coord="SKILL-WORKFLOW">
+  <h2 class="sec-header">工作流与技能串连</h2>
+  <div class="sec-coord">功能演示与应用场景</div>
+  
+  <p>Happycapy支持将不同技能串连形成完整工作流。演示中展示了英伟达股票分析案例：</p>
+  
+  <div class="quote">
+    <p>用户可串连上网搜索、生成图片、制作PPT和Excel等技能，只需设置好参数并输入指令，Happycapy就能完成任务，最终生成完整的PPT、股票分析文档并发送到邮箱。</p>
+    <div class="quote-author">伊娜老师演示</div>
+  </div>
+  
+  <div class="data-block" data-coord="WORKFLOW-FEATURES">
+    <strong>工作流特性：</strong>
+    <ul>
+      <li>代码生成后可拷贝到Happycapy执行</li>
+      <li>背后的Coco能理解指令并自动执行</li>
+      <li>支持多种输出格式（图片、视频、文档）</li>
+      <li>能在一个任务中跑通多种output</li>
+    </ul>
+  </div>
+</section>
+
+<section data-coord="PERSONALIZATION-PRICING">
+  <h2 class="sec-header">个性化迭代与获取方式</h2>
+  <div class="sec-coord">用户体验与商业模式</div>
+  
+  <div class="data-block" data-coord="SKILL-ITERATION">
+    <strong>技能个性化迭代：</strong>
+    <ul>
+      <li>用户可用人类语言对技能进行迭代（如风格偏好：可爱风、欧美风）</li>
+      <li>迭代后的技能会记住用户需求，下次使用无需重复设置</li>
+      <li>无需复杂Prompt engineering，大幅降低使用门槛</li>
+    </ul>
+  </div>
+  
+  <div class="golden-quote">
+    <p>让用户用人类语言将技能做成APP交给AI，使AI学习用户工作方式。这是降低技术门槛、让普通小白也能高效工作的核心思路。</p>
+  </div>
+  
+  <div class="data-block" data-coord="ACCESS-OPTIONS">
+    <strong>试用与购买方式对比：</strong>
+    <ul>
+      <li><strong>邀请码抽奖</strong>：通过视频号和飞书会议参与抽取，Early Preview阶段可无限跑任务</li>
+      <li><strong>官网等待列表</strong>：在pricing页面free plan的wait list留邮箱</li>
+      <li><strong>直接购买套餐</strong>：最高TIER价格与Claude无限畅用相同，但包含虚机和API模型调用credit，性价比更高</li>
+    </ul>
+  </div>
+</section>
+
+<section data-coord="CAPABILITIES-ROADMAP">
+  <h2 class="sec-header">产品能力与发展规划</h2>
+  <div class="sec-coord">功能演示与后续路线图</div>
+  
+  <div class="data-block" data-coord="CURRENT-FEATURES">
+    <strong>已支持功能：</strong>
+    <ul>
+      <li>GitHub项目处理：自动安装部署在云端</li>
+      <li>网页生成与总结：从指定网站抓取信息、生成预览网页</li>
+      <li>邮件功能：分析结果直接发送到邮箱</li>
+      <li>多任务处理：支持多个Desktop同时开启多个任务</li>
+      <li>Discord试玩：社区中@happy happy bot进行试玩</li>
+      <li>Bytecode开发：完成backend和front end开发</li>
+    </ul>
+  </div>
+  
+  <div class="data-block" data-coord="ROADMAP">
+    <strong>后续规划：</strong>
+    <ul>
+      <li>增加项目URL分享功能（目前暂不支持）</li>
+      <li>部署功能完善（参考老产品Trico的经验）</li>
+      <li>产品更新通过推特账号happykapayai和微信群同步</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3>核心要点速览</h3>
+  <ol>
+    <li><strong>降维的易用性</strong>：相比Croco/Clawball，Happycapy无需复杂安装，浏览器即可运行，实现真正意义上的"普通小白也能用"</li>
+    <li><strong>技能即APP</strong>：创新的技能商店模式让用户像下载APP一样获取功能，用自然语言迭代实现个性化而无需coding</li>
+    <li><strong>工作流串连</strong>：支持多技能组合，一个任务内实现多种output（文档、图片、视频等），大幅提升工作效率</li>
+    <li><strong>成本竞争力强</strong>：价格与Claude相当但包含虚机+API credit，性价比显著优于同类产品</li>
+    <li><strong>多渠道获取方式</strong>：邀请码抽奖、等待列表、直接购买灵活满足不同用户需求</li>
+    <li><strong>社区驱动优化</strong>：重视用户案例分享，在Discord和微信群中持续收集反馈迭代产品</li>
+    <li><strong>生态延伸潜力</strong>：支持bytecode开发，有机会整合Trico的部署能力，构建完整的开发-部署闭环</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI晚8点共学</span>
+    <span>2026-01-30</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
