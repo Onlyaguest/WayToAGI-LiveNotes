@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深度解析 AI硬件 × AI应用开发 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/AI硬件/2026-02-08/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">深度解析 <span class="hl">AI硬件 × AI应用开发</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">嘉宾：银海（AI产品经理）</span>
+    <span class="hero-meta">•</span>
+    <span class="hero-meta">时间：2026年2月8日 19:55-21:42</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">AI眼镜市场现状与产品能力</h2>
+  <div class="sec-coord">第一部分：硬件市场竞争格局与Rocket眼镜核心能力</div>
+  
+  <p>AI眼镜已成为科技大厂的竞争焦点，市场参与者众多。从华为早期的通话眼镜，到如今<span class="hl-yellow">Rocket、雷鸟等品牌在显示和功能方面的快速迭代</span>，再到专门做多语言翻译的眼镜在外贸市场的热销，AI眼镜赛道正在经历快速发展。</p>
+  
+  <p><strong>Rocket眼镜的核心能力</strong>包括"听"和"看"两个维度：</p>
+  <ul>
+    <li><strong>听的能力</strong>：通过镜腿扬声器实现放歌、播报、对话等功能</li>
+    <li><strong>看的能力</strong>：依靠摄像头进行录像、拍照，可与大模型对话（乐奇AI助手）</li>
+    <li><strong>显示效果</strong>：光栅屏幕解决了漏光问题，支持绿色全息触控AR显示，可显示时间、温度、电量等信息</li>
+  </ul>
+
+  <p>应用场景涵盖AI识物、AI拍照答疑、多语言翻译、快速回复、实时导航、灵感记录等，还能与支付宝、银联合作实现支付功能。</p>
+  
+  <p><strong>体验挑战</strong>：录像时能耗较高、生命周期短；由于需要双层镜片设计，透光率受影响；扬声器声音易被旁人听见。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">智能体应用与开发生态</h2>
+  <div class="sec-coord">第二部分：从应用体验到开发工具链</div>
+  
+  <p>眼镜端支持对话、调节音量亮度、便签、翻译、提词器、导航、会议纪要、智能体商店等多种交互操作。<span class="hl-yellow">智能体商店中有多种通用型智能体</span>，如12306订票、热量识别、查价格、单词收集等。</p>
+
+  <div class="quote">
+    <p>"开发者可搭建个性化智能体，如食物卡路里识别智能体，通过摄像头识别眼前物体的卡路里含量。"</p>
+    <span class="quote-author">— 银海</span>
+  </div>
+
+  <p><strong>开发平台生态对比</strong>：</p>
+  <ul>
+    <li><strong>灵珠平台</strong>：Rocket原生平台，插件生态和模型相对有限，但有快速模板</li>
+    <li><strong>三方平台</strong>：阿里云百炼和COZE等拥有丰富模型和模板，支持一键复制应用并绑定到眼镜</li>
+  </ul>
+
+  <p><strong>开发注意事项</strong>：接入时需获取API key和应用ID，COZE个人访问API key会在30天后过期，需动态更换。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">完整开发链路与成本优化</h2>
+  <div class="sec-coord">第三部分：从界面设计到功能集成的实战复现</div>
+  
+  <p>通过AI IDE创建AI glasses项目，参考眼镜交互图片构建终端体验。设计采用绿色极客风格，左下角显示时间和天气，右下角显示电量，中间显示语音输入转写内容。</p>
+
+  <p><strong>核心功能集成</strong>：</p>
+  <ul>
+    <li>ASR语音识别：接入语音模型API实现实时语音识别和翻译</li>
+    <li>主Agent搭建：创建Rocket眼镜助理Agent，选择Flash模型，支持文本和图像信息处理</li>
+    <li>工具能力：添加联网搜索、地图导航等工具，接入Amap地图插件实现路线规划</li>
+    <li>语音合成：接入实时语音合成API，支持自动语音打断能力</li>
+  </ul>
+
+  <div class="golden-quote">
+    <p>"通过code、阿里云百炼等工具，已打通从信息采集到智能体搭建再到眼镜显示的完整开发链路。开发范式简单高效，发布应用后可立即生效。"</p>
+  </div>
+
+  <p><strong>成本分析</strong>：使用Mac mini运行Openclaw测试中，5分钟388次请求耗费约30美元；切换到国内模型后成本降低。大模型平台多有免费额度，ASR语音识别每秒成本仅0.00022，整体开发成本相对较低。开发者可通过删除API key重新创建的方式控制成本。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">未来展望与实战建议</h2>
+  <div class="sec-coord">第四部分：应用拓展方向与社区交流</div>
+  
+  <p>AI眼镜在视觉类捕获方面有进一步拓展的空间，如拍照后生成风格化内容、视频剪辑等。结合用户生活场景的个性化定制，能够不断打磨应用体验。</p>
+
+  <p><strong>实战建议</strong>：观众可参考会议回放了解眼镜连接方法，开发时直接复制已有模板可大幅降低开发成本。龙虾网关虽未完全打通，但整体开发速度较快，与多种IM通讯设备的底层通信已基本实现。</p>
+</section>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>💡 核心要点速记</h3>
+  <ol>
+    <li><strong>市场现状</strong>：AI眼镜成为科技竞争焦点，Rocket、雷鸟等产品在显示、功能方面快速迭代，专业翻译眼镜已在外贸市场热销</li>
+    
+    <li><strong>Rocket眼镜核心优势</strong>：具备"听"（扬声器）和"看"（摄像头）双维度能力，支持语音对话、AR显示、多语言翻译、支付等多场景应用</li>
+    
+    <li><strong>开发生态选择</strong>：灵珠平台供给较弱，但阿里云百炼和COZE提供丰富模型和模板，支持快速一键部署，是更优的开发选择</li>
+    
+    <li><strong>完整链路可行性</strong>：通过AI IDE、语音识别、Agent搭建、工具集成，已打通从信息采集到眼镜显示的闭环，开发范式高效</li>
+    
+    <li><strong>成本控制</strong>：国内大模型平台提供免费额度，ASR识别成本极低（0.00022/秒），整体开发投入相对经济</li>
+    
+    <li><strong>用户体验挑战</strong>：双层镜片影响透光率，扬声器隐私问题需优化，电池续航在视频录制场景下需改进</li>
+    
+    <li><strong>未来方向</strong>：视觉内容生成、视频编辑、个性化定制是眼镜应用的主要拓展方向，市场潜力待深度挖掘</li>
+  </ol>
+</div>
+
+<footer>
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议列表</a>
+  </div>
+  <div class="footer-stamp">
+    <p>WaytoAGI 社区 | 2026年2月8日</p>
+    <p>智能纪要由AI生成，仅供参考</p>
+  </div>
+</footer>
+</div>
+</body>
+</html>
