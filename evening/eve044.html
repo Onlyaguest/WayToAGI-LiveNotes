@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano Banana Pro 众测分享会：三位嘉宾深度解析生图新纪元 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WAYSTUDY/2025-11-23/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Nano Banana Pro 众测分享会<span class="hl">：三位嘉宾深度解析生图新纪元</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">会议时间：2025年11月23日 19:55-21:59</span>
+    <span class="hero-meta">参会嘉宾：仓河 / 张梦飞 / 小歪</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">仓河的体验分享：从审美缺陷到专业输出</h2>
+  <div class="sec-coord" data-coord="SECTION_1_CAPABILITIES">
+    <p>仓河作为前程序员、现数字游民，深入体验了 Nano Banana Pro 的核心能力。他通过 <span class="hl-yellow">Notebook LLM 制作科技感 PPT</span>、使用 Lovart 设计公众号封面等实践案例，验证了该模型在中文理解、审美呈现方面的优势。</p>
+    
+    <div class="data-block" data-coord="capabilities_summary">
+      <strong>关键功能演示：</strong>
+      <ul>
+        <li>✓ PPT 自动生成：文章导入 → 指定风格 → PDF 输出 → WPS 编辑</li>
+        <li>✓ 多类型生成：数据大屏、产品原型、漫画、古诗配图、旅行手帐</li>
+        <li>✓ 动漫二次创作：遵循角色技能设定，支持高创意发挥</li>
+        <li>✓ 复杂内容可视化：百年孤独人物图谱、锂电池原理爆炸图</li>
+      </ul>
+    </div>
+
+    <blockquote class="golden-quote">
+      "Nano Banana Pro 中文理解能力强、文字不乱码、审美在线，配备 Gemini3 大模型，推理和人物角色一致性强，生成速度快，可生成 2K 和 4K 标准图片。"
+      <div class="quote-author">—— 仓河</div>
+    </blockquote>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">张梦飞的实践分析：从推理到商业化</h2>
+  <div class="sec-coord" data-coord="SECTION_2_APPLICATIONS">
+    <p>张梦飞从产品经理视角拆解了 Nano Banana Pro 的核心优势，强调其 <span class="hl-yellow">推理能力突出</span> 和 <span class="hl-yellow">提示词遵循度高</span> 的特性，并挖掘了多个商业应用场景。</p>
+
+    <div class="data-block" data-coord="model_capabilities">
+      <strong>模型能力维度分析：</strong>
+      <ul>
+        <li><strong>推理能力</strong>：解决复杂数学题，适用简笔画画册、拼豆画商业场景</li>
+        <li><strong>提示词遵循</strong>：精细呈现复杂要求，儿童插画领域应用效果佳</li>
+        <li><strong>世界知识</strong>：教科书配图、操作流程指示，具备推理和逻辑能力</li>
+        <li><strong>中文文字稳定性</strong>：支持邀请海报、电商详情页生成</li>
+        <li><strong>真实感与一致性</strong>：儿童写真、PPT 报表、线下 UI 套图应用优势明显</li>
+      </ul>
+    </div>
+
+    <p><strong>应用场景转化：</strong>图表可做切片数据可视化；人物一致性是目前最强的模型之一，可应用于多主体参考和角色持续化内容生产。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">小歪的实操指南：入口选择与高级玩法</h2>
+  <div class="sec-coord" data-coord="SECTION_3_OPERATIONS">
+    <p>小歪详细介绍了四大使用入口和丰富的实操案例，包括文字材质生成、知识图谱、多语言本地化、LOGO 设计等，展示了该工具的全面性。</p>
+
+    <div class="data-block" data-coord="access_points">
+      <strong>使用入口对比：</strong>
+      <ul>
+        <li>🌐 <strong>Gemini / AI Studio</strong>（需魔法）：免费或 Pro 用户均可，Pro 用户每天 100 张</li>
+        <li>🇨🇳 <strong>纳米 AI / 海螺</strong>（国内友好）：海螺活动期间会员无限生图，免费用户 50 张/天</li>
+      </ul>
+    </div>
+
+    <div class="data-block" data-coord="advanced_features">
+      <strong>高阶实操功能：</strong>
+      <ul>
+        <li>📝 <strong>文字表现</strong>：故事板生成、分镜文字、材质化英文/中文字母</li>
+        <li>🏗️ <strong>建筑文字</strong>：竖版效果差时改为横版呈现</li>
+        <li>🗺️ <strong>知识图谱</strong>：可视化信息图，适合教学场景</li>
+        <li>🌍 <strong>多语言本地化</strong>：产品文案翻译、场景改变、广告语调整</li>
+        <li>🎨 <strong>LOGO 设计</strong>：草图优化、全案多产品生成</li>
+        <li>🛋️ <strong>材质迁移</strong>：应用于沙发、马克杯、T恤等文创产品</li>
+        <li>🖼️ <strong>图片处理</strong>：改焦点、改景别、放大细节、去水印、多主体参考</li>
+        <li>🧘 <strong>姿势引导</strong>：通过肢体动作参考图进行人物生图</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">社区共创与待办事项</h2>
+  <div class="sec-coord" data-coord="SECTION_4_COMMUNITY">
+    <p>本次会议号召全社区参与 Nano Banana Pro 的众测和案例分享，建立了完整的反馈和知识沉淀机制。</p>
+
+    <div class="data-block" data-coord="action_items">
+      <strong>核心待办与后续计划：</strong>
+      <ul>
+        <li>📋 共创文档发送至视频号、直播间，征集使用案例并投票评选</li>
+        <li>📚 Gemini 能力中文文档分享，支持扫码查看和群内转发</li>
+        <li>💾 生成图片提示词汇总到飞书知识库，便于社区查找复用</li>
+        <li>🎁 案例提交有机会获得小礼物奖励</li>
+        <li>🔄 持续分享新发现和可玩点，探索更多应用场景</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>🎯 核心收获与行动建议</h3>
+  <ol>
+    <li><strong>推理 + 美学的平衡选手</strong>：Nano Banana Pro 在图像模型中推理能力突出，但美学方面略不如 Midjourney，适合偏重逻辑和商业应用的场景。</li>
+    
+    <li><strong>中文友好度领先</strong>：文字稳定性、中文理解、提示词遵循度是核心竞争力，快速迭代中，特别适合国内创作者。</li>
+    
+    <li><strong>一致性是杀手锏</strong>：人物一致性保持表现最强，适合 IP 形象、系列内容、多主体参考等需要连贯性的场景。</li>
+    
+    <li><strong>国内入口优先选择</strong>：纳米 AI 和海螺提供更便捷的访问体验，活动期间无限生图，降低使用门槛。</li>
+    
+    <li><strong>提示词是核心能力</strong>：该模型对提示词高度敏感，社区提示词库建设至关重要，复用优质提示词能大幅提升效率。</li>
+    
+    <li><strong>商业应用场景丰富</strong>：从简笔画商业化到电商详情页、出海产品本地化，覆盖 B2C、C端创作、企业级应用等多个维度。</li>
+    
+    <li><strong>立即行动：参与众测评选</strong>：提交自己的 Nano Banana Pro 创意案例到共创文档，既能获得反馈也有机会获奖。</li>
+  </ol>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <small>WaytoAGI 晚 8 点共学 · 2025-11-23 · Nano Banana Pro 众测专场</small>
+  </div>
+</div>
+</div>
+</body>
+</html>
