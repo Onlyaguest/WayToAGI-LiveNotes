@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n训练营 第一课 开营 · 4天吃透 N8N工作流WaytoAGI「AI训练营」第一期开营 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回首页</a>
+  <span class="ep-badge">TRAINING-CAMP</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">WAYTOAGI / N8N-BOOTCAMP-01 / 2025-10-13 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">4天吃透 <span class="hl">N8N工作流</span><br>WaytoAGI「AI训练营」第一期<span class="hl">开营</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">讲师：芋头小宝 / 林琼</span>
+    <span class="hero-meta">时长：147分钟</span>
+    <span class="hero-meta">参会：训练营学员群</span>
+  </div>
+  <div class="hero-rule">WaytoAGI晚8点共学 · 2025.10.13</div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <h2>训练营设计理念</h2>
+    <div class="sec-coord">SEC-01</div>
+  </div>
+  <div class="data-block" data-coord="INTENT">
+    <p><strong>核心问题：</strong>社区内容虽丰富但学员<span class="hl-yellow">无从下手</span>，知识零散缺乏实战机会</p>
+    <p><strong>解决方案：</strong></p>
+    <ul>
+      <li>标准化、系统化从零入门课程（4天快速了解 + 后续专项深学）</li>
+      <li>班级化管理 + 作业制 + 学习搭子配对</li>
+      <li>结业证书、优秀学员认证（通过率20%）、先锋官权益激励</li>
+      <li>多期多课程：N8N、AI视觉、AI产品经理等按兴趣选择</li>
+    </ul>
+  </div>
+  <blockquote class="quote">
+    <p>一枚扣子：「社区格言是让更多人因AI而强大，收益追求大家开心」</p>
+    <p class="quote-author">— 训练营不收费但需交作业</p>
+  </blockquote>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>N8N核心特点与商业潜力</h2>
+    <div class="sec-coord">SEC-02</div>
+  </div>
+  <div class="data-block" data-coord="PLATFORM-FEATURES">
+    <p><strong>工作流范式 + 低代码设计</strong></p>
+    <ul>
+      <li>纯粹工作流形式：节点按序排布（并行/串行），确定性强、结果可预测、便于调试</li>
+      <li>低代码平台：无需编码即可搭建，复杂数据可加代码节点</li>
+      <li>节点生态：预设400+节点，覆盖海外应用全生态，社区开发者持续贡献</li>
+      <li>开源自主：支持本地部署，解决数据安全隐私问题，生态活跃迭代快</li>
+    </ul>
+  </div>
+  <div class="data-block" data-coord="MONETIZATION" style="margin-top:20px;">
+    <p><strong>变现路径（N8N国内爆火时机）</strong></p>
+    <ul>
+      <li>定制工作流：垂直领域工作流定制服务</li>
+      <li>产品封装：N8N → 自有AI智能产品（通用/垂直），订阅盈利</li>
+      <li>培训咨询：成为该领域专家，提供培训和咨询</li>
+    </ul>
+  </div>
+  <blockquote class="golden-quote">
+    <p>芋头小宝：「学会N8N后迁移到其他平台门槛更低，它无需分辨不同类型AI，节点类型丰富，能刷新工作范式、做基层自动化数字员工」</p>
+  </blockquote>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>部署方案对比与最佳实践</h2>
+    <div class="sec-coord">SEC-03</div>
+  </div>
+  <div class="data-block" data-coord="DEPLOYMENT-CLOUD">
+    <p><strong>N8N Cloud（在线体验）</strong></p>
+    <ul>
+      <li>✓ 快速上手，无需安装配置</li>
+      <li>✓ 官方稳定性和安全性保障</li>
+      <li>✗ 仅14天免费期 / 不支持未认证社区节点</li>
+      <li>→ <span class="hl-yellow">初学者推荐先用 Cloud 获取正反馈，增强信心</span></li>
+    </ul>
+  </div>
+  <div class="data-block" data-coord="DEPLOYMENT-LOCAL">
+    <p><strong>本地部署对比</strong></p>
+    <table style="width:100%;border-collapse:collapse;margin:10px 0;">
+      <tr style="background:#f5f5f5;">
+        <td style="border:1px solid #ddd;padding:8px;"><strong>NPM安装</strong></td>
+        <td style="border:1px solid #ddd;padding:8px;">启动方便，但环境依赖复杂、版本升级繁琐、多实例管理困难 ✗ 不推荐新手</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #ddd;padding:8px;"><strong>Docker安装</strong></td>
+        <td style="border:1px solid #ddd;padding:8px;">图形化部署、环境隔离、支持社区节点 ✓ <span class="hl-yellow">强烈推荐</span></td>
+      </tr>
+      <tr style="background:#f5f5f5;">
+        <td style="border:1px solid #ddd;padding:8px;"><strong>Docker Compose</strong></td>
+        <td style="border:1px solid #ddd;padding:8px;">yaml文件维护、可读性好、多容器编排、环境变量配置方便 ✓ 推荐</td>
+      </tr>
+    </table>
+  </div>
+  <div class="data-block" data-coord="DOCKER-SETUP" style="margin-top:15px;">
+    <p><strong>Docker部署系统准备</strong></p>
+    <ul>
+      <li><strong>Windows 11：</strong>启动WSL（Linux子系统）+ 开启虚拟化</li>
+      <li><strong>Mac：</strong>直接从官网下载安装Docker Desktop</li>
+      <li><strong>配置流程：</strong>创建数据卷 → 运行镜像 → 设置端口映射 → 挂载数据卷 → 配置环境变量 → 注册激活</li>
+      <li><strong>环保贴士：</strong>用Docker Compose的yaml直接手动添加/修改环境变量，比命令行更方便不易出错</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>AI智能体工作流搭建实操</h2>
+    <div class="sec-coord">SEC-04</div>
+  </div>
+  <div class="data-block" data-coord="AGENT-ARCHITECTURE">
+    <p><strong>N8N AI Agent节点三要素</strong></p>
+    <ul>
+      <li>🧠 <strong>聊天模型：</strong>决定AI智能程度（如DeepSeek、GPT等）</li>
+      <li>📚 <strong>记忆库：</strong>让AI记住对话历史和用户偏好（Simple Memory方式设置记忆长度）</li>
+      <li>🔧 <strong>工具箱：</strong>赋予AI执行能力（如高德地图API、发送邮件、读写文件等）</li>
+    </ul>
+  </div>
+  <div class="data-block" data-coord="WORKFLOW-CONFIG" style="margin-top:15px;">
+    <p><strong>搭建关键配置</strong></p>
+    <ul>
+      <li><strong>模型选择：</strong>适合需求而非越强越好，需创建凭证输入API key</li>
+      <li><strong>系统消息：</strong>明确AI身份、行为规范、输出格式，与用户消息职责分离 → 保证一致性体验</li>
+      <li><strong>工具集成：</strong>通过MCP（模型上下文协议）调用第三方API，实现实时查询（天气、地点等）</li>
+      <li><strong>错误处理：</strong>工作流出错三种模式 → ① 停止工作流 ② 忽略错误继续运行 ③ 走备用线路（切换备用模型）</li>
+    </ul>
+  </div>
+  <div class="data-block" data-coord="USE-CASES" style="margin-top:15px;">
+    <p><strong>应用场景拓展</strong></p>
+    <ul>
+      <li>N8N + Web Coding：N8N负责后端工作流 + Web Coding设计前端页面 = 1+1>2 快速上线</li>
+      <li>自动化操作：通过API和触发器（邮件、飞书多维表格输入等）集成打通PC软件</li>
+      <li>与其他平台区别：相比Coze/Defi，N8N节点更丰富、对国外应用连通性更强、更易上手</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">核心收获 & 行动清单</div>
+  <ul>
+    <li><span class="label">学习路径</span> 新手先用N8N Cloud（14天免费）获取正反馈，避免部署卡点打击信心；后续按需本地部署扩展社区节点</li>
+    <li><span class="label">部署推荐</span> 使用Docker Compose方式部署N8N，yaml文件维护更便捷，环境变量配置无需频繁敲命令行</li>
+    <li><span class="label">商业机会</span> 趁N8N国内爆火期入局，定制垂直工作流、封装AI产品、提供培训咨询三大变现路径可行</li>
+    <li><span class="label">工作流设计</span> AI Agent搭建需设置系统消息（明确身份规范）+ 配置记忆库（记住对话历史）+ 添加工具能力（MCP调用API）三步走</li>
+    <li><span class="label">错误容错</span> 工作流出错时灵活选择处理模式：停止 / 忽略继续 / 备用线路切换，实现自动故障转移</li>
+    <li><span class="label">课程作业</span> Day 1作业：链接DeepSeek记忆节点 + 提交执行成功日志截图；查阅模型无状态性和注意力机制相关知识</li>
+    <li><span class="label">后续课程</span> Day 2学习N8N批量生图生视频（跨境电商/内容生产）；Day 3学习N8N与飞书多维表格结合应用</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 回到知识库首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>会议纪要 | WaytoAGI AI训练营 · 2025-10-13</p>
+    <p>内容结构化 by AI | 数据准确性需验证</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
