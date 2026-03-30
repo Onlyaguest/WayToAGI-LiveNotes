@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何制作2500万曝光的Seedance 2.0视频？ | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 回到首页</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WAYOUT/2026-02-20/SEEDANCE→STRUCTURED</div>
+  <h1 class="hero-title">如何制作<span class="hl">2500万曝光</span>的Seedance 2.0视频？</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">嘉宾：晨然 Ran</span>
+    <span class="hero-meta">Medeo产品负责人</span>
+    <span class="hero-meta">2026年2月20日</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<section>
+  <h2 class="sec-header">爆款视频的内核：稀缺性方法论</h2>
+  <div class="sec-coord" data-coord="爆款原因分析">
+    <p>晨然制作的《怪奇物语》重置结局视频全网曝光<span class="hl-yellow">2500万</span>，X平台原帖200多万浏览、50万点赞、5万转发。一天制作，成本不到100元，引发国际媒体报道。</p>
+    <p><strong>爆款三要素：</strong></p>
+    <ul>
+      <li><strong>内容稀缺性</strong>：Seedance 2.0仅中国创作者可用的时间窗口、精良叙事视频供给低、两分半讲故事的难度</li>
+      <li><strong>踩中热门梗</strong>：怪奇物语结局讨论热潮、网友声讨第九季</li>
+      <li><strong>放大情绪共鸣</strong>：弥补观众对原结局不满的遗憾</li>
+    </ul>
+    <p class="quote">内容无法讨好所有人，应精准定位受众。做内容不必想讨好所有人，而要明确定位、精准服务目标群体。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">脚本创作的80%投入</h2>
+  <div class="sec-coord" data-coord="脚本创作流程">
+    <p>晨然在脚本阶段投入了<span class="hl-yellow">80%的精力</span>，认为这是决定内容是否爆火的核心。</p>
+    <p><strong>迭代式创作方法：</strong></p>
+    <ul>
+      <li>每次只构思15秒剧情，与AI讨论生成结果后再思考故事发展方向</li>
+      <li>先制作40秒短片作MVP测试（小红书获千赞，抖音获3000赞）</li>
+      <li>基于反馈决定是否制作完整版本，避免无效投入</li>
+      <li>使用Cursor + Opus 4.6进行缺憾搜索，全网搜索观众不满之处</li>
+    </ul>
+    <p><strong>钩子设计（关键5秒）：</strong>包含三主角打灭霸、故事背景交代、人物高光、反派威胁等信息。前7秒划走率虽达70%，但因信息密度高吸引部分观众停留。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">节奏感与情感反转的秘诀</h2>
+  <div class="sec-coord" data-coord="视频制作核心">
+    <p><strong>短视频节拍规律：</strong>每6-12秒需有情感变化或反转。整个视频设计8次反转，每个反转节拍约15秒。</p>
+    
+    <div class="quote golden-quote">
+      <p>短视频的核心是每一秒都要留住观众，画面需推陈出新。观众在2-5秒内决定是否继续观看，若前几秒留不住人，后面内容再好也无用。</p>
+      <span class="quote-author">— 晨然</span>
+    </div>
+
+    <p><strong>文戏打戏设计：</strong></p>
+    <ul>
+      <li><strong>打戏</strong>：三层递进（will vs Vecna → 姐妹联手 → 怪物打怪物），符合剧情张力</li>
+      <li><strong>文戏</strong>：台词简短有力，每个角色一句台词且有高光。原则为：简短、有力、与其他角色产生互动张力</li>
+      <li>案例：开场台词"you put this thing inside me now it's mine"反转有力；Max的"Got you"多层含义</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">Seedance 2.0实战工具链</h2>
+  <div class="sec-coord" data-coord="工具与技术栈">
+    <p><strong>完整工作流：</strong></p>
+    <div class="data-block" data-coord="工具使用">
+      <ul>
+        <li><strong>脚本</strong>：Cursor（管理参考图、AI交流）</li>
+        <li><strong>视频生成</strong>：即梦（Seedance 2.0）</li>
+        <li><strong>剪辑</strong>：剪映</li>
+        <li><strong>清晰度</strong>：TOPAS</li>
+        <li><strong>音效</strong>：Elemmap</li>
+        <li><strong>场景生成</strong>：Medio</li>
+      </ul>
+    </div>
+
+    <p><strong>关键技巧：</strong></p>
+    <ul>
+      <li><strong>提示词</strong>：关键在于清晰表达故事意图。Seedance指令遵循能力强，重点不在写漂亮prompt，而在讲清故事</li>
+      <li><strong>参考图策略</strong>：用原剧截图固定角色年龄、穿着、战损形象。无数据集角色用Medio中的Nano Banana重新设计</li>
+      <li><strong>生成与混剪</strong>：每10-15秒作为一个场景，同一prompt生成4-6次后混剪提高素材利用率。截取上一场景尾帧作下一场景参考图实现衔接</li>
+      <li><strong>音色一致性</strong>：通过TTS文件、自录文件或在prompt中描述音色。也可用剪映、elevenlabs进行voice to voice替换</li>
+      <li><strong>背景音乐</strong>：可从剪映搜索、用elevenlabs或SUNO生成。文戏提高音量强调紧张感，打戏降低音量突出打斗声音</li>
+    </ul>
+
+    <p><span class="hl-yellow">积分消耗：</span>整个视频约3500积分。晨然认为多生成是为提高素材利用率，而非浪费积分。</p>
+  </div>
+</section>
+
+<div class="hero-rule"></div>
+
+<div class="takeaways">
+  <h3>💡 核心要点</h3>
+  <ol>
+    <li><strong>相信直觉，但要有方法论支撑</strong>——晨然的选题、工作流都凭直觉，但完成后分析发现踩中爆款要点。鼓励创作者多观影、学习热门视频来培养直觉</li>
+    <li><strong>设计"顿悟时刻"</strong>——借鉴编剧理念，让观众通过线索恍然大悟（如视频结局Max控制局面的反转），增加观看乐趣和记忆点</li>
+    <li><strong>把握模型无限制的时间窗口</strong>——Seedance 2.0海外上线前是红利期。在限制少的时候尽快创作，获得稀缺性优势</li>
+    <li><strong>MVP验证模式高效</strong>——用最小成本（40秒短片）验证想法，基于市场反馈决定是否投入大量精力，避免无效创作</li>
+    <li><strong>脚本为王，前5秒为王中王</strong>——脚本决定爆火潜力，前5秒的钩子决定观众是否继续观看。要在开头堆积信息密度和视觉冲击</li>
+    <li><strong>实践出真知</strong>——好创作在试错过程中把模糊感觉变成清晰作品。需认知到位后实践，通过不断迭代积累体感</li>
+    <li><strong>立即行动，跟上时代节奏</strong>——即便AI工具变化快，也要像被鳄鱼咬住一样跟着"死亡翻滚"变化频率。有好想法立即去做</li>
+  </ol>
+</div>
+
+<div class="hero-rule"></div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回目录</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI晚8点共学</span>
+    <span>2026年2月20日 19:55-21:23</span>
+    <span>主讲：晨然 Ran | Medeo产品负责人</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
