@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>千问APP 「AI小剧场」功能全解析 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/QIANWEN/2025-12-18/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">千问APP <span class="hl">「AI小剧场」</span>功能全解析</h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">主持：巴斯 | 讲师：KK老师、舒乐</div>
+    <div class="hero-meta">2025年12月18日 17:53-19:10</div>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section class="sec-header">
+  <div class="sec-coord">功能介绍与核心优势</div>
+  <h2>国内首个角色扮演视频生成模型</h2>
+</section>
+
+<p>千问APP本次重磅更新接入Wen2.6模型，是<span class="hl-yellow">国内首个支持角色扮演功能的视频生成模型</span>。用户可体验Sora2同款玩法，但无需科学上网、邀请码等复杂流程。核心特性包括：</p>
+
+<div class="data-block" data-coord="功能对比">
+  <strong>相比Sora2的优势：</strong>
+  <ul>
+    <li>使用门槛低：手机下载登录即用，中文输入无缝体验</li>
+    <li>清晰度更高：无满屏水印困扰，人物表现清晰不模糊</li>
+    <li>运镜自然：画面切换调度流畅，创作效率提升</li>
+    <li>成本更低：一个APP搞定，避免多软件协作</li>
+  </ul>
+</div>
+
+<section class="sec-header">
+  <div class="sec-coord">快速上手指南</div>
+  <h2>三步开启AI小剧场创作</h2>
+</section>
+
+<p><strong>进入方式：</strong>更新或新下载千问APP → 点击对话框上方的「AI小剧场」按钮 → 进入创作中心</p>
+
+<div class="data-block" data-coord="核心功能">
+  <strong>四大创作模式：</strong>
+  <ol>
+    <li><strong>AI分身创作</strong>：右上角启动，8秒内通过摄像头+麦克风捕捉个人形象和声音，内置美颜功能</li>
+    <li><strong>AI翻拍</strong>：点击替换键更换人物，剧情自动根据提示词重新生成，快速复刻他人创意</li>
+    <li><strong>剧本生成</strong>：从海量内置剧本中选择，自定义主角，一键生成高保真视频</li>
+    <li><strong>自由创作</strong>：输入简单白话或规范提示词，支持自定义台词、场景、视觉风格</li>
+  </ol>
+</div>
+
+<p class="quote">
+  <span>「只要内容和工具足够强大、有趣，用户更关注内容本身，而不是创作方式。」</span>
+  <span class="quote-author">— 舒乐</span>
+</p>
+
+<section class="sec-header">
+  <div class="sec-coord">自媒体创作策略</div>
+  <h2>从垂直新手到爆款创作者</h2>
+</section>
+
+<div class="data-block" data-coord="运营技巧">
+  <strong>实战三板斧：</strong>
+  <ul>
+    <li><strong>多账号矩阵</strong>：同步发布多条视频提高推流几率，降低单条失败风险</li>
+    <li><strong>热点结合</strong>：捕捉地域CP、明星梗、爆款剧情，融入AI小剧场快速创作</li>
+    <li><strong>连载运营</strong>：推出系列视频（如地域CP系列），虽然单集短但能拉动追更</li>
+  </ul>
+</div>
+
+<div class="quote golden-quote">
+  <span>「用户从质疑AI内容到主动接受，再到只关注趣味性——这个转变说明产品力已经过了验证阶段。现在的瓶颈是创意本身。」</span>
+  <span class="quote-author">— 巴斯（主持人总结）</span>
+</div>
+
+<section class="sec-header">
+  <div class="sec-coord">提示词技巧与社群连接</div>
+  <h2>规范化创作与持续反馈</h2>
+</section>
+
+<div class="data-block" data-coord="提示词框架">
+  <strong>推荐提示词结构：</strong>
+  <ul>
+    <li><strong>简式</strong>：直接描述场景主角，如「义和KK跟华妃聊AI发展」</li>
+    <li><strong>规范式</strong>：按时间、地点、人物、事件展开，如「宴会厅普京vs泽伦斯基关于鱼头朝向的争执」</li>
+    <li><strong>详细式</strong>：控制台词、拍照方式、场景空间和视觉风格，如「探班周芷若拍戏」</li>
+  </ul>
+</div>
+
+<p>加入官方微信群（视频号右边扫码）获取最新产品动态，查看微推AGI知识库中的详细玩法文档，与KK老师和社区创作者直接交流。</p>
+
+<div class="takeaways">
+  <h3>核心要点速记</h3>
+  <ol>
+    <li>千问APP小剧场 = 国内首个角色扮演视频生成工具，Sora2平替方案，使用门槛更低</li>
+    <li>AI分身、翻拍、剧本、自由创作四大模式覆盖从新手到进阶的全创作链路</li>
+    <li>对标Sora2的三大核心优势：无科学上网需求、清晰度更高、创作成本更低</li>
+    <li>自媒体破局关键：多账号矩阵发布 + 热点创意结合 + 连载系列化运营</li>
+    <li>用户心智转变：从质疑AI内容 → 逐步接受 → 最终只关注趣味性，产品力已验证</li>
+    <li>提示词三阶进阶：简式（场景描述）→ 规范式（时地人事）→ 详细式（全参数控制）</li>
+    <li>持续众测参与能抢先体验新功能，加入官方社群获取一手资讯和创作反馈</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>WaytoAGI 晚8点共学</p>
+    <p class="ep-badge">2025.12.18</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
