@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用阿里百炼制作春节祝福内容一场直播掌握Workflow全流程 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WaytoAGI/2026-02-12/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">用阿里百炼制作春节祝福内容<span class="hl">一场直播掌握Workflow全流程</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">直播嘉宾：电波曲奇</div>
+    <div class="hero-meta">时间：2026年2月12日 19:55-21:08</div>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<!-- 第一部分：平台能力概览 -->
+<section>
+  <div class="sec-header">
+    <h2>阿里百炼平台核心能力</h2>
+    <div class="sec-coord">02:00-08:14</div>
+  </div>
+  <div class="data-block" data-coord="05:40">
+    <p>阿里百炼平台具有<span class="hl-yellow">基础模型服务和应用开发两大核心能力</span>，可调用千问系列大模型，覆盖文本、视觉、图片、视频、语音等多模态能力。年前发布的新模型性能大幅提升，新上线的图像模型也表现出色。</p>
+    <p>平台可直接复刻多个开源应用，包括新春营销专区的短信生成器、海报生成器等，其中海报生成器涉及MCP（Model Context Protocol）的调用能力。</p>
+  </div>
+</section>
+
+<!-- 第二部分：Workflow架构详解 -->
+<section>
+  <div class="sec-header">
+    <h2>Workflow核心架构与节点运作</h2>
+    <div class="sec-coord">15:00-52:01</div>
+  </div>
+  
+  <div class="data-block" data-coord="15:00">
+    <h3>Workflow本质与设计思路</h3>
+    <p><span class="hl-yellow">Workflow是单次与模型进行复杂交互的流程</span>，有明确的开始和结束，中间步骤可根据需求灵活设计。以萌宠拜年视频为例，通过图生视频和文生视频的多节点流程，相比单一Agent推理更为复杂，但逻辑更清晰。</p>
+  </div>
+
+  <div class="data-block" data-coord="18:00">
+    <h3>条件判断节点：流程分支控制</h3>
+    <p>通过条件判断节点将文生视频和图生视频两个业务场景分开——根据是否上传图片决定走不同分支。条件变量来自开始节点，可添加自定义变量实现复杂的分支逻辑，支持"全部满足"和"任意满足"两种条件关系。</p>
+  </div>
+
+  <div class="data-block" data-coord="35:13">
+    <h3>核心节点类型对比</h3>
+    <ul>
+      <li><strong>开始节点</strong>：任务起点，包含预置变量（图片、query）和自定义变量</li>
+      <li><strong>大模型节点</strong>：与模型交互的核心，输出结果存储在result中，支持不同模型类型</li>
+      <li><strong>脚本节点</strong>：运行Python/JS代码处理工程问题，可处理列表转字符串等数据格式转换</li>
+      <li><strong>图生视频节点</strong>：选择i to v模型，输入参考图片和提示词，可调整清晰度、时长、种子</li>
+      <li><strong>文生视频节点</strong>：直接文本输入，无需图片参考，流程更简洁</li>
+      <li><strong>流程输出节点</strong>：类似打log功能，便于追踪中间过程，替代查看流程日志</li>
+    </ul>
+  </div>
+
+  <blockquote class="golden-quote">
+    <p>"Workflow承担业务工作超70%，是中期考试，检验对各节点应用及知识储备的掌握。若未掌握Workflow相关能力如调API、MCP等，搞Agent会遇阻碍。"</p>
+    <div class="quote-author">— 电波曲奇</div>
+  </blockquote>
+</section>
+
+<!-- 第三部分：实战案例与常见问题 -->
+<section>
+  <div class="sec-header">
+    <h2>萌宠拜年视频实战与问题解答</h2>
+    <div class="sec-coord">30:31-01:05:01</div>
+  </div>
+
+  <div class="data-block" data-coord="30:31">
+    <h3>完整执行流程演示</h3>
+    <p>以生成猫咪跳舞视频为例：用户上传小猫图片并输入"生成猫咪跳舞视频"指令 → 条件判断命中图生视频分支 → 大模型生成优化提示词 → 脚本节点抠出图片URL → 图生视频节点生成MP4格式视频 → 以Markdown格式打印视频链接可在页面实时渲染展示。</p>
+  </div>
+
+  <div class="data-block" data-coord="01:01:17">
+    <h3>常见技术问题详解</h3>
+    <ul>
+      <li><strong>列表转字符串作用</strong>：因图生视频需要image的URL格式，但原生节点输入是JSON，该步骤从长JSON中截取网页地址作为入参，实现格式转换</li>
+      <li><strong>流程输出目的</strong>：不仅可显示最终结果，更重要的是将意图识别、分流等中间信息打进输出，便于追踪内部执行逻辑，类似打log功能</li>
+      <li><strong>多图参考生成限制</strong>：当前版本i to v入参仅支持单图，多图参考需等待百炼升级，已向产品经理提需求</li>
+      <li><strong>参数调整测试</strong>：修改视频时长、分辨率、随机种子等参数后需重新测试，可快速验证效果差异</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="52:47">
+    <h3>分级学习建议</h3>
+    <p><strong>新手入门阶段</strong>：优先掌握大模型、多模态生成、条件判断和变量等基础内容，足以完成大部分工作。</p>
+    <p><strong>进阶专业阶段</strong>：有一定基础的学员可深入学习知识库操作、API接口通讯、脚本处理、插件组件运用等高级内容。</p>
+    <p><strong>实践强调</strong>：只有通过实际操作才能真正理解各节点功能，建议按照教学文档边学边做。</p>
+  </div>
+</section>
+
+<!-- 第四部分：架构优化与未来展望 -->
+<section>
+  <div class="sec-header">
+    <h2>Workflow架构优化与技术前瞻</h2>
+    <div class="sec-coord">55:33-01:09:31</div>
+  </div>
+
+  <div class="data-block" data-coord="55:33">
+    <h3>Workflow改造方向</h3>
+    <p><strong>架构层面</strong>：可随意增加节点、调整条件判断分支，满足更复杂的业务需求。</p>
+    <p><strong>内容层面</strong>：调整节点内部的提示词和参数，优化生成质量。实际上就是在既有框架上进行定制化改造，测试后通过流程输出节点监控中间结果。</p>
+  </div>
+
+  <div class="data-block" data-coord="01:07:07">
+    <h3>Workflow在Agent时代的价值</h3>
+    <p>虽然当前处于agentic时代有诸多Agent架构选择，但<span class="hl-yellow">Workflow是检验对模型交互理解的中期考试</span>。掌握Workflow的API调用、MCP集成等能力，是构建复杂Agent系统的基础。业务实践中，Workflow承担超过70%的生产工作。</p>
+  </div>
+
+  <div class="data-block" data-coord="01:09:31">
+    <h3>Python SDK调用与后续资源</h3>
+    <p>可通过查看发布渠道的使用文档，安装带swap的Python SDK包，调用import application，输入参数变量、API key和prompt即可实现Workflow的程序化调用。</p>
+    <p><strong>持续学习资源</strong>：关注WaytoAGI视频号获取后续课程，扫码加入百炼官方群获得技术支持，在小红书关注"电波曲奇"账号了解最新模型和技术动态。</p>
+  </div>
+</section>
+
+<div class="hero-rule"></div>
+
+<div class="takeaways">
+  <h3>💡 核心要点总结</h3>
+  <ul>
+    <li><strong>Workflow是核心</strong>：业务工作量70%以上由Workflow承担，掌握它比盲目追捧Agent更务实</li>
+    <li><strong>节点功能清晰</strong>：条件判断控制分支、大模型节点做推理、脚本节点处理数据、流程输出追踪过程，各司其职</li>
+    <li><strong>图文生视频差异</strong>：图生视频需上传参考图片和URL处理，文生视频更直接，应根据场景选择</li>
+    <li><strong>提示词很关键</strong>：大模型节点的提示词优化直接决定生成质量，可通过专门的提示词生成节点优化输出</li>
+    <li><strong>分级学习路径</strong>：新手掌握基础节点即可应对大部分工作，进阶学习API和插件需要更深的技术功底</li>
+    <li><strong>测试与迭代</strong>：改造Workflow后必须测试验证，流程输出节点是最好的调试工具，替代复杂的日志查看</li>
+    <li><strong>实践大于理论</strong>：只有自己动手操作才能真正掌握Workflow，建议按文档一边学一边做</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>会议纪要 | WaytoAGI晚8点共学 | 2026-02-12</p>
+    <p>讲师：电波曲奇 | 内容：阿里百炼Workflow实战教学</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
