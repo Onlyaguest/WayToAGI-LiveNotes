@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 CES 热乎情报速递：具身智能与无人驾驶两大赛道深度解读 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/CES/2026-01-10/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">2026 CES <span class="hl">热乎情报速递</span>：具身智能与无人驾驶两大赛道深度解读</h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">
+      <span class="ep-badge">嘉宾</span>
+      王玮滢 | 哈佛大学计算机博士、具身智能研究科学家、连续创业者
+    </div>
+    <div class="hero-meta">
+      <span class="ep-badge">时间</span>
+      2026年1月10日 14:55-15:56 (GMT+08)
+    </div>
+  </div>
+  <hr class="hero-rule">
+</div>
+
+<section>
+  <h2 class="sec-header">自动驾驶：技术路线与商业化分化</h2>
+  <div class="sec-coord">自动驾驶/技术对比/成本分析</div>
+  
+  <p>Waymo与国内厂商采取截然不同的技术路线。Waymo依赖<span class="hl-yellow">高精地图</span>，已投入数百亿美元，车辆配备19个摄像头和多个Lidar，成本高昂。而国内主推<span class="hl-yellow">无图策略</span>，原因在于城市基础设施变化迅速、地图更新成本高。</p>
+  
+  <p>Waymo的可持续性体现在其自动化建图流程和成本控制上：通过融合Google Map技术和高度自动化流程，降低制图和更新成本；车辆供应商更换后，单车成本也在大幅下降。目前已在旧金山和洛杉矶实现大规模运营，即将完全开放高速能力。</p>
+
+  <p>Tesla robotaxi路线则从2021年的罗曼塔切换到FSD，经三年努力加强学习训练策略。但与Waymo相比，其从有安全员到全自动化上路的时间更长，且面临大规模车队运维、充电物流等难题，难以完全自动化。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">数据处理：从99%噪声中提炼1%价值</h2>
+  <div class="sec-coord">自动驾驶/数据策略/工程方法</div>
+  
+  <p>自动驾驶数据处理的核心挑战是：<span class="hl-yellow">99%的数据是无意义的</span>。关键不在于投喂数据量，而在于如何高效获取有意义的1%。</p>
+
+  <p>Tesla采用的<span class="hl-yellow">事件驱动(event-based)方法</span>值得借鉴——在海量数据中寻找"不无聊的数据"。获取有意义数据后，还需要有效的增量训练方式，避免模型训练出现跷跷板效应，同时考虑模型大小、实时推理延迟、硬件热效率等工程因素。</p>
+
+  <p>英伟达提出的AI Physics相关模型（如Palmio）通过离线分类器对数据进行推理和分类，相比传统大规模测试和在线仿真方法更高效，是解决长尾数据问题的有效方案。</p>
+
+  <div class="quote">
+    <p>"关键是找出数据后要有有效的增量训练方式，这个理念具有跨领域的益处。"</p>
+    <p class="quote-author">— 王玮滢</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">具身智能：硬件将至，灵魂尚未到达</h2>
+  <div class="sec-coord">具身智能/产业现状/应用落地</div>
+  
+  <p>国内具身智能展现出明显优势：国家层面积极推动，硬件成本控制极致——关节成本已降至数百元。但应用场景仍然有限，主要集中在跳舞、教育或科研用途，缺乏真正有价值的商业应用。</p>
+
+  <p>这种现象类似自动驾驶的早期发展：算法看似成熟但场景落地困难，容易导致资本失去耐心。当前国内具身智能处于<span class="hl-yellow">"硬件将至，灵魂尚未到达"</span>的阶段——硬件发展迅速，但核心算法和智能仍需提升。</p>
+
+  <p><span class="hl-yellow">人形机器人最先可能应用于工业制造业</span>，因工业场景相对结构化，地面和工厂蓝图已知，可将固定机械臂替换为移动机械臂。相比之下，家庭等非结构化环境对感知和推理能力要求更高，端侧算力难以满足。</p>
+
+  <p>工业落地需要<span class="hl-yellow">工程化思路而非追求最前沿技术</span>——采用多个模型协同工作，部分侧重泛化，部分侧重底层运控，根据实际需求取舍，避免用单一模型解决所有问题。国内制造业大厂投入具身智能解决实际问题，比家庭场景应用更加可靠。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">商业化前景：三年内的关键节点</h2>
+  <div class="sec-coord">自动驾驶/商业化/市场预判</div>
+  
+  <p>从商业规律看，自动驾驶领域最后存活的企业不会超过三家——运营大规模车队的成本极高，包括车辆损耗、维护等硬成本，超出创业团队承受范围。国内竞争可能加剧价格战，资金实力弱的企业将因资金流问题被淘汰。</p>
+
+  <p>关于乘客无需坐在主驾驶位置的时间预测：在robotaxi场景下，时间尺度为<span class="hl-yellow">3-5年</span>。Waymo已趟出可行之路，一旦某家企业达到一定规模（如单城市1000辆车），就能证明该路线可行，后续资本会更愿意投入。</p>
+
+  <div class="golden-quote">
+    <p>"硬件将至，灵魂尚未到达。国内具身智能需要的不是最花哨的技术，而是工程化的实际解决方案——就像Waymo采用相对传统的算法，却更注重稳定性。"</p>
+    <p class="quote-author">— 王玮滢</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">AI时代工程师的核心竞争力</h2>
+  <div class="sec-coord">AI应用/人力市场/能力演进</div>
+  
+  <p>全球工程师普遍使用AI辅助编程，一旦开始就很难回到手写代码的方式。但AI暂时无法替代工程师处理复杂问题的能力。</p>
+
+  <p>工程师的<span class="hl-yellow">核心竞争力在于将抽象问题转化为实际工程方案</span>的能力：需要将复杂问题分解为数据问题、工程设计问题、验证评估问题等，转化为不同的prompt让AI生成代码，再基于自己的理解对AI输出进行修改和鉴别。这种能力在短期内是AI难以替代的。</p>
+</section>
+
+<div class="takeaways">
+  <h3>核心要点 · 5条</h3>
+  <ul>
+    <li><strong>技术路线分化：</strong>Waymo坚持高精地图方案，国内主推无图策略，反映不同市场条件下的务实选择</li>
+    <li><strong>数据处理革命：</strong>从大量投喂数据转向事件驱动的精准数据采集，效率提升是关键竞争力</li>
+    <li><strong>具身智能困局：</strong>硬件成本优势明显但应用场景有限，工业制造是最先突破口，需要工程化而非论文驱动</li>
+    <li><strong>商业化淘汰：</strong>自动驾驶最后存活不超三家，3-5年内决出胜负，Waymo已验证可行性路径</li>
+    <li><strong>工程师未来：</strong>AI改变编程方式但难以替代问题转化能力，工程思维和系统思维是短期护城河</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议列表</a>
+  </div>
+  <div class="footer-stamp">
+    <span>会议纪要 · 2026-01-10</span>
+    <span>来源：清华MBA人工智能俱乐部 × 通往AGI之路</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
