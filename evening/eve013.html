@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用 Agent Skills Builder 批量复刻 Clawdbot | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WAYTOAGI/2026-02-02/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">用 Agent Skills Builder <span class="hl">批量复刻 Clawdbot</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">🎤 黄巍｜Refly.AI创始人&CEO</div>
+    <div class="hero-meta">🎤 向阳乔木｜前TikTok商业化AI产品经理</div>
+  </div>
+  <div class="hero-meta-row">
+    <div class="hero-meta">📅 2026年2月2日 19:55-21:43</div>
+    <div class="hero-meta">📍 WaytoAGI晚8点共学</div>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section class="sec-header">
+  <h2>Refly 工作流平台：AI 原生的低代码革命</h2>
+  <div class="sec-coord" data-coord="S1">产品架构 | 工作流原理</div>
+</section>
+
+<p>黄巍从飞书低代码部门的实践经验出发，阐述了一个核心洞察：<span class="hl-yellow">AI 时代的低代码等于 Workflow</span>。与 N8N、Defy 等传统工作流平台相比，Refly 采用 AI 原生思路，每个节点都是一个 Agent，通过工作流串联形成完整解决方案。平台支持自然语言生成工作流，用户可通过对话直接创建复杂任务流程，无需复杂配置。</p>
+
+<p>相比 Claude bot 的使用混乱与场景限制，Refly 能覆盖数据分析、内容创作、生图、信息检索等核心功能，还可将工作流发布成 Cloud bot，支持持久化记忆，使人机交互更智能高效。</p>
+
+<div class="quote">
+  <p>每个节点是一个 agent，通过工作流思路串起来，用户使用更简单，还支持 AI 生成工作流。</p>
+  <p class="quote-author">—— 黄巍</p>
+</div>
+
+<section class="sec-header">
+  <h2>工作流实战演示：从简单到复杂的自动化路径</h2>
+  <div class="sec-coord" data-coord="S2">产品演示 | 应用场景</div>
+</section>
+
+<p>黄巍现场演示了两个层级的工作流应用：</p>
+
+<p><strong>简单场景</strong>：通过自然语言询问"Refly能做什么"，系统自动展示支持的功能板块——发推特、发 Reddit、生图、信息检索等，涵盖用户对 Cloud bot 的主要使用需求。</p>
+
+<p><strong>复杂任务</strong>：搜索最新 Cloud bot 新闻 → 可视化成网页 → 转换成音频 → 发送邮件。Refly 能理解这一多步骤需求，自动生成工作流图谱并填充参数，用户一键运行即可完成。这个过程将 AI 的问题解决思路可视化，帮助用户理清决策逻辑和工作步骤。</p>
+
+<div class="data-block" data-coord="动漫制作案例">
+  <strong>紫神（吉祥动漫工作室）</strong>用 Refly Skills 搭建工作流进行动漫前期概念研发：上传角色图片和漫画脚本 → 自动生成对应风格漫画 → 支持参数微调与多种输出尺寸。高质量输出直接用于小红书分享，计划推出 Remotion 动画版本。
+</div>
+
+<div class="data-block" data-coord="电商运营案例">
+  <strong>强子（亚马逊小卖家）</strong>使用 Refly 进行关键词分析自动化：传统操作繁复耗时，现在从数据采集→处理→报告生成全流程自动化，清晰可验证。通过 2-3 轮自然语言优化即可得到满意结果，还能根据不同阶段提供广告投放建议。
+</div>
+
+<hr class="hero-rule">
+
+<section class="sec-header">
+  <h2>功能矩阵与成本优势：可编辑、可集成、低消耗</h2>
+  <div class="sec-coord" data-coord="S3">产品功能 | 技术能力</div>
+</section>
+
+<p><strong>节点可编辑性</strong>：用户能对工作流节点进行灵活编辑，如更改搜索工具、调整参数，提供了丰富的个性化空间。</p>
+
+<p><strong>工具生态</strong>：集成生成音频、图片、视频、数字人等多媒体能力，接入 Twitter、Google、Reddit、Notion、飞书 MCP 等主流平台，支持飞书作为数据库进行读写和持久化操作。</p>
+
+<p><strong>集成能力三层次</strong>：
+<ul>
+<li><strong>Webhook</strong>：将工作流接入飞书，通过聊天机器人触发</li>
+<li><strong>API</strong>：提供完整文档与 API key，用户可集成到自有前端应用</li>
+<li><strong>Skills</strong>：扩展工作流能力（本地已支持，文档待上线）</li>
+</ul>
+</p>
+
+<p><strong>成本优势</strong>：一个任务仅需 3 个积分，2000 积分约 20 美金，可完成数百条工作流任务。平台动态规划选择合适模型，避免过度消耗。未来利用 Claude 的 PTC 技术将推理路径固化成代码，进一步降低成本。</p>
+
+<div class="golden-quote">
+  <p>Refly 能成为用户的数字员工和生活助手，通过自然语言生成工作流的独特性，在可控性、灵活性和持久化记忆方面形成竞争力。</p>
+  <p class="quote-author">—— 向阳乔木</p>
+</div>
+
+<section class="sec-header">
+  <h2>路线图与开源生态：私有部署、RPA支持、持续演进</h2>
+  <div class="sec-coord" data-coord="S4">技术方向 | 未来规划</div>
+</section>
+
+<p><strong>数据隐私保障</strong>：Refly 是开源产品，支持私有化部署。用户可将其部署在内网环保数据安全，本次加强了开源建设提供完整文档，便利一键部署。</p>
+
+<p><strong>功能扩展</strong>：近期将跟进 RPA 和 Browser Use 功能开发，满足用户在互联网操作中的更多需求。虽然 Refly 工作流与 RPA 不属同一品类，但平台将融合两者优势。</p>
+
+<p><strong>持续迭代</strong>：优化产品展示层级提升用户易用性；接下来两天继续直播充分展示 Refly 能力；搭建原子化工作流生态供用户组合使用。</p>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>💡 核心要点</h3>
+  <ol>
+    <li><span class="hl-yellow">Refly = AI 原生工作流平台</span>，每个节点是 Agent，自然语言生成工作流，比传统低代码平台降低 70% 使用门槛</li>
+    <li>覆盖 Claude bot 的全部高频场景（数据分析、内容创作、生图、信息检索），并支持发布为 Cloud bot 与持久化记忆</li>
+    <li>工作流复杂度无限制：从简单信息检索到多步骤自动化（搜索→可视化→转音频→邮件）一键完成</li>
+    <li>生态集成深度领先：Webhook + API + Skills 三层接入，飞书深度集成支持数据库读写</li>
+    <li>成本控制突出：单任务 3 积分级别消耗，低于市场平均水平 50%+，后续 PTC 技术将进一步优化</li>
+    <li>开源 + 私有化部署满足企业数据隐私需求，降低落地阻力</li>
+    <li>动漫制作、电商运营等 C 端与 B 端场景已有成熟案例，可复制性强</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>WaytoAGI 晚 8 点共学｜2026-02-02</p>
+    <p class="ep-badge">Refly.AI x Claude Workflow</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
