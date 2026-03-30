@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>少儿AI春晚 · 绘本共学屋孩子们的创意海报 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+  <span class="ep-badge">会议纪要</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/少儿AI春晚/2025-12-06/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">少儿AI春晚 · 绘本共学屋<br><span class="hl">孩子们的创意海报</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">📅 2025年12月6日 周六 17:55-19:48</div>
+    <div class="hero-meta">👥 主讲：冰鱼仔老师（冰甲）</div>
+    <div class="hero-meta">🎯 Way to AGI 社区首届少儿AI春晚</div>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">✨ 活动概览</h2>
+  <div class="sec-coord" data-coord="EVE/少儿AI春晚/活动介绍">
+    <p>首届少儿AI春晚由Way to AGI社区主办，面向小学一年级至初中学生，以视频形式征集创意作品。活动筹备于11月，预计2026年2月播放视频，在视频号、B站等多平台展出。上届成年人春晚时长达210分钟，获数百万观看。</p>
+    <p><strong>活动设置</strong>七个主题分组共学：锦绣山河、文脉新传、温馨日常、智能制造、逐梦星海、自由主题，每个小朋友可根据创意选择相应共学小组。</p>
+    <p class="golden-quote">💡 <span class="quote">活动意义：让孩子与自己的作品进行共创，把每一个小朋友的创意被所有人看见。</span></p>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">🎨 AI绘图提示词核心法则</h2>
+  <div class="sec-coord" data-coord="EVE/少儿AI春晚/提示词写法">
+    <p><strong>提示词五要素</strong>（按重要性排序）：</p>
+    <ol>
+      <li><span class="hl-yellow">用途明确</span>——如"创意海报""创意摄影"，让AI快速定位；</li>
+      <li><span class="hl-yellow">风格设定</span>——立体像素、充气气球、折纸、毛毡、十字绣、拼豆等；</li>
+      <li><span class="hl-yellow">核心主体</span>——需放在前面，避免被描述词弱化（如橘猫、奶茶）；</li>
+      <li><span class="hl-yellow">细节描写</span>——前景、透视、仰视、液体飞溅等质感表现；</li>
+      <li><span class="hl-yellow">构图补充</span>——画面构成与整体质感。</li>
+    </ol>
+    <p><strong>关键技巧</strong>：词汇越多越准确，画面稳定性越高；使用"伸向镜头强透视""箭尖指向镜头"等特殊构图词增加纵深感；逗号使内容混在一起，句号则分块理解——谨慎选择。</p>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">🖼️ 风格表现与创作方法</h2>
+  <div class="sec-coord" data-coord="EVE/少儿AI春晚/风格技巧">
+    <p><strong>模型选择影响显著</strong>：极梦3.0在风格化支持更多，4.0更偏向写实摄影；人物一致性用4.0模型保证，但上传图片的构图和占比会影响效果。若出现风格困难，建议切换3.0重试。</p>
+    <p><strong>特殊镜头效果</strong>：</p>
+    <ul>
+      <li>鱼眼镜头——边缘扭曲，中间清晰，短片制作效果亮眼；</li>
+      <li>前景模糊——让远处物体显得离镜头很近，营造沉浸感。</li>
+    </ul>
+    <p><strong>印刷风格新玩法</strong>：半调图案（现代感）、凹版印刷线稿（80年代报纸质感）、网状纹理——通过添加艺术家名字、色彩鲜艳等套滤镜般的描述，让画面色调和质感更稳定。</p>
+    <p><strong>创作建议</strong>：作品需有故事性、动态和意想不到的细节；先从老师提示词修改开始，逐步培养能力；<span class="hl-yellow">避免版权问题，尽量自己设计角色</span>；竖版海报用9:16，视频制作用16:9横版。</p>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">📋 作品点评与技术答疑</h2>
+  <div class="sec-coord" data-coord="EVE/少儿AI春晚/答疑点评">
+    <p><strong>常见问题优化</strong>：</p>
+    <ul>
+      <li>人物占比过小——添加目标元素（如水桶、气垫）丰富画面层次；</li>
+      <li>缺少故事性——先明确立意再出图，让画面更饱满；</li>
+      <li>角色图平淡——添加细节（如肩膀趴着小猫）、描述动态（手抚摸、抱入怀）提升创新性。</li>
+    </ul>
+    <p><strong>清晰度提升</strong>：出图后使用智能超清功能可选2K、4K、8K分辨率（8K消耗积分）；<span class="hl-yellow">不要细节生成程度拉满</span>，避免过度处理。</p>
+    <p><strong>特殊需求处理</strong>：合照批入人物保持一致性无法用极梦完成，需借助其他AI工具；人物越多脸越小，清晰度会下降（算力固定导致）。</p>
+    <p><strong>豆包辅助工具</strong>：将图片扔给豆包可自动拆解成提示词，适合不知如何描述画面的初学者。</p>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>🎯 核心要点 5 条</h3>
+  <ul>
+    <li><span class="hl-yellow">提示词黄金法则</span>：用途→风格→核心主体（前置优先）→细节→构图，词汇越多越稳定，但避免动态姿势等不可控因素。</li>
+    <li><span class="hl-yellow">模型选择策略</span>：4.0保证人物一致性偏写实，3.0支持风格化更丰富；上传构图和画面占比直接影响最终效果。</li>
+    <li><span class="hl-yellow">创意表现要素</span>：故事性+动态+意想不到的细节三位一体；添加火焰、水流等元素作吸睛亮点；版权意识不可少。</li>
+    <li><span class="hl-yellow">技术规格明确</span>：海报用竖版9:16比例，视频用横版16:9；智能超清可提升分辨率，但细节生成程度要适度控制。</li>
+    <li><span class="hl-yellow">共学参与路径</span>：即日起可扫二维码报名分组，作品递交截止12月31日，2月发布成果；优秀作品会发公众号标注作者信息。</li>
+  </ul>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 回到首页</a>
+  </div>
+  <div class="footer-stamp">
+    <small>纪要生成：Way to AGI 首届少儿AI春晚 · 绘本共学屋 | 2025-12-06 | 讲师：冰鱼仔老师（冰甲）</small><br>
+    <small>📅 共学入学截止：12月15日 | 📤 作品递交截止：12月31日 | 🎬 成果发布：2026年2月</small>
+  </div>
+</div>
+</div>
+</body>
+</html>
