@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI办公高效收尾：百炼模板一键搞定节前工作 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVE02/2026-02-03/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">AI办公高效收尾：<span class="hl">百炼模板一键搞定</span>节前工作</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">WaytoAGI晚8点共学</span>
+    <span class="hero-meta">2026年2月3日 19:55-21:27</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section class="data-block" data-coord="EVE02/核心议程">
+  <h2 class="sec-header">
+    <span class="sec-coord">[核心议程]</span>
+    课程目标与讲师介绍
+  </h2>
+  <p>主持人Xiang Zhou邀请芋头小宝老师（周洁）分享阿里百炼平台AI办公应用。课程旨在帮助参与者在春节前<span class="hl-yellow">高效完成手中任务</span>，掌握AI办公核心技巧。</p>
+  <p><strong>讲师背景：</strong>芋头小宝老师是500强企业AI解决方案工程师、微头微核心共创伙伴，精通主流智能体开发平台，教学和实战经验丰富。相关课程已上线百炼平台供大家学习。</p>
+</section>
+
+<section class="data-block" data-coord="EVE02/应用场景">
+  <h2 class="sec-header">
+    <span class="sec-coord">[应用场景]</span>
+    企业AI办公四大类场景
+  </h2>
+  <p>阿里百炼平台覆盖企业办公AI应用的四大场景：</p>
+  <ul>
+    <li><strong>基础知识问答</strong> — 基于AI内部或企业内部知识库</li>
+    <li><strong>文档信息处理</strong> — PPT、Excel、音频视频文件处理</li>
+    <li><strong>网络信息搜索</strong> — 用于行业分析、舆情分析等</li>
+    <li><strong>数据分析</strong> — 处理数据库或Excel数据</li>
+  </ul>
+  <p>平台官方设计的模板具启发性，可根据企业内部特定场景进行修改应用，<span class="hl-yellow">降低使用门槛</span>，无论有无AI基础都可直接使用。</p>
+</section>
+
+<section class="data-block" data-coord="EVE02/核心应用">
+  <h2 class="sec-header">
+    <span class="sec-coord">[核心应用]</span>
+    各类AI办公应用详细介绍与操作演示
+  </h2>
+  
+  <div class="quote">
+    <p>高频重复性任务可转化为AI应用，提前预设提示词，节省对话时的输入时间，提高处理垂直领域任务的效率。</p>
+    <span class="quote-author">— 芋头小宝老师</span>
+  </div>
+
+  <h3>基础问答类应用</h3>
+  <p><strong>法律问答助手：</strong>可点击"立即体验"或"免费复制"。复制后在个人空间查看应用配置，主要设置提示词（助手领域、遵循规则等），支持文件解析，可上传法律文件进行问答。拓展到日常办公时，预设提示词可节省重复输入时间。</p>
+
+  <h3>文档信息处理类应用</h3>
+  <p><strong>合同信息抽取助手：</strong>可处理金融合同、软件合同等。配置界面左边进行提示词设计，赋予文件解析能力。提示词需明确角色和想获取的信息（如甲方、乙方信息），可根据业务需求修改，如进行招投标信息提取，还可使用AI工具辅助设计提示词。</p>
+  
+  <p><strong>PPT生成应用：</strong>背后连接第三方工具，在聊天框输入主题即可生成。工作方式是基于输入主题进行网络搜索，再由模型生成大纲，最后交给PPT生成工具。生成的PPT可下载到本地进行二次编辑，导出支持PPT、PDF及长图格式。</p>
+  
+  <p><strong>会议图文纪要应用：</strong>通过上传音频文件生成会议纪要，效果良好可下载为长图分享。配置界面采用典型工作流，包括：读取音频→转文字→大模型二次处理→MCP工具部署→生成可访问网页链接→输出完整图文纪要。</p>
+
+  <h3>网络信息搜索类应用</h3>
+  <p><strong>行业策略分析应用：</strong>工作流采用并行处理逻辑。先通过联网搜索进行多维度网络搜索，将结果给到对应模型进行信息总结，再统一给到一个模型进行汇总。输出包含行业概览分析、竞争对手分析、政策分析等内容。可根据需求修改分析维度（如政府分析、4P分析法、波特五力等），新增线路通过拖拉拽节点完成。</p>
+
+  <h3>数据分析类应用</h3>
+  <p><strong>问答与BI生成小助手：</strong>配置界面左边设置提示词，说明助手身份、任务、工具使用步骤，开通文件引用功能支持上传Excel数据。配置MCP服务包括数据库访问、可视化图表和按序思考工具。使用时可上传Excel数据进行可视化分析，也可连接阿里云百炼平台配置好的数据库。MCP有免费调用额度，超出后可按需购买。</p>
+</section>
+
+<section class="data-block" data-coord="EVE02/关键问题">
+  <h2 class="sec-header">
+    <span class="sec-coord">[关键问题]</span>
+    QA环节重点解答
+  </h2>
+  
+  <div class="golden-quote">
+    <p>通过联网搜索和上传文档知识库可减少"幻觉"问题，但难以做到百分百避免。Agent联网搜索资料存在一定创意性，答案可能不同。</p>
+    <span class="quote-author">— 芋头小宝老师</span>
+  </div>
+
+  <p><strong>MCP使用与部署：</strong>联网搜索资料可在MCP广场开通服务，工作流和智能体可使用该功能。自动化部署到阿里云服务器需询问官方。应用可发布为API、公众号、UI应用等，但目前不能直接发布到小程序；转网页可通过MCP工具实现。</p>
+  
+  <p><strong>幻觉问题处理：</strong>Agent存在一定创意性，但通过联网搜索和上传文档知识库可减少问题，难以百分百避免。</p>
+</section>
+
+<div class="takeaways">
+  <h3>💡 核心收获</h3>
+  <ol>
+    <li>阿里百炼平台提供<span class="hl-yellow">四大类场景</span>的AI办公应用，官方模板降低使用门槛，无需AI基础可直接使用</li>
+    <li>通过预设提示词将<span class="hl-yellow">高频重复性任务</span>转化为AI应用，节省对话时的手动输入时间</li>
+    <li>合同抽取、PPT生成、会议纪要等应用通过<span class="hl-yellow">提示词设计和工作流配置</span>可快速定制</li>
+    <li>工作流采用<span class="hl-yellow">拖拉拽节点</span>方式构建，支持并行处理和工具组合，降低技术门槛</li>
+    <li>MCP工具可实现<span class="hl-yellow">联网搜索、数据库访问、可视化生成</span>等高级功能，免费调用有额度限制</li>
+    <li>应用可发布为API、公众号、UI应用等多种形式，支持下载和二次编辑</li>
+    <li>后续还有迎春内容挑战（2月10日）和春节祝福实战（2月12日）直播预告，可持续关注WaytoAGI社区</li>
+  </ol>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <small>记录时间：2026-02-03 | WaytoAGI晚8点共学系列</small>
+  </div>
+</div>
+</div>
+</body>
+</html>
