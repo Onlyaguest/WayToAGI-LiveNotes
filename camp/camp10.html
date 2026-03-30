@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能体训练营二期 第二节 · Prompt魔法：一句话让Bot听懂人话 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">CAMP / CAMP-02-02 / 2025-11-09 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Prompt魔法：<br>一句话让Bot<span class="hl">听懂人话</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">AI智能体训练营·第二期·第二节</div>
+    <span class="ep-badge">已完成</span>
+  </div>
+  <div class="hero-rule">AI智能体训练营 · 2025.11.09</div>
+</div>
+
+<section class="section">
+  <div class="sec-header">
+    <h2>课程核心内容</h2>
+    <div class="sec-coord">SEC-01</div>
+  </div>
+  <p>本次会议围绕 AI 智能体训练营第二期第二节课程展开，深入讲解提示词工程的原理、优化方法与实践应用。课程强调从基础的提示词生成到高阶的上下文工程，帮助学员掌握如何通过精心设计提示词来引导大模型按期望输出。</p>
+  
+  <div class="data-block" data-coord="DATA-01">
+    <h3>提示词工程四层级方案</h3>
+    <ul>
+      <li><strong>提示词工程</strong>：成本低、易实现，是最常用的优化方式</li>
+      <li><strong>RAG（检索式增强生成）</strong>：效果较好，复杂性高，常与提示词配合使用</li>
+      <li><strong>微调</strong>：成本和复杂性较高</li>
+      <li><strong>预训练</strong>：成本和复杂性最高，但效果最优</li>
+    </ul>
+  </div>
+
+  <div class="quote">
+    <p>"提示词工程就像咒语召唤阿拉丁神灯的能力——通过精心设计的词汇和结构，引导模型按照你的期望行动。"</p>
+    <div class="quote-author">— 吕昭波老师</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sec-header">
+    <h2>提示词要素与优化方法</h2>
+    <div class="sec-coord">SEC-02</div>
+  </div>
+  
+  <div class="data-block" data-coord="DATA-02">
+    <h3>提示词的四大要素</h3>
+    <ul>
+      <li><strong>指令</strong>：明确告诉AI要做什么</li>
+      <li><strong>上下文</strong>：提供背景信息和背景知识</li>
+      <li><strong>输入数据</strong>：分为系统输入（如生成内容的设置）和用户输入（如具体数据）</li>
+      <li><strong>输出指示</strong>：指定输出格式和方式</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="DATA-03">
+    <h3>提升AI效果的八大技巧</h3>
+    <ul>
+      <li>提供简明扼要的指示</li>
+      <li>充分提供上下文背景信息</li>
+      <li>增加具体的指令约束条件</li>
+      <li>提供响应示例进行引导</li>
+      <li>将复杂任务分解为小步骤</li>
+      <li>采用Markdown格式提升结构化程度</li>
+      <li>反复尝试和创意优化</li>
+      <li>使用链式思维拆分推理过程</li>
+    </ul>
+  </div>
+
+  <p class="golden-quote"><span class="hl-yellow">0样本与小样本应用</span>：简单场景可使用0提示样本，复杂或特定领域场景需提供示例。如向小朋友解释奇数偶数，通过举例后其能按逻辑推演——这个原理同样适用于提示词设计。</p>
+</section>
+
+<section class="section">
+  <div class="sec-header">
+    <h2>提示词框架与优化平台</h2>
+    <div class="sec-coord">SEC-03</div>
+  </div>
+
+  <div class="data-block" data-coord="DATA-04">
+    <h3>12个精选提示词框架</h3>
+    <p>包括APE（行动-目的-期望）、Brock模型、SCL（背景-输入-输出）、角色能力体验框架等。这些框架在调优过程中按需使用：先让AI生成整体框架，运行后根据结果用不同框架优化。</p>
+  </div>
+
+  <div class="data-block" data-coord="DATA-05">
+    <h3>推荐优化平台</h3>
+    <ul>
+      <li><strong>火山方舟</strong>：可管理提示词，支持评分模式和对比验证</li>
+      <li><strong>百度千帆</strong>：提供模板、优化、评估功能，界面直观，评分功能较早推出</li>
+      <li><strong>阿里百炼</strong>：拥有多种提示词模板，可作为模板仓库，优化后可用于其他平台</li>
+      <li><strong>COZE</strong>：平台内直接支持提示词优化和应用</li>
+    </ul>
+  </div>
+
+  <p>强调<span class="hl-yellow">批量测试提示词</span>的重要性：复杂场景下需严格判定，根据测试结果选择合适提示词应用到实际项目。</p>
+</section>
+
+<section class="section">
+  <div class="sec-header">
+    <h2>提示词评估与上下文工程演进</h2>
+    <div class="sec-coord">SEC-04</div>
+  </div>
+
+  <div class="data-block" data-coord="DATA-06">
+    <h3>提示词评估方法</h3>
+    <ul>
+      <li><strong>定量分析</strong>：统计相同字数、重复率等自动化指标</li>
+      <li><strong>定性分析</strong>：主观评价，通过对比实验验证优化前后效果</li>
+      <li><strong>双重验证</strong>：可采用人工打分或AI模型打分两种方式</li>
+    </ul>
+  </div>
+
+  <div class="quote">
+    <p>"去年流行提示词工程，今年是上下文工程。提示词驱动大模型按期望格式输出，上下文工程则集成知识库、历史对话、系统和用户设置等更多工具和数据。"</p>
+    <div class="quote-author">— 吕昭波老师</div>
+  </div>
+
+  <div class="data-block" data-coord="DATA-07">
+    <h3>上下文工程的高级概念</h3>
+    <ul>
+      <li><strong>提示词缓存</strong>：提升多轮对话的效率，减少重复计算</li>
+      <li><strong>路由分发</strong>：根据不同场景智能分配处理流程</li>
+      <li><strong>自洽性检验</strong>：让模型生成内容后自我反省优化</li>
+      <li><strong>思维树</strong>：模拟模型的思维过程，通过剪枝获得最优输出</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">核心要点总结</div>
+  <ul>
+    <li><span class="label">基础原理</span>提示词工程是开发、设计、优化提示的新兴领域，通过精心设计词汇和结构引导模型行为，成本低、易实现</li>
+    <li><span class="label">优化策略</span>结合提示词工程与RAG知识库是普通使用者最实用的方案，5-15分钟内即可生成有效提示词</li>
+    <li><span class="label">框架选择</span>12个精选提示词框架（如APE、SCL等）适用于不同场景，需根据项目需求选择使用，无需强行记忆</li>
+    <li><span class="label">平台工具</span>火山方舟、百度千帆、阿里百炼等平台提供批量测试和评估功能，支持提示词的生成、优化、验证全流程</li>
+    <li><span class="label">评估体系</span>定量分析（数据指标）与定性分析（主观评价）相结合，通过对比实验验证提示词优化效果</li>
+    <li><span class="label">进阶方向</span>从提示词工程向上下文工程演进，需掌握提示词缓存、思维树、链式推理等高级概念</li>
+    <li><span class="label">作业目标</span>初学者生成80分提示词用于智能体，进阶者达成90分以上，并选用12框架中至少一种进行优化</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回课程中心</a>
+  </div>
+  <div class="footer-stamp">
+    <div>AI智能体训练营·第二期·第二节</div>
+    <div>2025-11-09 录制</div>
+  </div>
+</div>
+</div>
+</body>
+</html>
