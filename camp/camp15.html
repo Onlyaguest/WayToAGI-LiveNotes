@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI训练营二期 开营仪式 · AI 训练营第二期：     Agent 智能体实战训练营 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+  <span class="ep-badge">CAMP / CAMP-02 / 2025-11-02 / TRANSCRIPT→STRUCTURED</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">CAMP / CAMP-02 / 2025-11-02 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">
+    AI 训练营第二期：<br>
+    <span class="hl">Agent 智能体实战训练营</span>
+  </h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">🎙️ 嘉宾：罗文 · weina · 王磊</div>
+    <div class="hero-meta">📅 2025.11.02 晚 8 点</div>
+  </div>
+  <div class="hero-rule">WaytoAGI 共学 · 2025.11.02</div>
+</div>
+
+<section class="sec-main">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    <h2>训练营报名与课程调整</h2>
+  </div>
+  
+  <div class="data-block" data-coord="SEC-01-A">
+    <h3>报名信息速递</h3>
+    <p><strong>报名方式：</strong>视频号右下角扫码 / 飞书群内点击链接</p>
+    <p><strong>关键要点：</strong>需填写入学申请，建议使用<span class="hl-yellow">一个飞书账号</span>报名和提交作业，便于数据关联。报名持续开放，填完申请即算初步成功，后续统一发送入学通知。</p>
+  </div>
+
+  <div class="data-block" data-coord="SEC-01-B">
+    <h3>第一期数据回顾 vs 第二期优化</h3>
+    <p><strong>第一期成绩单（N8N 训练营）：</strong></p>
+    <ul>
+      <li>报名人数：1,058 人</li>
+      <li>优秀学员：18 位</li>
+      <li>作业提交：1,400 份</li>
+      <li>难度评价：相对较难</li>
+    </ul>
+    <p><strong>第二期调整方向：</strong>根据预习作业情况<span class="hl-yellow">动态调整课程难度</span>，增加基础概念讲解和案例输出比例，兼顾多层级学员需求。证书附唯一编码，优秀学员享额外福利。</p>
+  </div>
+</section>
+
+<section class="sec-main">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    <h2>AI 学习与机会成本框架</h2>
+  </div>
+
+  <div class="quote">
+    <p>"学习 AI 前先提高学习效率，遇到复杂内容让 AI 用小学生能理解的方式解释。"</p>
+    <div class="quote-author">— 罗文老师</div>
+  </div>
+
+  <div class="data-block" data-coord="SEC-02-A">
+    <h3>从电商从业者到 AI 专家的蜕变</h3>
+    <p>罗文老师分享了两年 AI 学习的核心方法论：</p>
+    <ul>
+      <li>📖 阅读《如何阅读一本书》提升学习效率</li>
+      <li>🤖 利用 AI 将复杂概念转化为易懂的表述</li>
+      <li>🔄 结合从业经验、AI 认知和语言能力进行交叉学习</li>
+    </ul>
+    <p>目前身份：智能体工程师、应用工程师考级导师、AI 书籍作者、多平台讲师</p>
+  </div>
+
+  <div class="data-block" data-coord="SEC-02-B">
+    <h3>机会成本四象限分析</h3>
+    <p>基于诺贝尔经济学奖理论，罗文老师提出 AI 机会的四种类型：</p>
+    <table style="width:100%; border-collapse:collapse; margin:12px 0;">
+      <tr style="background:#f5f5f5;">
+        <td style="border:1px solid #ddd; padding:8px;"><strong>效率型</strong></td>
+        <td style="border:1px solid #ddd; padding:8px;">优化现有工作、降本增效</td>
+        <td style="border:1px solid #ddd; padding:8px;">✅ 低机会成本</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #ddd; padding:8px;"><strong>赋能型</strong></td>
+        <td style="border:1px solid #ddd; padding:8px;">提升能力、激发潜力</td>
+        <td style="border:1px solid #ddd; padding:8px;">✅ 低机会成本</td>
+      </tr>
+      <tr style="background:#fef3cd;">
+        <td style="border:1px solid #ddd; padding:8px;"><strong>攻坚型</strong></td>
+        <td style="border:1px solid #ddd; padding:8px;">创新突破、颠覆生产关系</td>
+        <td style="border:1px solid #ddd; padding:8px;">⚠️ 高机会成本</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #ddd; padding:8px;"><strong>探索型</strong></td>
+        <td style="border:1px solid #ddd; padding:8px;">发现未来可能性</td>
+        <td style="border:1px solid #ddd; padding:8px;">⚠️ 高机会成本</td>
+      </tr>
+    </table>
+    <p><strong>核心建议：</strong>多数人应选择机会成本低的<span class="hl-yellow">效率型和赋能型</span>。</p>
+  </div>
+
+  <div class="golden-quote">
+    <p>💡 <strong>黄金洞察：</strong>"每一个选择都意味着放弃。关键是选择放弃什么、获得什么，以及自身的承受风险能力。"</p>
+  </div>
+</section>
+
+<section class="sec-main">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    <h2>AI 工具实战与应用策略</h2>
+  </div>
+
+  <div class="data-block" data-coord="SEC-03-A">
+    <h3>王磊老师的"内求法"与"外求法"</h3>
+    <p><strong>内求法（向内看）：</strong></p>
+    <ul>
+      <li>了解多种工具，避免工具依赖</li>
+      <li>梳理工作和生活中的<span class="hl-yellow">重复任务</span>交给 AI</li>
+      <li>让 AI 成为协助伙伴，解决工作流程卡点和数据困扰</li>
+    </ul>
+    <p><strong>外求法（向外看）：</strong></p>
+    <ul>
+      <li>关注竞品如何用 AI，争取弯道超车</li>
+      <li>主动调查沟通，让客户理解 AI 上下线</li>
+      <li>判断自身是先行者、追随者还是落后者，持续提升竞争力</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="SEC-03-B">
+    <h3>从小场景突破的学习路径</h3>
+    <p><strong>快速获取正反馈的方式：</strong></p>
+    <ul>
+      <li>✏️ 写小文案 → 生图 → 搭简单工作流</li>
+      <li>📊 衡量收益维度：节省员工时间、减少错误、提升工作满意度、决策准确性提升</li>
+      <li>🎯 设定小目标并奖励自己，分享学习成果吸引他人加入</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="SEC-03-C">
+    <h3>AJ 分享的工具体验亮点</h3>
+    <p><strong>AI 写 PPT 的工作流：</strong></p>
+    <ul>
+      <li>💬 提出问题 → AI 自动梳理内容</li>
+      <li>🔍 调动工具搜索、汇总生成大纲和文档</li>
+      <li>📚 飞书知识问答可索引社区文档和会议录音</li>
+    </ul>
+    <p><strong>社区活动构想：</strong>AI 产品试玩会、插画节等共创活动，邀请集思广益。</p>
+  </div>
+</section>
+
+<section class="sec-main">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    <h2>常见问题与后续规划</h2>
+  </div>
+
+  <div class="data-block" data-coord="SEC-04-A">
+    <h3>小白参与疑虑解答</h3>
+    <ul>
+      <li><strong>年龄和技术背景：</strong>无年龄限制，零基础也能参加</li>
+      <li><strong>第一期回看：</strong>在"通往 AGI 之路"共学历史库中查找 N8N 训练营回看</li>
+      <li><strong>为何免费：</strong>社区由 900+ 万小伙伴共创，资源开源，老师们主动免费赋能</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="SEC-04-B">
+    <h3>后续工作日程</h3>
+    <ul>
+      <li>📅 <strong>正式开课时间：</strong>协调老师时间后通知学员</li>
+      <li>🎪 <strong>活动推进：</strong>AI 产品试玩会、插画节等策划组织</li>
+      <li>📄 <strong>文档分享：</strong>罗文老师处理文档后分享至群内</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">🎯 核心要点速览</div>
+  <ul>
+    <li><span class="label">报名</span>报名持续开放，使用单个飞书账号便于数据关联，第二期根据预习情况动态调整难度</li>
+    <li><span class="label">学习方法</span>先提升学习效率，用 AI 化繁为简，结合从业经验进行交叉学习</li>
+    <li><span class="label">机会抉择</span>基于机会成本四象限分析，多数人应优先选择低成本的效率型和赋能型机会</li>
+    <li><span class="label">工具实战</span>梳理重复任务、多工具搭配、向内向外双向学习，从小场景快速获得正反馈</li>
+    <li><span class="label">职业转变</span>电商从业者通过两年系统学习成为智能体工程师、书籍作者、认证导师</li>
+    <li><span class="label">社区生态</span>900+ 万小伙伴共创资源开源，老师主动免费赋能初学者</li>
+    <li><span class="label">后续赋能</span>活动试玩会、插画节等共创活动，以及优秀学员的额外福利机制</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 回到首页</a>
+  </div>
+  <div class="footer-stamp">
+    <small>WaytoAGI 晚 8 点共学 · 2025-11-02 · Agent 智能体实战训练营启动</small>
+  </div>
+</div>
+</div>
+</body>
+</html>
