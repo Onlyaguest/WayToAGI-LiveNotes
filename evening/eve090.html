@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI视频创作与北京大赛实战分享 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVE08/2025-08-18/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">AI视频创作与<span class="hl">北京大赛</span>实战分享</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">讲师：娜乌斯佳</span>
+    <span class="hero-meta">参会人数：566</span>
+    <span class="hero-meta">时长：2h 14m</span>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section class="sec-main" data-coord="EVE/EVE08/2025-08-18/SEC1">
+  <h2 class="sec-header">核心工具体系</h2>
+  <div class="data-block" data-coord="EVE08-TOOLS">
+    <h3>闭源工具矩阵</h3>
+    <p><strong>Midjourney</strong>：高审美模型标杆，30$/月。支持<span class="hl-yellow">三种垫图方式</span>（star reference管风格、image transform保留元素、only reference记录细节），可进行竖横屏转换和视频导出。</p>
+    <p><strong>豆包</strong>：擅长中国地标识别，可作微缩模型预生图再导入Midjourney精修。</p>
+    <h3>开源方案对标</h3>
+    <p><strong>千问 Image</strong>：相当于纪梦3.0，免部署费但网页生速稍缓。</p>
+    <p><strong>万 2.2</strong>：动作迁移能力已超越部分闭源工具。</p>
+    <p><strong>Multitalk</strong>：开源对口型顶级工具，支持多人对话和音色克隆。</p>
+    <h3>纪梦生态</h3>
+    <p>首尾帧+多帧功能（灰度中）低成本生成视频串联；Agent模式可自动完成小说推文的大纲编写、分镜绘制；文字效果需置于<span class="hl-yellow">双引号内</span>。</p>
+  </div>
+</section>
+
+<section class="sec-main" data-coord="EVE/EVE08/2025-08-18/SEC2">
+  <h2 class="sec-header">创意实战技法</h2>
+  <div class="data-block" data-coord="EVE08-TECHNIQUES">
+    <h3>微缩摄影提示词框架</h3>
+    <p>核心关键词：<code>cinematic Micro photography + isometric bird's eye view</code>。无需完全复用示例，可通过Google按省份生成定制提示词并筛选地标建筑。<span class="hl-yellow">悬空寺、南天门、少林寺</span>等已验证无需垫图可直生。</p>
+    <h3>改图工程流</h3>
+    <p><strong>Context改图</strong>：支持万物转换（短发、金发等），操作快速简便。</p>
+    <p><strong>工作流搭建</strong>：RunningHub网站提供现成方案，小白可直用，高阶者可自建或云端部署（需付算力费）。</p>
+    <h3>首尾帧穿梭动画</h3>
+    <p>制作核心：根据画面写差异化提示词，保持首尾帧元素一致实现丝滑过渡。案例演示：以"一家人看电视→电视内古罗马斗兽场"为例展示分层构图。可借PS调整（裁剪、缩放）精控画面。</p>
+  </div>
+</section>
+
+<section class="sec-main" data-coord="EVE/EVE08/2025-08-18/SEC3">
+  <h2 class="sec-header">北京赛事必读指南</h2>
+  <div class="data-block" data-coord="EVE08-COMPETITION">
+    <h3>选题策略</h3>
+    <p><span class="hl-yellow">核心要素</span>：融入胡同、天坛、紫禁城等地标，融合全聚德等文化符号，强化国际化传播（多语种字幕配音）。</p>
+    <h3>雷区规避清单</h3>
+    <ul>
+      <li>禁用：国徽、伟人头像、国旗（需确保比例正确、地图完整）</li>
+      <li>风险点：AI失真画面的敏感元素应规避</li>
+    </ul>
+    <h3>时间军事化管理</h3>
+    <p>避免末日提交（最后1-2天审核堆积）。充分利用剩余时间<span class="hl-yellow">多作品参赛</span>，同时创作视频和图片，多抽奖卡。</p>
+  </div>
+</section>
+
+<div class="quote">
+  <p class="golden-quote">"微缩摄影提示词 + 地标建筑垫图"这套方法论已在天坛、少林寺等标志性场景验证可行，关键是用Google按省份生成定制提示词而非生硬复制。</p>
+  <p class="quote-author">—— 娜乌斯佳</p>
+</div>
+
+<div class="takeaways">
+  <h3>核心洞察 (7条)</h3>
+  <ol>
+    <li><strong>工具矩阵搭建</strong>：Midjourney（高审美）+ 豆包（地标）+ 纪梦（低成本视频）形成闭源+开源混合方案，降低单点依赖</li>
+    <li><strong>垫图三分法</strong>：star reference管风格、image transform保留元素、only reference记录细节，不同场景选用不同方案</li>
+    <li><strong>微缩模型公式化</strong>：cinematic Micro photography + isometric bird's eye view + Google自动生成 = 地标快速生成</li>
+    <li><strong>首尾帧核心</strong>：元素一致性 + PS微调 = 穿梭动画丝滑感，可降低视频过渡生硬度</li>
+    <li><strong>赛事选题铁则</strong>：北京元素 + 国际化字幕 + 敏感元素规避 + 非末日提交 = 提高过审率</li>
+    <li><strong>开源对标进阶</strong>：千问/万2.2/Multitalk已在特定维度超越闭源，成本与效果平衡需动态评估</li>
+    <li><strong>Agent工作流红利</strong>：纪梦Agent模式自动化小说推文全链路（大纲→分镜→角色→生成），降低创作时间成本</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回纪要库</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI 晚8点共学 | 2025.08.18 | AI视频创作专题</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
