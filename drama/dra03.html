@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRA-03 · Sora2短剧大赛：现场编写·投稿·展示 | AI短剧 WayToAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">DRAMA/DRA2025/2025-10-02/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Sora2短剧大赛：<span class="hl">现场编写·投稿·展示</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">2025年10月2日 19:52-23:55</span>
+    <span class="ep-badge">首届赛罗2短剧大赛</span>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <h2>Sora2功能与应用</h2>
+    <div class="sec-coord">SORA2/ACCESS_FEATURES</div>
+  </div>
+  <p>韩煜东介绍Sora2的登录方式包括苹果手机端（需美区账号）和官网（Sora.ChatGPT.com，需电脑出国）。核心创作功能涵盖文字生视频，用户可输入"橘猫跳舞"等文字指令生成视频，还能@朋友进行联合创作。在平台内，<span class="hl-yellow">宗教、萌宠萌系等内容流量较高</span>。</p>
+  <p>应用场景多元化，可制作广告片、短剧、儿童绘本等。韩煜东展示了耐克、美妆等广告案例，验证Sora在商业广告领域的表现力。</p>
+  <div class="quote">
+    <p>"手机端避坑经验：若生成的视频不满意想修改，软件编辑框有字数限制，可能丢失部分提示词，建议发布提示词前复制备份到微信等其他APP上。"</p>
+    <div class="quote-author">— 韩煜东</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>短剧创作方法论</h2>
+    <div class="sec-coord">SHORT_DRAMA/CREATION_STRATEGY</div>
+  </div>
+  <p>王文分享了制作10秒一集故事的核心方法：<strong>提示词先描述人物再写台词</strong>，若不想露出人脸需在括号注明，避免声音被污染。剧情结构分为开头、转折、悬疑三个板块，每个板块约3秒，提示词不能超过4句。</p>
+  <p>空镜头创作采用"单独镜头"和"连续成组镜头"两个提示词较为稳定。王磊进一步介绍可对已有提示词反推结构后加上主题，形成新的提示词，用于个人传记、预告片、宣传片、广告片等。</p>
+  <div class="golden-quote">
+    <p>做内容要稳住风格调性，形成品牌调性，选准一个方向做内容以大概率破圈。以辅导的内容生产公司为例，将签约素人的脸训练成Lora做个人IP，快速让素人录制视频。</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>N8N工作流与API方案</h2>
+    <div class="sec-coord">N8N_API/AUTOMATION_TOOLS</div>
+  </div>
+  <p>周洁介绍N8N本地部署简单，工作界面节点类型丰富、触发方式多，灵活性强，能针对多个items自动循环，用于<span class="hl-yellow">批量自动化生成多套视频</span>。"PIN"功能可将上一个节点生成的数据固定下来，节省测试成本和时间。</p>
+  <p>所罗门分享API开发情况：用未绑的旧号和外网激活码测试，第一阶段逆向成API并赞助一百个名额。操作与OpenAI官方API文档模式一样，使用价格为<strong>0.2元一次视频，无需翻墙</strong>。目前官网视频默认时长为10秒，Pro会员200刀可延伸到20秒。</p>
+  <div class="data-block" data-coord="API/PRICING_ACCESS">
+    <p><strong>API关键指标：</strong>0.2元/次 | 无需翻墙 | 去水印处理 | 10秒默认时长 | Pro可扩至20秒</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>首届赛罗2短剧大赛</h2>
+    <div class="sec-coord">SORA2_CONTEST/RULES_RESULTS</div>
+  </div>
+  <p>赛事规则明确：视频时长10秒钟，将提示词输入大语言模型生成10秒短剧并直接填链接投稿，投稿位置在《首届Sora2短剧大赛》文档处。</p>
+  <p>投稿热情高涨，已收到40个投稿，还有很多上传内容。部分作品很有创意，展示了周易周导、王文、李瑜老师等人的作品。韩煜东推动持续创作：立即将提示词输入大语言模型生成内容并投稿，可一次投多个。</p>
+</section>
+
+<div class="takeaways">
+  <h3>核心要点</h3>
+  <ul>
+    <li>Sora2支持文字生视频和@朋友联合创作，宗教、萌宠内容流量高；手机端需备份提示词避免字数限制丢失</li>
+    <li>短剧创作遵循"人物→台词"提示词逻辑，10秒故事分开头/转折/悬疑三板块各3秒，提示词不超4句</li>
+    <li>N8N的"PIN"功能可固定节点数据，实现批量自动化生成多套视频，配合表单参数提交高效迭代</li>
+    <li>API方案0.2元/次无需翻墙，解决生成视频清晰度问题可用TOPAS超分+wink去水印</li>
+    <li>内容IP运营需稳住品牌调性，通过Lora训练素人脸部快速产出个人风格视频</li>
+    <li>首届赛罗2短剧大赛已收40个投稿，激励持续创作并将优质提示词分享到社区</li>
+    <li>国庆结束后组织N8N共学，学习平台为通往AGI之路官方视频号</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 回到文库首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>WaytoAGI 晚8点共学 | 2025-10-02</p>
+    <p>Sora2短剧大赛·N8N工作流·API开发</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
