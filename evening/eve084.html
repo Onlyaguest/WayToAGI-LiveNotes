@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09-02 WaytoAGI晚8点共学AI摆摊经验分享会 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="ep-badge">WaytoAGI 共学会议</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/COMMUNITY/2025-09-02/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">09-02 WaytoAGI晚8点共学<span class="hl">AI摆摊经验分享会</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">📅 2025年9月2日 19:50-22:37</span>
+    <span class="hero-meta">📍 线上共学</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">核心洞察</h2>
+  <div class="sec-coord">#摆摊经验 #AI产品 #商业变现</div>
+  
+  <div class="quote">
+    <p class="golden-quote">不必等所有准备完备再出摊，<span class="hl-yellow">重在参与</span>——勇于迈出第一步，在行动中结识伙伴、获得改进建议、实现成长。这是本次摆摊大会最核心的启示。</p>
+    <p class="quote-author">—— 孙老师（AI与书法融合摊主）</p>
+  </div>
+
+  <div class="data-block" data-coord="#参与行动与收获">
+    <h3>参与行动与收获</h3>
+    <ul>
+      <li><strong>勇于迈出第一步：</strong>孙老师强调不必等待完全准备好，重在参与和行动。在摆摊中结识新朋友、获得积分第一成为第一摊主，体验超开心</li>
+      <li><strong>创意吸引关注：</strong>宙宇科技摆放3D打印小玩具，成功吸引众多小朋友和家长驻足。钟正团队推出AI生成可爱卡通引流品，大幅提升摊位人气</li>
+      <li><strong>现场碰撞优化：</strong>神农AI识百草项目通过与用户沟通，收获药膳建议、中药科普等多个改进方向</li>
+      <li><strong>锻炼自我鼓励他人：</strong>清蒸鱼参加摆摊既为自我锻炼，也为激励未参与的小伙伴，充分展现社区共学精神</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">产品开发策略</h2>
+  <div class="sec-coord">#AI产品 #用户痛点 #小白友好</div>
+  
+  <div class="data-block" data-coord="#结合痛点与AI">
+    <h3>结合痛点与AI的产品设计</h3>
+    <ul>
+      <li><strong>Fire AI退休规划：</strong>Crystal魏京团队一天开发，根据用户收入、支出等信息，提供个性化退休方案和财务目标规划</li>
+      <li><strong>"遇见"心理健康项目：</strong>申壮壮通过穿戴设备采集生理数据，结合多模态输入识别情绪，用AI萌宠提供疗愈服务，形成24小时心理健康哨兵</li>
+      <li><strong>Taco AI编程工具：</strong>吕越男团队解决普通人不会编程的问题，小白用户可用自然语言与产品对话生成产品，支持录屏视频自动生成功能</li>
+      <li><strong>多与用户碰撞改进：</strong>强调产品首个功能不需强大，关键是多和用户交流获取迭代思路</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">商业模式与变现</h2>
+  <div class="sec-coord">#多元变现 #数据应用 #商业闭环</div>
+  
+  <div class="data-block" data-coord="#商业模式探索">
+    <h3>多元化变现方向</h3>
+    <ul>
+      <li><strong>AI手串项目：</strong>胡利容提出产品销售、硬件+NFC芯片、ToC/ToB智能体、企业定制等多个变现渠道。可开展培训或智能体培训，形成商业闭环</li>
+      <li><strong>数据应用服务：</strong>朱一鸣基于飞书多维表格开发数据采集工具，结合AI智能体为品牌公司提供服务。吕杰与其合作从6月起已实现5-10万月稳定收入</li>
+      <li><strong>舆情数据监控：</strong>吕杰从舆情机构获取数据，为品牌公司如海尔提供用户分析，计划开发评论区获取功能实时监控大宗交易客户线索</li>
+      <li><strong>软件开发量化服务：</strong>Taco AI让人人像雇佣水电工一样雇佣AI开发软件，解决生活和业务问题</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="#营销链路设计">
+    <h3>线下活动营销链路</h3>
+    <p>鑫燕老师分享减脂营从0到1落地经验：通过LED屏、海报引流→进群后二销经流程→免秒杀团购、分佣机制等策略→根据情况调整销售方式。强调复盘重要性，建议复刻到线上直播。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">摆摊执行建议</h2>
+  <div class="sec-coord">#摆摊技巧 #用户承接 #目的导向</div>
+  
+  <div class="data-block" data-coord="#摆摊经验">
+    <h3>优化摆摊流程与话术</h3>
+    <ul>
+      <li><strong>客户教客户机制：</strong>胡利容建议先自己教客户，再让客户教客户，增加参与感同时减少物料损耗</li>
+      <li><strong>话术优化：</strong>钟正团队发现"直接说免费做AI职业形象照"比抽象话术更吸引人群，提升转化效率</li>
+      <li><strong>用户承接：</strong>做好简易表单收集，便于后续交付和二次转化</li>
+      <li><strong>创意物品引流：</strong>3D打印玩具、可爱卡通形象等视觉创意能有效吸引驻足，增加摊位人气</li>
+      <li><strong>清晰摆摊目的：</strong>摊主需明确自己的目标是学习、交友还是赚钱，有针对性地调整策略</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="#后续工作计划">
+    <h3>后续发展方向</h3>
+    <ul>
+      <li>申壮壮下次摆摊制作AI萌宠demo，打印精美情绪食谱卡片，让服务更有形态感</li>
+      <li>吕杰与朱一鸣继续开发评论区获取功能，提供更全面的品牌服务</li>
+      <li>Victor的AI开天眼项目月底参加阿里云栖大会展示成果</li>
+      <li>一枚扣子安排多位分享者后续直播或专场分享机会</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3>核心要点</h3>
+  <ol>
+    <li><span class="hl-yellow">参与优于完美</span>——不要等所有准备齐全再开始，行动中获得反馈、改进和成长机会更多</li>
+    <li><span class="hl-yellow">创意驱动流量</span>——视觉创意物品（3D打印、卡通形象等）能有效吸引关注和驻足体验</li>
+    <li><span class="hl-yellow">用户碰撞迭代</span>——多与用户交流获取改进建议，第一版产品功能简洁也没关系</li>
+    <li><span class="hl-yellow">多元变现布局</span>——同一项目可通过产品销售、硬件、企业定制、数据服务等多个渠道实现商业闭环</li>
+    <li><span class="hl-yellow">话术与承接关键</span>——优化话术表述方式、做好用户表单收集，直接影响转化效率和后续交付</li>
+    <li><span class="hl-yellow">明确摆摊目标</span>——学习、交友、赚钱等不同目标需要差异化的策略调整和资源分配</li>
+    <li><span class="hl-yellow">社区志愿精神</span>——多位分享者身兼多职参与活动，展现开源和志愿力量对社区发展的价值</li>
+  </ol>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议列表</a>
+  </div>
+  <div class="footer-stamp">
+    <p>📝 智能会议纪要 | 来源：WaytoAGI社区</p>
+    <p>⚠️ AI生成内容，建议核实后使用</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
