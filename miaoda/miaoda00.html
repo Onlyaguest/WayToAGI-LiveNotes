@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI+应用创作第一课：百度秒哒"一句话建应用"实战课 | WayToAGI 直播笔记</title>
+  <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+  <main class="container">
+    ```html
+<header class="ep-header">
+  <h1 class="ep-title">AI+应用创作第一课：百度秒哒"一句话建应用"实战课</h1>
+  <div class="ep-meta">
+    <span>2025年7月23日</span>
+    <span class="tag">秒哒变现</span>
+  </div>
+</header>
+
+<section class="ep-section">
+  <h2>会议信息</h2>
+  <ul>
+    <li><strong>主题：</strong>AI+应用创作第一课：百度秒哒"一句话建应用"实战课 WaytoAGI晚8点共学</li>
+    <li><strong>时间：</strong>2025年7月23日（周三）19:55 - 22:22（GMT+08）</li>
+    <li><strong>参会人数：</strong>433人</li>
+  </ul>
+  <p class="highlight-box">
+    <em>智能会议纪要由 AI 生成，可能不准确，请谨慎甄别后使用</em>
+  </p>
+</section>
+
+<section class="ep-section">
+  <h2>会议总体概览</h2>
+  <p>本次共学直播聚焦百度秒搭的使用教学与应用展示，介绍了秒搭的功能、优势及使用规则，分享了多个不同领域的应用案例，还宣布了秒搭共学大赛的相关信息，鼓励大家积极参与，探索秒搭在更多场景的应用。</p>
+</section>
+
+<section class="ep-section">
+  <h2>秒搭介绍与共学大赛启动</h2>
+  
+  <h3>秒搭教学安排</h3>
+  <ul>
+    <li><strong>教学主题明确：</strong>AJ介绍本周教学围绕用agent搭建好玩的网站应用展开，当晚聚焦秒搭搭建，高雁老师凭借丰富经验带大家实操</li>
+    <li><strong>共学共创活动：</strong>计划带领大家用秒搭共创名人传记系列，组成名人墙（如李白、杜甫等），增添学习趣味性</li>
+  </ul>
+
+  <h3>秒搭发展与功能特点</h3>
+  <ul>
+    <li><strong>发展历程回顾：</strong>2024年底百度世界大会秒搭概念发布，2025年3月24日正式发布后，众多用户涌入创建应用，突破3万个</li>
+    <li><strong>操作便捷高效：</strong>
+      <ul>
+        <li>访问入口可通过链接或百度搜索找到</li>
+        <li>操作简单，可上传参考图、文件，使用语音输入</li>
+        <li>支持AI优化设计，如AJ参考图片快速搭建动态网站</li>
+        <li>能生成活动二维码</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>共学大赛举办</h3>
+  <ul>
+    <li><strong>以赛代练激励：</strong>举办秒搭共学大赛，鼓励大家学完动手操作，感受其魅力</li>
+    <li><strong>积分规则说明：</strong>
+      <ul>
+        <li>每天登录可获100积分</li>
+        <li>每月上限500积分</li>
+        <li>使用会消耗积分，如上传、使用语音助手、指令调优等</li>
+      </ul>
+    </li>
+    <li><strong>优质作品展示：</strong>希望大家积极提交作品，优质作品将获展示机会</li>
+  </ul>
+</section>
+
+<section class="ep-section">
+  <h2>秒搭使用规则与技巧</h2>
+  
+  <h3>多智能体协作优势</h3>
+  <ul>
+    <li><strong>自动编排调用：</strong>秒搭是多智能体工具，智能体执行时会自动编排和调用，用户只需告知需求，后续自动安排</li>
+    <li><strong>文档资源丰富：</strong>进入秒搭有官方文档、教学视频和最佳实践案例，还给出提示词结构示例</li>
+  </ul>
+
+  <h3>积分获取与消耗规则</h3>
+  <ul>
+    <li><strong>免费获取方式：</strong>每天免费登录可获100点积分，每月上限500点</li>
+    <li><strong>消耗情况说明：</strong>按token消耗，上传、使用语音助手、指令调优等都会消耗，提需求时应尽量完善，避免多轮对话浪费积分</li>
+  </ul>
+
+  <h3>需求描述技巧</h3>
+  <ul>
+    <li><strong>充分描述需求：</strong>AJ和高雁老师都强调提需求要完整，可多描述想法，利用语音输入功能，让AI梳理，如AJ与朋友聊天时将想法告知秒搭，成功搭建网页</li>
+    <li><strong>借助大模型辅助：</strong>若不会写需求，可借助千川等大模型工具，如让其列出知识点、提供生活实例和测验题，再将输出内容提供给秒搭</li>
+  </ul>
+</section>
+
+<section class="ep-section">
+  <h2>教育领域应用案例</h2>
+  
+  <h3>牛顿第一定律科普网页</h3>
+  <ul>
+    <li><strong>功能设计亮点：</strong>高雁老师创建关于牛顿第一定律的交互式教学动画网页，包含标题、原理解释、公式介绍、交互动画和小测验等内容</li>
+    <li><strong>交互动画特性：</strong>
+      <ul>
+        <li>汽车急刹车演示</li>
+        <li>滑块演示</li>
+        <li>可调整质量、加速度、初始速度</li>
+        <li>启用或禁用摩擦力</li>
+        <li>直观展示惯性现象</li>
+      </ul>
+    </li>
+    <li><strong>需求编写方法：</strong>可借助大模型梳理知识点、动画要求和测验题目，再提供给秒搭</li>
+  </ul>
+
+  <h3>名人科普网页</h3>
+  <ul>
+    <li><strong>李白传奇一生案例：</strong>高雁老师让秒搭制作"李白的传奇一生"网页，最初需求不完整，经多次对话才完成</li>
+    <li><strong>网页内容功能：</strong>
+      <ul>
+        <li>展示李白代表作品名句</li>
+        <li>展示人生轨迹</li>
+        <li>在地图上标注其行踪</li>
+        <li>点击可查看相关信息</li>
+        <li>对小朋友科普有用</li>
+      </ul>
+    </li>
+    <li><strong>合作共创计划：</strong>AJ提议大家一起用秒搭为古代诗人制作科普页面，借助众人力量为小朋友提供更多学习资源，高雁老师将分享提示词供参考</li>
+  </ul>
+
+  <h3>天文知识科普小游戏</h3>
+  <ul>
+    <li><strong>游戏功能特点：</strong>高雁老师为孩子制作宇宙天文知识科普小游戏，具备以下特性：
+      <ul>
+        <li>动态太阳系八大行星</li>
+        <li>点击可查看行星英文单词和简介</li>
+        <li>地球有月亮围绕运转</li>
+      </ul>
+    </li>
+    <li><strong>需求实现过程：</strong>第一次生成时点击动画不完善，经反馈修正后功能完整，体现秒搭根据需求调整完善的能力</li>
+  </ul>
+
+  <h3>古诗词试卷模拟生成器</h3>
+  <ul>
+    <li><strong>试卷生成功能：</strong>高雁老师将官方案例改为古诗词考生试卷模拟生成器，功能包括：
+      <ul>
+        <li>选择难度</li>
+        <li>选择考试时长</li>
+        <li>设定总分数</li>
+        <li>选择试题数量</li>
+        <li>生成试卷并显示答案</li>
+        <li>支持打印</li>
+      </ul>
+    </li>
+    <li><strong>教学应用价值：</strong>方便家长为孩子复习古诗词，可根据需求灵活生成试卷，提高学习效率</li>
+  </ul>
+</section>
+
+<section class="ep-section">
+  <h2>企业与商业领域应用案例</h2>
+  
+  <h3>企业官网搭建</h3>
+  <ul>
+    <li><strong>官网功能展示：</strong>高雁老师模拟创建USIG公司官网，具备以下功能：
+      <ul>
+        <li>产品介绍</li>
+        <li>商品上架</li>
+        <li>信息收集</li>
+        <li>智能客服</li>
+      </ul>
+    </li>
+    <li><strong>后台操作：</strong>可在后台新增商品，如上架阿尔法宇宙飞船，前端页面可查看商品详情</li>
+    <li><strong>客户互动：</strong>提交购买信息可在后台查看；添加智能客服可关联百度千帆的智能体，解答客户问题</li>
+    <li><strong>域名配置说明：</strong>可使用自己的域名与秒搭应用绑定，通过CNAME方式解析，但域名需备案（如高雁老师购买的域名正在备案中）</li>
+  </ul>
+
+  <h3>产品发布会邀请函</h3>
+  <ul>
+    <li><strong>邀请函生成：</strong>高雁老师用秒搭为公司产品发布会生成科技邀请函，内容包括：
+      <ul>
+        <li>会议简介</li>
+        <li>会议流程</li>
+        <li>特邀嘉宾</li>
+        <li>往届回顾</li>
+        <li>会议信息和地址</li>
+        <li>可直接使用百度地图</li>
+      </ul>
+    </li>
+    <li><strong>便捷发布优势：</strong>无需下载，一键应用发布，支持多种常见功能和后台操作</li>
+  </ul>
+</section>
+
+<section class="ep-section">
+  <h2>其他创意应用案例</h2>
+  
+  <h3>单词记忆小游戏</h3>
+  <ul>
+    <li><strong>游戏功能与玩法：</strong>高雁老师制作单词记忆小游戏，包含：
+      <ul>
+        <li>连连看模式</li>
+        <li>填空模式</li>
+        <li>可添加单词并发音</li>
+        <li>记录游戏进度和准确率</li>
+      </ul>
+    </li>
+    <li><strong>提示词生成：</strong>借助AI生成产品策划需求，复制到秒搭生成游戏，体现AI辅助设计的便捷性</li>
+  </ul>
+
+  <h3>沙盒游戏</h3>
+  <ul>
+    <li><strong>游戏设计与体验：</strong>高雁老师设计沙盒游戏，玩家选择元素组合英雄，通过技能攻击怪物，每关有boss，游戏难度逐渐增加</li>
+    <li><strong>需求理解与实现：</strong>秒搭能准确理解游戏规则和要求，生成网页小游戏，但UI和交互方面有待优化</li>
+  </ul>
+
+  <h3>浪漫策划网站</h3>
+  <ul>
+    <li><strong>网站功能特点：</strong>为解决直男不懂浪漫问题，制作浪漫策划网站，可进行：
+      <ul>
+        <li>个性化设置日期提醒</li>
+        <li>节日时提供策划方案</li>
+        <li>添加重要日期</li>
+        <li>移动端也能使用</li>
+      </ul>
+    </li>
+    <li><strong>智能助手应用：</strong>网站关联浪漫专家智能助手，提供类似客服的服务，如女友生日时给出邀请家人朋友、准备特殊礼物等建议</li>
+  </ul>
+
+  <h3>ERP系统设计</h3>
+  <ul>
+    <li><strong>系统生成与功能：</strong>高雁老师让秒搭用PRD设计ERP系统，虽第一次生成无测试数据，但经反馈添加后功能完善：
+      <ul>
+        <li>可生成报表</li>
+        <li>支持下载</li>
+      </ul>
+    </li>
+    <li><strong>复杂系统实现：</strong>展示秒搭对复杂后台系统的生成能力，只需简单描述需求即可完成</li>
+  </ul>
+
+  <h3>配色小工具</h3>
+  <ul>
+    <li><strong>工具功能用途：</strong>高雁老师制作配色小工具，可选择配色方案，导出完整CSS文件，用于网站配色设计</li>
+    <li><strong>设计便捷性：</strong>为无美感的人提供配色解决方案，直接将样式文件应用到网站</li>
+  </ul>
+
+  <h3>小红书卡片生成</h3>
+  <ul>
+    <li><strong>卡片生成功能：</strong>选择文字示例和清新简约风格，可生成小红书卡片，还可调用插件列表中的AI能力</li>
+    <li><strong>插件集成优势：</strong>秒搭可将插件能力集成到应用中，与其他工具调用方式不同，为应用增添更多功能</li>
+  </ul>
+</section>
+
+<section class="ep-section">
+  <h2>参会者案例分享</h2>
+  
+  <h3>密室逃脱应用</h3>
+  <ul>
+    <li><strong>设计思路与过程：</strong>李童分享密室逃脱案例，将故事梗概交给DeepSeek设计，存在一些问题，后将相关内容交给秒搭生成应用</li>
+    <li><strong>应用效果与改进：</strong>应用界面可生成关卡，
+  </main>
+</body>
+</html>
