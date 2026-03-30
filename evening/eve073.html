@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>秒搭黑客松大赛 权威解读 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/HACKATHON/2025-09-17/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">秒搭黑客松大赛 <span class="hl">权威解读</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">百度世界 × 小红书科技</span>
+    <span class="hero-meta">2025年9月17日 19:55-21:44</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<!-- Section 1: 秒搭平台核心能力 -->
+<section data-coord="EVE/HACKATHON/2025-09-17/SEC-01">
+  <h2 class="sec-header">
+    <span class="sec-coord">[01]</span>
+    秒搭AI开发平台：从想法到应用的创新体验
+  </h2>
+  
+  <p><span class="hl-yellow">想法即创造</span>：输入想法或语音指令即可生成应用，无需编程基础。支持创建旅游规划H5、企业管理系统等复杂应用，让AI成为全能开发者。</p>
+  
+  <p><span class="hl-yellow">双引擎开发</span>：自然语言修改与可视化拖拽结合，面对复杂需求时，智能体协作机制自主思考、动态调整策略，选择合适任务分工完成应用开发。</p>
+  
+  <p><span class="hl-yellow">功能无限延伸</span>：灵活调用第三方服务（表单验证码、地图导航、社交分享等），像搭积木般无需代码接口即可实现一键分享等营销功能。</p>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- Section 2: 丰富应用场景展示 -->
+<section data-coord="EVE/HACKATHON/2025-09-17/SEC-02">
+  <h2 class="sec-header">
+    <span class="sec-coord">[02]</span>
+    应用场景全景：创意、实用、游戏三大领域
+  </h2>
+  
+  <div class="data-block" data-coord="创意应用">
+    <strong>创意应用</strong>
+    <ul>
+      <li>打call灯牌：语音输入即生成应援灯牌，支持自定义风格颜色，可发布微信小程序</li>
+      <li>网页内容总结：自动爬取页面内容并总结，支持主题定制（黑色、彩虹色等）</li>
+      <li>股票K线分析：展示真实走势、投资建议与自信度评分</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="实用工具">
+    <strong>实用工具</strong>
+    <ul>
+      <li>二维码生成器：即时生成，可自定义尺寸、背景色、前景色</li>
+      <li>短链生成器：长链接转短链（需绑定新域名规避风险）</li>
+      <li>一键抠图工具：自动化图片处理解决方案</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="游戏场景">
+    <strong>游戏场景</strong>
+    <ul>
+      <li>RPG游戏：自动挂机、手动攻击、装备解锁、boss挑战等完整系统</li>
+      <li>社交游戏：真心话大冒险、石头剪子布、多人对战模式</li>
+      <li>休闲游戏：横版过关、抢红包、练手速等多元化选择</li>
+    </ul>
+  </div>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- Section 3: 高级玩法与赛事详情 -->
+<section data-coord="EVE/HACKATHON/2025-09-17/SEC-03">
+  <h2 class="sec-header">
+    <span class="sec-coord">[03]</span>
+    进阶技巧 × 赛事激励：30万奖池等你挑战
+  </h2>
+  
+  <p><strong>设计进阶技巧</strong>：使用参考图指导秒搭按色彩风格进行排版；对效果要求高时需明确关键词避免偏差；可添加智能体调用百度千方能力；支持API接入满足定制需求；允许导出源码供二次开发。</p>
+
+  <div class="data-block" data-coord="赛事基础信息">
+    <strong>秒搭非编程黑客松大赛</strong>
+    <ul>
+      <li><strong>奖金配置</strong>：现金奖池30万 | 一等奖5万 | 二等奖3万 | 三等奖×3各1万 | 卓越奖30名</li>
+      <li><strong>赛事主题</strong>：效率工具/商业应用 OR 情绪按摩/心理疗愈</li>
+      <li><strong>时间周期</strong>：报名8月28日-10月28日 | 提交截止10月31日 | 优秀作品可参加百度世界大会路演</li>
+    </ul>
+  </div>
+
+  <p><strong>参赛流程</strong>：发布应用到广场→添加"通往AGI之路"标签→提交小红书笔记链接、应用链接及联系方式到官网→被点赞获秒点积分。</p>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- Golden Quote Section -->
+<blockquote class="golden-quote">
+  <p>"想法即创造，银海介绍，百度秒搭是一款应用开发平台，只需输入想法，甚至语音输入，就能创造应用。真正实现了代码零门槛，让AI成为全能开发者。"</p>
+  <div class="quote-author">— 银海，秒搭平台主讲嘉宾</div>
+</blockquote>
+
+<div class="hero-rule"></div>
+
+<!-- Takeaways Section -->
+<div class="takeaways">
+  <h3 class="sec-header"><span class="sec-coord">[核心要点]</span></h3>
+  <ol>
+    <li><strong>零代码创新</strong>：秒搭通过自然语言+语音输入+可视化拖拽，让任何人都能开发应用，消除编程门槛</li>
+    <li><strong>智能体协作</strong>：复杂需求时调用多个智能体分工协作，系统自主思考并动态调整策略，提升开发效率</li>
+    <li><strong>生态开放</strong>：支持第三方服务集成、API接入、源码导出，满足从初级到进阶的全栈需求</li>
+    <li><strong>丰厚激励</strong>：30万奖池+百度世界大会路演机会，鼓励创意与实用工具的双向创新</li>
+    <li><strong>免费生态</strong>：平台完全免费，每日免费点数可用，邀请好友还能获得秒点积分</li>
+    <li><strong>场景多元</strong>：涵盖创意应用、实用工具、游戏娱乐三大领域，激发创作想象力</li>
+    <li><strong>参赛建议</strong>：明确关键词描述、灵活运用参考图指导、利用Agent和API扩展功能、最后导出源码优化细节</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI晚8点共学</span>
+    <span>2025-09-17</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
