@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n训练营 结营 · AI训练营第一期N8N工作流结营仪式 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<nav class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回首页</a>
+  <span class="ep-badge">结营仪式</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-coord">CAMP / CAMP-N8N-01 / 2025-10-31 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">AI训练营第一期<br><span class="hl">N8N工作流</span>结营仪式</h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">1521人进群 | 222人全勤完成</div>
+    <div class="hero-meta">18位优秀学员 | 近1400份作业</div>
+  </div>
+  <div class="hero-rule">WaytoAGI晚8点共学 · 2025.10.31</div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <h2>训练营成果数据</h2>
+    <div class="sec-coord">SEC-01</div>
+  </div>
+  
+  <div class="data-block" data-coord="DATA-01">
+    <h3>学员与作业统计</h3>
+    <ul>
+      <li><strong>报名入学：</strong>1521人进群，1058人提交入学申请</li>
+      <li><strong>作业完成：</strong>四课共提交近1400份作业，仅222位全部完成</li>
+      <li><strong>完成率提示：</strong>未提交入学申请即便完成作业也无法获得结业证书</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="DATA-02">
+    <h3>结业证书体系</h3>
+    <ul>
+      <li><strong>证书内容：</strong>显示所学课程、唯一编号、可在首页查询</li>
+      <li><strong>优秀学员：</strong>共18位，综合考量作业质量和笔记情况</li>
+      <li><strong>评审流程：</strong>助教轮番评审 → 老师终极点评 → 最终复核</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>优秀学员学习心得</h2>
+    <div class="sec-coord">SEC-02</div>
+  </div>
+
+  <div class="quote">
+    <p><span class="hl">靠愿力启动，珍惜机会逼自己学习；小步快跑，将复杂任务拆解，积累小正反馈；靠期望拉动，在临近成功时多投入。</span></p>
+    <div class="quote-author">白志雄 · 完成技巧分享</div>
+  </div>
+
+  <div class="data-block" data-coord="DATA-03">
+    <h3>典型学员工作流案例</h3>
+    <ul>
+      <li><strong>江舒：</strong>纯小白通过视频回放 + ChatGPT/DeepSeek辅助，第三次作业图片生成后兴奋许久</li>
+      <li><strong>春雨月：</strong>分享修4小时Bug经历，强调不盲信AI，监督其输出，使用飞书节点遇问题需自行判断</li>
+      <li><strong>FF：</strong>以家中过期菜为灵感，用通义千问搭建"精致拼好菜"工作流，涵盖新增/查询/更新操作</li>
+      <li><strong>袁宇晖：</strong>零基础搭建日报工作流，从新闻API → 去重整理 → 生成HTML，再拓展至完整写作流程</li>
+      <li><strong>李幸：</strong>IT项目经理无代码背景，独立开发多个应用，通过AI和教程解决Docker/节点/API问题</li>
+      <li><strong>周士伟：</strong>边学边在公众号沉淀知识，想需求 → 找接口 → 拼工作流的闭环学习</li>
+    </ul>
+  </div>
+
+  <div class="golden-quote">
+    <p>学习AI像精心烹饪的汤，要耐得住寂寞，付出努力不一定马上有正反馈。<span class="hl">不要因挫折放弃，你已领先很多人。</span></p>
+    <div class="quote-author">笨笨v泡泡 · 助教视角</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>助教与高阶经验</h2>
+    <div class="sec-coord">SEC-03</div>
+  </div>
+
+  <div class="data-block" data-coord="DATA-04">
+    <h3>助教成长与建议</h3>
+    <ul>
+      <li><strong>axshui（小水）：</strong>计算机小白在社区获得归属感，帮助他人快速成长，遇图片转base64问题用Jamina2.5解决</li>
+      <li><strong>流云（黄彬®AIGC）：</strong>搭建自动公众号工作流，核心是提示词微调，用DeepSeek写文 + 千问生图 + 公众号节点生成草稿</li>
+      <li><strong>Jason（大熊）：</strong>系统学习四节课，整理安装脚本解决问题，推荐N8N官网AI节点解决90%问题，魔搭社区节约生图成本</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="DATA-05">
+    <h3>后续课程与校友会</h3>
+    <ul>
+      <li><strong>第二期智能体训练营：</strong>职场晋升、内容创作效率提升基础内容，手把手教搭建场景</li>
+      <li><strong>N8N课程调整：</strong>下一期降低难度，针对性开课</li>
+      <li><strong>校友会建设：</strong>完善首页、收集数据、优秀校友群期待加入</li>
+      <li><strong>证书发放：</strong>明日发放第一期证书，鼓励社媒分享推荐</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <h2>关键洞察与行动</h2>
+    <div class="sec-coord">SEC-04</div>
+  </div>
+
+  <div class="takeaways">
+    <div class="takeaways-header">核心要点</div>
+    <ul>
+      <li><span class="label">学习方法</span>先照猫画虎减少错误 → 参数对比找答案 → 重复操作形成范式，系统拆解项目成节点单位</li>
+      <li><span class="label">心态建设</span>对技术保持敬畏同时给自己信心，学习中需要兴趣驱动和成就感反馈，不盲信AI要监督输出</li>
+      <li><span class="label">工具组合</span>N8N+AI大模型（DeepSeek/千问/ChatGPT）+飞书多维表格形成完整自动化生态</li>
+      <li><span class="label">问题解决</span>遇困难不放弃可先放下，多问社区和老师，用好一点的大模型和官网AI节点</li>
+      <li><span class="label">知识沉淀</span>边学边记录输出到公众号/社媒，获得正反馈，多参加比赛以赛代练快速成长</li>
+      <li><span class="label">社群价值</span>训练营提供归属感和氛围，学员互相鼓励支持，找到一起学习进步的搭子是成功关键</li>
+      <li><span class="label">迭代规划</span>第二期智能体课程启动11月1-2日报名，N8N课程持续降低难度，校友会完善体系建设</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回课程首页</a>
+  </div>
+  <div class="footer-stamp">
+    <div>WaytoAGI 晚8点共学</div>
+    <div>AI训练营 · N8N工作流结营</div>
+    <div>2025-10-31</div>
+  </div>
+</footer>
+</div>
+</body>
+</html>
