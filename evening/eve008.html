@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天不卷了，让TRAE Skill干活！ | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/TRAE/2026-02-07/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">今天不卷了，让<span class="hl">TRAE Skill</span>干活！</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">主讲：王涛（TRAE产品经理）</span>
+    <span class="hero-meta">时间：2月7日 19:55-21:09</span>
+  </div>
+  <div class="ep-badge">技能赋能 | 工作流优化 | AI生产力</div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">Skills核心概念：让AI成为专家</h2>
+  <div class="sec-coord">EVE/TRAE/2026-02-07/CONCEPTS</div>
+  
+  <p>Skills是Anthropic为Claude提出的革命性概念——将大模型看作接受通识教育的智能体，Skills就是灌入的专业技能。如同给电工赋予电路设计手册，模型即刻获得特定领域专长。</p>
+  
+  <p><strong>核心优势：</strong>动态按需加载机制。文档分层设计（元数据→技能说明→详细描述），模型预加载仅记住技能名称，匹配任务时才加载具体内容，<span class="hl-yellow">有效减少上下文负担，提升特定任务表现</span>。</p>
+
+  <div class="quote">
+    <p>"Skills不是万能的，需符合其约束和规范。一个好的Skill应尽量原子化，只完成一个任务，便于模型遵循。"</p>
+    <div class="quote-author">— 王涛，TRAE产品经理</div>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">Skills vs 快捷指令 vs MCP：分层赋能体系</h2>
+  <div class="sec-coord">EVE/TRAE/2026-02-07/DIFFERENTIATION</div>
+
+  <div class="data-block" data-coord="快捷指令">
+    <strong>快捷指令：</strong>工具上的预设按钮，将输入和操作固化
+  </div>
+
+  <div class="data-block" data-coord="MCP">
+    <strong>MCP：</strong>协议和管道，让AI突破限制，跨软件访问（如在TRAE中通过MCP操作Figma）
+  </div>
+
+  <div class="data-block" data-coord="Skills">
+    <strong>Skills：</strong><span class="hl-yellow">更上层、更封装的概念</span>，面向复杂任务，可包含command和MCP的组合，达成一系列目的
+  </div>
+
+  <p>三者形成递进关系：快捷指令 → MCP → Skills，从固化操作到跨域连接，再到智能编排。</p>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">实战案例：产品经理和运营工作流重塑</h2>
+  <div class="sec-coord">EVE/TRAE/2026-02-07/APPLICATIONS</div>
+
+  <h3>产品经理工作流</h3>
+  <p><strong>原型设计提效：</strong>加载前端设计Skill，快速生成原型（如为任务面板添加批量删除功能）</p>
+  <p><strong>PRD生成与上传：</strong>调用"写PRD"和"上传飞书文档"Skills，一键完成PRD初版，<span class="hl-yellow">后续仅需简单修改即可交付</span></p>
+
+  <h3>运营人员工作流</h3>
+  <p>使用"调研"和"微信文章写作"Skills，完成公众号文章的调研→写作→发布全流程，显著提高产出效率</p>
+
+  <div class="golden-quote">
+    <p>🌟 <strong>最佳实践：</strong>先使用现有Skills，在社区Skills基础上调整，最后尝试自己构建。不建议无限嵌套优化，而应基于场景选择，略微修改即可。</p>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">构建优质Skills的黄金法则</h2>
+  <div class="sec-coord">EVE/TRAE/2026-02-07/BEST-PRACTICES</div>
+
+  <div class="data-block" data-coord="原子化设计">
+    <strong>原子化设计：</strong>一个Skill完成一个任务，便于模型遵循和组合
+  </div>
+
+  <div class="data-block" data-coord="清晰描述">
+    <strong>清晰描述：</strong>直接、简单、让模型更好理解，避免复杂表述
+  </div>
+
+  <div class="data-block" data-coord="参数设计">
+    <strong>参数设计合理：</strong>不宜过于复杂，超出模型理解能力影响效果
+  </div>
+
+  <div class="data-block" data-coord="可组合性">
+    <strong>可组合性：</strong>将复杂场景拆分成多个独立Skills（如写调研报告→分解为"数据采集"和"报告整理"两个Skills）
+  </div>
+
+  <p><strong>创建方式三选一：</strong>拖入文件夹 | Setting页面创建 | 让AI生成（需微调）</p>
+</section>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>💡 核心要点（Takeaways）</h3>
+  <ul>
+    <li><strong>Skills是分层赋能：</strong>从快捷指令的操作固化，到MCP的跨域连接，再到Skills的智能编排，形成递进式能力体系</li>
+    <li><strong>动态加载是核心优势：</strong>按需加载减轻上下文负担，相比"一股脑塞给模型"的方式，模型在特定任务上表现更优</li>
+    <li><strong>原子化设计原则：</strong>一个Skill完成一个任务，参数设计简洁，描述清晰直接——这是构建高效Skills的基础</li>
+    <li><strong>工作流优化有模板：</strong>产品经理可用"前端设计→PRD生成→文档上传"三步Skill组合；运营可用"调研→写作→发布"组合</li>
+    <li><strong>先用后改再创建：</strong>从Claude官方和Github开源Skills开始，基于社区资源调整，最后尝试自己构建，循序渐进避免踩坑</li>
+    <li><strong>模型更新持续增强：</strong>近期发布的模型对Skills支持增强，春节后调用精准度提升；国内版内置Kimi、K2.5、GLM等多个模型可选</li>
+    <li><strong>全局vs项目模式：</strong>Skills有project和global两种生效范围，全局生效需导入global文件夹，灵活应对不同使用场景</li>
+  </ul>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 回到主页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>WaytoAI 智能纪要 | 2026年2月7日 | 王涛（TRAE产品经理）主讲</p>
+    <p>待办：讲义链接发送 | 多个Skills包打包分享（含PRD to Larkdoc）</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
