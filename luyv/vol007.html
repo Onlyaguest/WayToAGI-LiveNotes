@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vol.007 · 从家庭主妇到AI 公司创始人普通人真的可以逆袭吗 | 鹿演 WayToAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<nav class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回目录</a>
+  <span class="ep-badge">鹿演 Vol.007</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-coord">LUYV / VOL-007 / 2025-12-13 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">从家庭主妇到<br>AI 公司创始人<br><span class="hl">普通人真的可以逆袭吗</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">嘉宾：如山（Mulan.pro 联合创始人）</span>
+    <span class="hero-meta">伊乐（技术负责人）</span>
+    <span class="hero-meta">叶彦辛（产品演示）</span>
+  </div>
+  <div class="hero-rule">鹿演 Vol.007 · 2025.12.13</div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    产品定位：一张画布完成 AI 视频全流程
+  </div>
+
+  <p>木兰（Mulan.pro）将自己定位为<strong>准专业的 AI 视频创作工具</strong>，核心理念是在一张画布上完成从文案、文生图、图生视频、配音配乐到字幕剪辑的全流程。技术负责人伊乐最初在用 Stable Diffusion SVD 和 ComfyUI 时，被高学习成本折磨，萌生了开发"强大、灵活、精准且简单"工具的念头。</p>
+
+  <div class="data-block" data-coord="FEAT-01">
+    <p><span class="hl-yellow">三类核心节点</span></p>
+    <ul>
+      <li><strong>生成节点</strong>：文生图、图生视频、音频生成，输入提示词即可调整比例与分辨率</li>
+      <li><strong>编辑节点</strong>：改背景、移除背景、全模态材料合成</li>
+      <li><strong>特色节点</strong>：文本拆分、角色替换、动作复刻、对口型——批量生产的核心武器</li>
+    </ul>
+  </div>
+
+  <blockquote class="quote">
+    最初以为很多团队会走画布工作流路线，但实际上只有我们坚持——直到 7 月底可灵发布类似产品，我们才意识到已经领先了半年以上。
+    <div class="quote-author">—— 伊乐，木兰技术负责人</div>
+  </blockquote>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    三个实战案例：从法语教学到珠宝商用
+  </div>
+
+  <div class="data-block" data-coord="CASE-01">
+    <p><span class="hl-yellow">案例一：法语学习视频</span></p>
+    <p>通过"生成语音 → 数字人 → 对口型"节点串联，半小时内完成带字幕的三人法语对话视频，对口型效果测试优秀，法国用户直接贡献为官方模板。</p>
+  </div>
+
+  <div class="data-block" data-coord="CASE-02">
+    <p><span class="hl-yellow">案例二：科技感动态 PPT 视频</span></p>
+    <p>以藏师傅提示词为基础，用"文本拆分 → 批量文生图 → 首尾帧转场 → 合并视频 → 添加背景音乐"完整链路，生成玻璃拟态风格 PPT 视频。</p>
+  </div>
+
+  <div class="data-block" data-coord="CASE-03">
+    <p><span class="hl-yellow">案例三：珠宝品牌商用视频</span></p>
+    <p>接到珠宝客户需求后，上传产品图 → 多模型测试 → 首尾帧切换 → 淡入淡出 + 背景音乐，最终启用 <span class="hl-yellow">木兰 1.5 自动化生成节点</span>快速交付，客户当场付款。</p>
+  </div>
+
+  <p><strong>成本控制提示：</strong>Seedream 4.0、nanobanana Pro 等模型 TOKEN 消耗大；Minimax 音乐节点成本低且可控制歌词，但需在提示词中限定时长。使用 Agent 自动化前，建议先手动测试各模型指定最优选项。</p>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    适用人群：谁最需要木兰？
+  </div>
+
+  <div class="data-block" data-coord="USER-MAP">
+    <ul>
+      <li><span class="hl-yellow">ComfyUI / N8N 重度用户</span>：操作更简单，所见即所得，减少配置摩擦</li>
+      <li><span class="hl-yellow">TikTok 电商 / 社媒营销</span>：批量生成高质量视频矩阵，大幅提升产出效率</li>
+      <li><span class="hl-yellow">预算有限的小企业主</span>：面包店老板自学一小时，自行制作抖音 / 视频号宣传片</li>
+      <li><span class="hl-yellow">零基础 AI 视频小白</span>：在 Agent 辅助下，一小时内完成元旦求婚视频并直接付费</li>
+    </ul>
+  </div>
+
+  <div class="golden-quote">AI 不应该只属于工程师——它应该让每一个普通人都能成为创作者</div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    创业故事：40 岁家庭主妇的逆袭路径
+  </div>
+
+  <p>如山的故事是本场最打动人的部分。40 多岁、无技术背景、无行业资源，接触 ChatGPT 后决定入局 AI。她在一次 AI 沙龙上遇到伊乐——知识付费领域的老兵，曾被抄袭、创业受挫，彼时状态低落。两人一拍即合，以"让用户因产品而更强大"为信念共同创业。</p>
+
+  <div class="data-block" data-coord="TEAM-01">
+    <p><span class="hl-yellow">团队关键节点</span></p>
+    <ul>
+      <li><strong>2024 年 1 月</strong>：选定画布工作流形态，判断这是 AI native 视频创作的正确路径</li>
+      <li><strong>2024 年 6 月 23 日</strong>：1.0 版本发布，内测发现 bug 多、体验差，拒绝大肆宣传抢头条，选择踏实打磨</li>
+      <li><strong>2024 年 7 月底</strong>：可灵发布类似产品，验证方向正确，先发优势超过半年</li>
+    </ul>
+  </div>
+
+  <p>如山的女儿 Joyce 高中起帮忙写代码，考入加州伯克利工程学院后凭实力入选 YC，大二时已有投资人愿出资 200 万美元支持其独立创业，目前负责木兰美国市场运营。</p>
+
+  <blockquote class="quote">
+    我们的勇敢价值观刻印在木兰的每一个设计决策里——我们愿意为同样勇敢的用户服务。
+    <div class="quote-author">—— 伊乐</div>
+  </blockquote>
+
+  <div class="golden-quote">普通人逆袭的关键不是资源，而是在正确的时间做出勇敢的判断</div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-05</span>
+    快速上手指南
+  </div>
+
+  <div class="data-block" data-coord="ONBOARD-01">
+    <ol>
+      <li>注册登录 Mulan.pro，国内可直接使用（服务器在美国，不影响访问）</li>
+      <li>从<span class="hl-yellow">空白画布</span>开始，或直接套用<span class="hl-yellow">官方模板</span>学习工作流逻辑</li>
+      <li>初学者教学内置在首页，跟着"文本节点 → AI 生图节点"走一遍即可入门</li>
+      <li>克隆模板后在画布中自由改造，探索批量生产与个性化定制的边界</li>
+      <li>使用 Manus 等配套<span class="hl-yellow">对话工具</span>搭建工作流，无需手动连线</li>
+    </ol>
+  </div>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">核心要点 Takeaways</div>
+  <ul>
+    <li><span class="label">定位</span>木兰是准专业 AI 视频创作平台，一张画布覆盖文案→生图→生视频→配音→剪辑全流程，核心竞争力是所见即所得的可视化工作流</li>
+    <li><span class="label">先发</span>2024 年 1 月就选定画布工作流路线，比可灵类似产品早半年以上，方向孤注一掷但最终被市场验证</li>
+    <li><span class="label">案例</span>法语视频、动态 PPT、珠宝商用三个案例覆盖教育、内容、电商三大场景，均在数小时内完成交付</li>
+    <li><span class="label">成本</span>选模型是控制成本的关键；Minimax 音乐节点性价比高，重量级模型（Seedream 4.0 等）建议在 Agent 自动化前先手动测试</li>
+    <li><span class="label">人群</span>最适合营销人员、小企业主和 AI 视频小白；对 ComfyUI 老用户来说是体验升级而非替代</li>
+    <li><span class="label">创始人</span>如山 40 岁无背景入局，通过沙龙结识技术合伙人，用"勇敢"作为团队核心价值观驱动产品决策</li>
+    <li><span class="label">产品观</span>1.0 内测发现 bug 多时，主动拒绝抢占"全球第一"宣传机会，选择踏实打磨——这一决策奠定了产品口碑基础</li>
+    <li><span class="label">信念</span>团队目标是让用户因产品而更强大，普通人借助 AI 工具实现创作自由是木兰存在的根本意义</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">WaytoAGI 晚 8 点共学</a> · 鹿演系列
+  </div>
+  <div class="footer-stamp">VOL-007 · 2025.12.13</div>
+</div>
+</div>
+</body>
+</html>
