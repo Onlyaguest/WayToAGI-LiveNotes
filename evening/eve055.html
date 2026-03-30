@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chroma Awards 2025：100万美金AI工具权益 + 17.5万奖金海外视频大赛全解 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/CHROMA/2025-10-21/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Chroma Awards 2025：<span class="hl">100万美金AI工具权益 + 17.5万奖金</span>海外视频大赛全解</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">📅 2025年10月21日 19:55-21:10</span>
+    <span class="hero-meta">🎯 WaytoAGI晚8点共学</span>
+  </div>
+  <div class="hero-meta-row">
+    <span class="ep-badge">嘉宾：Davis (Director/Producer)</span>
+    <span class="ep-badge">Joey (莫奈丽莎AI联合创始人)</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<!-- 第一部分：赛事背景与架构 -->
+<section>
+  <div class="sec-header">
+    <h2>赛事背景：从Project ODYSSEY到Chroma Awards</h2>
+    <div class="sec-coord">EVE/CHROMA/01</div>
+  </div>
+  <p>Chroma Awards是AI创意的年度盛典。比赛<span class="hl-yellow">前身为Project ODYSSEY，2024年首办，今年由Eleven Labs主办</span>，已成为AI界的奥林匹克运动会。团队由Matty Shimomura领导，汇聚Machine、Cinema和社区合作伙伴的力量。</p>
+  <p>Davis老师是比赛制片人，也是Project ODYSSEY第一、二季获奖者。今年比赛<span class="hl-yellow">拓展到音乐和游戏领域</span>，延续开放、多元、全球化精神。</p>
+</section>
+
+<!-- 第二部分：比赛规则与投稿指南 -->
+<section>
+  <div class="sec-header">
+    <h2>竞赛类别与投稿要点</h2>
+    <div class="sec-coord">EVE/CHROMA/02</div>
+  </div>
+  
+  <div class="data-block" data-coord="RULES">
+    <h3>📋 比赛类别与技术要求</h3>
+    <ul>
+      <li><strong>类别设置</strong>：电影（含动画、短剧等）、音乐视频、游戏三大类</li>
+      <li><strong>画面比例</strong>：动画支持9:16或16:9；短剧限制为9:16</li>
+      <li><strong>创作时间</strong>：作品需在2025年2月1日之后创建</li>
+      <li><strong>工具要求</strong>：任何AI工具均可，投递时需标注使用工具名称</li>
+      <li><strong>赞助商奖项</strong>：使用赞助商工具可参与其专项评选</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="AWARDS">
+    <h3>💰 奖金设置示例</h3>
+    <p>游戏类别：1st $2,000 | 2nd $1,000 | 3rd $500</p>
+    <p><span class="hl-yellow">社区专属奖池：1,500美元</span>（参赛需在Community Awards选择WaytoAGI Community）</p>
+  </div>
+
+  <div class="data-block" data-coord="SUBMISSION">
+    <h3>📤 投稿流程（关键步骤）</h3>
+    <ul>
+      <li>平台：DevPost（官网点击Submit按钮跳转）</li>
+      <li>注册会员→加入Hackathon→选择参赛形式（个人/团队）</li>
+      <li>填写成员信息→选择参赛类别→一部作品仅投一个类别</li>
+      <li><strong>截止日期延后至11月17日</strong>（原定11月初）</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 第三部分：创作经验与工具方案 -->
+<section>
+  <div class="sec-header">
+    <h2>参赛成功案例与创作工具方案</h2>
+    <div class="sec-coord">EVE/CHROMA/03</div>
+  </div>
+
+  <div class="quote">
+    <p>好故事能让非AI领域的观众全程观看并理解影片内容。评审时，故事是最重要的，能激起观众情绪的作品才能脱颖而出。</p>
+    <div class="quote-author">— Davis，Chroma Awards制片人</div>
+  </div>
+
+  <div class="golden-quote">
+    <p>用创作IP的思路制作影片，架构更大的世界观，进行衍生创作。这样的作品架构能显著增加获奖机会。从单部作品到IP宇宙的跨越，是参赛的制胜法门。</p>
+  </div>
+
+  <h3>🎬 周宇(Joyce)参赛成果回顾</h3>
+  <ul>
+    <li><strong>AI功夫2077</strong>：拟人化AI大厂举办武道会，上线AI春晚首播</li>
+    <li><strong>交通银行广告短片</strong>：联合品牌方制作，意外入围广告TOP50</li>
+    <li><strong>众神之战</strong>：两集AI短剧，第一集入围叙事赛道荣誉提名</li>
+    <li><strong>总成绩</strong>：4支作品获奖（含2个TOP50、2个荣誉提名）</li>
+  </ul>
+
+  <h3>🛠️ 推荐工具链</h3>
+  <div class="data-block" data-coord="TOOLS">
+    <ul>
+      <li><strong>剧本阶段</strong>：ChatGPT、Claude、Gemini（故事核心需人工把控）</li>
+      <li><strong>视觉概念</strong>：Midjourney、即梦（可直出4K图片视频）</li>
+      <li><strong>动态镜头</strong>：海螺（动作幅度大，适合打斗）、可灵（画质高）、拍我（功能全）</li>
+      <li><strong>后期制作</strong>：剪映（预设库丰富）、PS、AE</li>
+      <li><strong>声音设计</strong>：专业对白和背景音乐会显著加分</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 第四部分：创作建议与常见问题 -->
+<section>
+  <div class="sec-header">
+    <h2>参赛核心建议与常见问题解答</h2>
+    <div class="sec-coord">EVE/CHROMA/04</div>
+  </div>
+
+  <div class="data-block" data-coord="CRITICAL_TIPS">
+    <h3>🎯 参赛前必读清单</h3>
+    <ul>
+      <li><strong>规则优先</strong>：创作前充分了解比赛规则，用简单短片提前测试流程</li>
+      <li><strong>尽早领福利</strong>：许多厂商免费名额持续消耗中，尽快申领可降低成本</li>
+      <li><strong>版权审查</strong>：所有素材（IP、音乐、角色）必须有版权，无版权作品将被刷除</li>
+      <li><strong>时长限制</strong>：社交媒体类需确认具体限制（参考22分钟上限），投递前查看类别说明</li>
+      <li><strong>语言选择</strong>：各国语言欢迎参赛，英文字幕最优</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="FEEDBACK">
+    <h3>❓ 常见问题反馈</h3>
+    <ul>
+      <li><strong>注册问题</strong>：部分用户遇到电话号码验证困难，Davis团队会议后跟进解决</li>
+      <li><strong>工具领取</strong>：除视频工具外，还有音频、剧本等类别工具可申领</li>
+      <li><strong>团队合作</strong>：支持个人和团队投稿，DevPost演示包含填写队友信息流程</li>
+    </ul>
+  </div>
+</section>
+
+<div class="hero-rule"></div>
+
+<div class="takeaways">
+  <h2>💡 核心要点速记</h2>
+  <ol>
+    <li><strong>赛事规模</strong>：Chroma Awards是AI创意的国际顶级赛事，由Eleven Labs主办，拥有100万美金工具权益+17.5万奖金激励，是参赛者展示实力的关键舞台</li>
+    <li><strong>投稿截止延长至11月17日</strong>，通过DevPost平台投递，支持任何AI工具创作，使用赞助商工具可参与专项评选</li>
+    <li><strong>故事为王</strong>：评审最看重的是叙事质量和情绪感染力，非AI圈受众的完整观影体验决定作品竞争力</li>
+    <li><strong>IP思维制胜</strong>：从单部作品升级为IP宇宙架构和衍生创作，显著提升获奖概率</li>
+    <li><strong>工具链成熟</strong>：可灵、海螺、即梦等主流基础模型已稳定可用，尽早申领免费名额降低成本</li>
+    <li><strong>版权合规底线</strong>：所有素材必须有版权保障（IP、音乐、角色），无版权作品直接被刷</li>
+    <li><strong>社区特权</strong>：WaytoAGI社区参赛者享1,500美元专属奖池，需在Community Awards选择社区身份</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <p>📌 <strong>后续行动项</strong>：Davis团队将在会议后解决注册中的电话号码验证问题</p>
+    <p>🔗 投稿入口：<a href="https://devpost.com" target="_blank">DevPost官网</a></p>
+  </div>
+  <div class="footer-stamp">
+    <p>纪要生成 | WaytoAGI晚8点共学</p>
+    <p>2025.10.21 | Chroma Awards解读专场</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
