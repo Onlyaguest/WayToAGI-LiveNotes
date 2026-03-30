@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能体训练营二期 第四节 · 工作流进阶：分支、循环、意图识别一把抓 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">←</a>
+  <span class="ep-badge">CAMP02</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">CAMP / CAMP02 / 2025-11-13 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">工作流进阶：<br>分支、循环、意图识别<span class="hl">一把抓</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">讲师：薛临风</div>
+    <div class="hero-meta">时长：2h 44min</div>
+    <div class="hero-meta">学员：进阶开发者</div>
+  </div>
+  <div class="hero-rule">AI智能体训练营·2025.11.13</div>
+</div>
+
+<section class="main-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    <h2>工作流核心思维：从流水线到数据流动</h2>
+  </div>
+  
+  <div class="data-block" data-coord="流水线思维模型">
+    <p>薛临风老师强调将工作流视为<span class="hl-yellow">流水线系统</span>——数据在节点间流动，每个节点是独立的处理机器。这要求学员理解5条对应原则：</p>
+    <ul>
+      <li>节点连接配置</li>
+      <li>输入参数映射</li>
+      <li>技能设置与调用</li>
+      <li>输出数据提取</li>
+      <li>变量命名规范（蛇形命名法）</li>
+    </ul>
+    <p>掌握这些原则是从简单顺序节点进阶到复杂分支循环的基础。</p>
+  </div>
+
+  <div class="data-block" data-coord="数据结构基础">
+    <p>本课程重点讲解6种常见数据类型，每种类型在工作流中的应用场景不同：</p>
+    <table style="width:100%; margin-top:12px; border-collapse:collapse;">
+      <tr style="border-bottom:1px solid #e0e0e0;">
+        <td style="padding:8px;"><strong>类型</strong></td>
+        <td style="padding:8px;"><strong>用途</strong></td>
+        <td style="padding:8px;"><strong>实例</strong></td>
+      </tr>
+      <tr style="border-bottom:1px solid #f0f0f0;">
+        <td style="padding:8px;">int / number</td>
+        <td style="padding:8px;">数值运算</td>
+        <td style="padding:8px;">价格、数量</td>
+      </tr>
+      <tr style="border-bottom:1px solid #f0f0f0;">
+        <td style="padding:8px;">boolean</td>
+        <td style="padding:8px;">条件判断</td>
+        <td style="padding:8px;">是/否状态</td>
+      </tr>
+      <tr style="border-bottom:1px solid #f0f0f0;">
+        <td style="padding:8px;">string</td>
+        <td style="padding:8px;">文本存储</td>
+        <td style="padding:8px;">提示词、内容</td>
+      </tr>
+      <tr style="border-bottom:1px solid #f0f0f0;">
+        <td style="padding:8px;">array</td>
+        <td style="padding:8px;">批量循环</td>
+        <td style="padding:8px;">章节列表、结果集</td>
+      </tr>
+      <tr>
+        <td style="padding:8px;">object</td>
+        <td style="padding:8px;">结构化数据</td>
+        <td style="padding:8px;">用户信息、配置项</td>
+      </tr>
+    </table>
+    <p style="margin-top:12px;">关键技巧：将大模型输出从string改为array，便于后续循环处理和数据聚合。</p>
+  </div>
+</section>
+
+<section class="main-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    <h2>分支逻辑实战：意图识别与多路径处理</h2>
+  </div>
+
+  <div class="quote">
+    <p>"意图识别节点本质就是一个大模型，根据用户输入进行分类，然后触发不同的处理分支。"</p>
+    <div class="quote-author">—— 薛临风老师</div>
+  </div>
+
+  <div class="data-block" data-coord="分支流程架构">
+    <p><strong>案例：小小写作家智能体</strong></p>
+    <p>通过意图识别让大模型自行选择任务类型：</p>
+    <ul style="margin:12px 0;">
+      <li><strong>意图节点</strong>：接收用户灵感(idea)，识别需求类别</li>
+      <li><strong>分支1</strong>：写诗 → 专用提示词 → 诗歌输出</li>
+      <li><strong>分支2</strong>：写微小说 → 故事提示词 → 小说输出</li>
+      <li><strong>分支3</strong>：写观点洞察 → 评论提示词 → 观点输出</li>
+      <li><strong>异常处理</strong>：灵感不匹配 → 搜索节点 → 友好提示</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="核心配置细节">
+    <p><strong>意图识别节点配置：</strong></p>
+    <ul>
+      <li>选择极速模式加快响应</li>
+      <li>正确引入用户输入变量(idea)</li>
+      <li>设置明确的匹配选项（诗/微小说/观点/其他）</li>
+      <li>为每个分支创建独立的大模型节点，避免变量污染</li>
+    </ul>
+    <p><strong>异常处理与输出聚合：</strong></p>
+    <ul>
+      <li>添加搜索节点处理意图不匹配的边界情况</li>
+      <li>使用<span class="hl-yellow">变量聚合节点</span>返回"每个分组中第一个非空值"</li>
+      <li>确保最终输出节点选择返回纯文本格式</li>
+    </ul>
+  </div>
+</section>
+
+<section class="main-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    <h2>循环逻辑实战：长篇小说分章节生成</h2>
+  </div>
+
+  <div class="golden-quote">
+    <p>"循环的关键是理解数组迭代和中间变量的状态传递——每次循环的输出要成为下次循环的输入，形成完整的创作链条。"</p>
+    <div class="quote-author">—— 薛临风老师 核心教学</div>
+  </div>
+
+  <div class="data-block" data-coord="循环工作流架构">
+    <p><strong>步骤1：大纲生成与数组转换</strong></p>
+    <ul>
+      <li>大模型节点生成小说大纲（8个章节点）</li>
+      <li>将输出改为array类型，每个大纲作为独立对象</li>
+      <li>原因：便于循环遍历和上下文传递</li>
+    </ul>
+    
+    <p style="margin-top:16px;"><strong>步骤2：循环节点配置</strong></p>
+    <ul>
+      <li>选择数组循环模式</li>
+      <li>引入大纲变量(outline)作为循环源</li>
+      <li>设置中间变量(last_part)记录上一次写作内容</li>
+      <li>在循环体中：大模型引用 outline + 当前item + last_part</li>
+    </ul>
+
+    <p style="margin-top:16px;"><strong>步骤3：变量传递与输出处理</strong></p>
+    <ul>
+      <li>循环内每次写作完成后，用"设置变量"节点更新last_part</li>
+      <li>将新输出赋值给last_part供下次循环使用</li>
+      <li>循环结束后，用文本处理节点拼接所有输出</li>
+      <li>最终输出节点返回完整小说文本</li>
+    </ul>
+
+    <p style="margin-top:16px; color:#666;"><strong>常见问题排查：</strong></p>
+    <ul>
+      <li>输出为空 → 检查变量是否正确引入、节点连接是否完成</li>
+      <li>上下文丢失 → 确认last_part在每次循环后被正确更新</li>
+      <li>数据类型错误 → 大模型输出必须保持array而非string</li>
+    </ul>
+  </div>
+</section>
+
+<section class="main-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    <h2>实战扩展：飞书多维表集成与作业要求</h2>
+  </div>
+
+  <div class="data-block" data-coord="飞书多维表连接">
+    <p><strong>无代码方案：将工作流输出存储到飞书</strong></p>
+    <ul>
+      <li>添加飞书多维表插件，选择"新增多条数据"功能</li>
+      <li>设置APP TOKEN为多维表链接</li>
+      <li>映射三个变量：idea（灵感） + content（生成内容） + type（意图类型）</li>
+      <li>通过大模型节点自动赋值，解决手工录入问题</li>
+    </ul>
+    <p style="margin-top:12px;">注意：遇到类型字段问题可用大模型处理或文本节点修改，强调"多思考、利用各种节点"的问题解决思路。</p>
+  </div>
+
+  <div class="data-block" data-coord="作业与竞赛设置">
+    <p><strong>初学者任务：</strong> 根据详细文档复现工作流，加入符合需求的自选功能（避免完整照搬）</p>
+    <p style="margin-top:8px;"><strong>进阶者任务：</strong> 将分支+循环+多维表三个流程拼接成完整链路，或开发公众号管理工具等复杂应用</p>
+    <p style="margin-top:8px;"><strong>提交截止：</strong> 11月25日前提交，需附运行成功的工作流截图+智能体链接</p>
+    <p style="margin-top:8px;"><strong>比赛鼓励：</strong> 组团参加扣子AI挑战赛，参考赛事评判标准争取获奖</p>
+  </div>
+
+  <div class="data-block" data-coord="后续学习资源">
+    <p><strong>立即可用：</strong></p>
+    <ul>
+      <li>课程回放视频（直播结束后上传到社区）</li>
+      <li>老师讲义、思维导图、会议总结</li>
+      <li>测试集使用指南（提前预设边界情况，避免反复试运行）</li>
+      <li>公众号历史文章提取链接（用于后续工作流参考）</li>
+    </ul>
+    <p style="margin-top:12px;"><strong>学习建议：</strong> 多动手练习，反复观看回放深化理解；在测试调试过程中查看飞书扣子官方教程，丰富工作流节点概念。</p>
+  </div>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">核心要点速记</div>
+  <ul>
+    <li><span class="label">流水线思维</span> 工作流=数据流动系统，每个节点是处理机器，掌握5条连接原则是进阶基础</li>
+    <li><span class="label">数据结构</span> string→array转换是循环处理的关键，对象(object)用于结构化数据存储，布尔值用于条件分支</li>
+    <li><span class="label">意图识别</span> 本质是大模型分类，通过变量聚合"返回第一个非空值"可优雅处理多分支输出</li>
+    <li><span class="label">循环状态传递</span> 中间变量(last_part)记录前次输出，每次循环更新，形成完整的上下文链条</li>
+    <li><span class="label">异常处理</span> 遇到不匹配情况要添加搜索节点反馈，避免工作流静默失败</li>
+    <li><span class="label">飞书集成</span> 用大模型自动赋值，无需代码即可将输出存储到多维表，提升数据可用性</li>
+    <li><span class="label">作业策略</span> 初学者复现+自选功能，进阶者拼接完整链路或开发产品参赛，"以赛代练"检验成果</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回课程列表</a>
+  </div>
+  <div class="footer-stamp">
+    <div>AI智能体训练营·第二期·第四节</div>
+    <div>2025-11-13 · WaytoAGI晚8点共学</div>
+  </div>
+</div>
+</div>
+</body>
+</html>
