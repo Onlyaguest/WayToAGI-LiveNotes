@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语音AI输入法开发实战攻略与避坑指南 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/语音AI/2026-02-01/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">语音AI输入法开发<span class="hl">实战攻略与避坑指南</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">嘉宾：银海 <span class="ep-badge">AI产品经理</span></span>
+    <span class="hero-meta">时间：2026年2月1日 19:55-21:43</span>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section class="sec-header">
+  <h2>核心一：语音输入法开发与模型选择</h2>
+  <div class="sec-coord">SECTION 01 | 模型架构与成本对比</div>
+</section>
+
+<p>语音输入法开发的第一步是选择合适的模型。macOS自带语音输入虽然基础，但处理<span class="hl-yellow">高频热词需要专业领域识别模型</span>，阿里、Minimax等在音频领域表现出众。开发者面临三条路：一是使用浏览器插件（应用范围受限），二是macOS原生开发（需精通Swift），三是自主集成ASR模型。</p>
+
+<div class="data-block" data-coord="01-MODEL-CHOICE">
+<strong>主流方案对标：</strong>
+<ul>
+<li><strong>豆包APP</strong>：自带语音输入，功能隐蔽但免费</li>
+<li><strong>闪电说</strong>：实时语音转写成本 ¥0.0003/秒</li>
+<li><strong>Tablist</strong>：月费$20或年费$12，需月讲70小时+才划算</li>
+<li><strong>自主开发</strong>：成本相对最低，可完全掌控</li>
+</ul>
+</div>
+
+<p>银海强调<span class="hl-yellow">领域热词定制的关键作用</span>——未定制热词导致互联网黑话、产品名称等识别错误。阿里云百炼平台提供开箱即用的模型聚合能力，parform模型可自动修正用词和标点。他在两小时内完成了初步开发，并将项目<strong>开源免费</strong>供社区使用。</p>
+
+<section class="sec-header">
+  <h2>核心二：手机端从0到1的开发实践</h2>
+  <div class="sec-coord">SECTION 02 | Swift UI界面与实时翻译</div>
+</section>
+
+<p>iOS语音输入法开发使用SwiftUI构建界面，后端接入Claude等大模型。银海的创新做法是<span class="hl-yellow">直接将API链接丢给模型，让其自动接入ASR模型</span>。开发中可利用Websocket API实现实时语音转文字，同时集成开源小模型如昆山ASR（0.6B规模适合本地运行）进行端侧部署。</p>
+
+<div class="data-block" data-coord="02-DEV-FLOW">
+<strong>开发三部曲：</strong>
+<ul>
+<li><strong>快速原型</strong>：提示模型"根据项目生成LANDING page介绍页"，自动生成前端</li>
+<li><strong>风格优化</strong>：截取样板图供模型参考，快速迭代设计方案</li>
+<li><strong>一键上线</strong>：推送GitHub后通过Fossil同步，项目变更自动更新前端</li>
+</ul>
+</div>
+
+<blockquote class="golden-quote">
+  "通过给模型一句话，就能自动生成完整的介绍页面。若风格不合适，只需截取样板图让模型优化——这就是AI驱动的产品开发节奏。"
+  <div class="quote-author">— 银海</div>
+</blockquote>
+
+<section class="sec-header">
+  <h2>核心三：内容创作的语音写作SOP</h2>
+  <div class="sec-coord">SECTION 03 | 从口语到结构化的闭环</div>
+</section>
+
+<p>银海分享了完整的语音写作流程。第一步用语音输入法快速录入（豆包按住FN键，速度比键盘打字快<span class="hl-yellow">至少3倍</span>）；第二步用ChatGPT、Kimi等AI工具根据过往风格润色，将口语化转为结构化；第三步手动排版避免超长段落，通过微截图等补充内容框架。</p>
+
+<div class="data-block" data-coord="03-CONTENT-PROCESS">
+<strong>效率提升关键点：</strong>
+<ul>
+<li>语音输入速度是键盘3倍以上</li>
+<li>AI工具批量润色而非逐句优化</li>
+<li>通过补充图片和排版增加阅读美感</li>
+<li>避免手打和洗稿，内容更有洞见</li>
+</ul>
+</div>
+
+<p>这套方法论能显著提升内容创作的传播效率和质量。银海将其应用于公众号、小红书等多平台，效果显著。</p>
+
+<section class="sec-header">
+  <h2>核心四：AI产品开发的系统思路</h2>
+  <div class="sec-coord">SECTION 04 | 从Skill到工作流的产品架构</div>
+</section>
+
+<p>AI产品开发的高阶玩法在于<span class="hl-yellow">模型能力的灵活组合和工作流抽象</span>。银海以播客生成为例：通过集成阿里云TTS、火山引擎等多个底层模型API，在IDE中实现文本转语音，生成男女混声播客。将所有模型API能力抽象后可自由调度，根据需求生成不同主题和时长的内容。</p>
+
+<div class="data-block" data-coord="04-WORKFLOW-APP">
+<strong>应用层工作流搭建案例：</strong>
+<ul>
+<li><strong>短剧创作工具箱</strong>：复制API工作流作为Skill能力调用</li>
+<li><strong>钉钉AI听记</strong>：整理应用ID和API文档，通过工作流快速成型</li>
+<li><strong>专题内容生成</strong>：自动生成图文并茂的在线访问链接</li>
+<li><strong>会议AI助手</strong>：梳理API和场景，独立产品快速上线</li>
+</ul>
+</div>
+
+<p>这种<span class="hl-yellow">API工作流的组合方式</span>将复杂产品开发时间从周级降低到日级，使一人团队也能高效输出专业级产品。</p>
+
+<div class="takeaways">
+  <h3>💡 核心要点速记</h3>
+  <ol>
+    <li><strong>模型选择</strong>：优先选择支持领域热词定制和实时转写的ASR模型，自主开发成本往往低于订阅制</li>
+    <li><strong>两小时快速开发</strong>：通过将API直接丢给大模型，可极速完成语音输入法初版，验证想法成本最低</li>
+    <li><strong>语音写作3倍速</strong>：语音输入+AI润色+手动排版的SOP能显著提升内容创作效率和质量</li>
+    <li><strong>Swift开发挑战</strong>：macOS原生开发需掌握Swift，但部分模型在Swift语言能力上较弱，选择合适的模型很关键</li>
+    <li><strong>Skill能力集成</strong>：将底层模型API抽象为Skill，可快速组合成播客、短剧、会议助手等独立产品</li>
+    <li><strong>工作流复用</strong>：API工作流可作为Skill能力复用，大幅降低产品开发门槛和周期</li>
+    <li><strong>开源共享</strong>：银海将语音输入法项目开源，下周直播分享AI眼镜开发，课程和应用全部免费</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议列表</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI 晚8点共学</span>
+    <span>02-01 | 2026年2月1日</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
