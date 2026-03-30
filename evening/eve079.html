@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qoder食用说明书：从入门到惊艳 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/CODER/2025-09-07/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Qoder食用说明书：<span class="hl">从入门到惊艳</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">WaytoAGI晚8点共学</span>
+    <span class="hero-meta">2025年9月7日 19:54-21:46 GMT+08</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">产品特性与架构</h2>
+  <div class="sec-coord">EVE/CODER/FEATURES</div>
+  
+  <p><strong>Agentic Coding新范式</strong>：Coder定位为代理式编程工具，突出结对编程和Quest mode两大特色。结对编程通过多轮自然语言对话完成功能或APP开发；Quest mode强调文档优先，先编写技术规格说明书(SPEC)，委派AI执行任务拆解、测试验证，最后生成验收报告。</p>
+  
+  <p><strong>上下文工程优势</strong>：包含记忆、规则、项目上下文和代码库等多维度信息。系统能快速进行代码检索和知识库调用，精准理解任务需求，这是区别于其他厂商的核心差异。</p>
+  
+  <p><strong>Repo Wiki可视化文档</strong>：自动生成项目代码逻辑结构、架构设计和底层依赖的可视化文档，对开源项目共建、遗留代码阅读和新人入职特别有帮助。系统进行代码向量检索和RAG切片，确保召回精准度。</p>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">使用方法与协作模式</h2>
+  <div class="sec-coord">EVE/CODER/USAGE</div>
+  
+  <p><strong>快速启动</strong>：支持Mac和Windows系统下载（Linux版开发中），支持GitHub和Google邮箱登录，登录后可clone或fetch自有Git项目仓库。</p>
+  
+  <p><strong>三栏式界面设计</strong>：左栏为项目目录树，中栏为代码编辑区，右栏为AI协作面板。提供ask模式（代码问答和知识库检索）、agent模式（功能添加、批量测试、代码重构）和request模式（编写技术方案文档后委派AI执行）。</p>
+  
+  <p><strong>Memory与Rules机制</strong>：Memory自动沉淀项目信息持续更新；Rules设置编码规则避免AI出错，优先级更高。两者结合可显著提升AI理解和执行精度。</p>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">社区实践案例精选</h2>
+  <div class="sec-coord">EVE/CODER/CASES</div>
+  
+  <p><strong>游戏开发</strong>：宙宇科技用简单提示词、三轮交互即实现3D空空射击游戏基本效果，两款小游戏制作不超三小时。关键经验是分阶段给出提示词，让AI专注单一界面或功能，可大幅减少bug出现频率。</p>
+  
+  <p><strong>教育平台</strong>：居来提用Rust后端+React前端借助Coder开发雅思智能训练平台，现已完成写作批改功能。Coder对项目把控理解能力强，前端开发体验顺畅流畅。</p>
+  
+  <p><strong>信息可视化</strong>：胡文祥用Coder制作多角色信息卡片生成系统，支持中英文和卡片组拼。核心建议：先实现基础功能再迭代小功能，从用户角度出发设计，小步迭代能显著提高效率。</p>
+  
+  <p><strong>测试自动化</strong>：鹏鹏在宠物诊所管理系统中演示AI辅助测试方法，系统自动生成单元测试、功能测试、接口测试方案，自动运行修复代码，生成边界异常覆盖的测试数据集和脚本，最终保证生产级质量。</p>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">项目开发最佳实践</h2>
+  <div class="sec-coord">EVE/CODER/BEST_PRACTICES</div>
+  
+  <p><strong>提示词策略</strong>：避免一次性输入所有提示词，应分阶段逐步给出，让AI专注于单一功能的实现。bug修复时需先让AI分析问题原因、制定修复计划后再执行，避免"越改越偏"。</p>
+  
+  <p><strong>需求明确化</strong>：撰写提示词时必须准确表达需求，避免过于复杂或模糊，这直接影响AI执行效果。多轮对话过程中可持续优化和完善任务描述。</p>
+  
+  <p><strong>人机协作节奏</strong>：先用ask或agent模式完成原型验证再进入Quest mode，利用AI在代码生成、测试验证方面的优势提升效率和质量。非技术背景用户也能通过AI编程尝试Web应用开发，降低精通门槛。</p>
+</section>
+
+<div class="quote">
+  <p class="golden-quote">「AI编程让不懂代码的人也能尝试Web应用开发，这是积极的转变。做生产级应用需完备考量，但动手做原型并迭代，与AI交互的过程很有乐趣。」</p>
+  <p class="quote-author">—— 张能（产品负责人）</p>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">商业化与后续规划</h2>
+  <div class="sec-coord">EVE/CODER/ROADMAP</div>
+  
+  <div class="data-block" data-coord="CREDITS_PLAN">
+    <p><strong>Credits获取方案</strong>：活动期间credits用完的用户可在社交媒体分享Coder使用实践经验赚取1000 credits（可完成十来个中等任务）。活动截止日期延长至9月15日左右。</p>
+  </div>
+  
+  <div class="data-block" data-coord="COMMERCIALIZATION">
+    <p><strong>收费计划推出</strong>：商业化计划预计9月中旬发布，具体收费标准和方式将在飞书群、微信公众号和小红书公众号公布。建议关注多平台通知。</p>
+  </div>
+  
+  <div class="data-block" data-coord="TECHNICAL_ROADMAP">
+    <p><strong>功能优化计划</strong>：开放GitHub开源仓库分享适用于不同编程语言和范式的规则实践用例；优化SSH远程连接功能，解决二次登录问题；考虑与阿里云等云厂商打通，降低项目部署难度；探索更多UI设计集成方案（Figma、Master Go、Super Design等）。</p>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>核心收获 <span class="hl-yellow">TOP 7</span></h3>
+  <ul>
+    <li><strong>分阶段提示词策略最关键</strong>——不一次性输入所有提示词，让AI逐步专注单一功能实现，可显著减少bug和幻觉，这是游戏、卡片、训练平台等项目验证的最佳实践</li>
+    <li><strong>Quest mode代表人机协同新范式</strong>——文档优先，先完善SPEC，委派AI执行任务拆解、测试验证、生成报告，是未来开发协作的主要方向</li>
+    <li><strong>上下文工程是精准度的基石</strong>——强大的记忆、规则、代码库集成使AI能快速检索相关片段和知识库内容，这是Coder区别于其他厂商的核心竞争力</li>
+    <li><strong>非技术背景也能开发Web应用</strong>——来自跨境电商背景的用户用简单提示词三轮交互即完成游戏开发，证明AI编程大幅降低了精通门槛</li>
+    <li><strong>AI测试自动化提升生产级质量</strong>——系统能自动生成完整的测试方案、用例、数据集和报告，覆盖边界和异常场景，保证交付质量</li>
+    <li><strong>Repo Wiki助力项目理解和交接</strong>——自动生成可视化文档、架构设计、依赖关系，对开源共建、遗留代码阅读、新人入职特别有帮助</li>
+    <li><strong>多轮对话优化是持续迭代的关键</strong>——在ask、agent和request模式中进行多轮对话，逐步完善任务描述和实现方案，打字交流能让AI准确理解修改意图</li>
+  </ul>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <p>📌 <strong>相关资源</strong></p>
+    <p>官方文档：<span class="hl-yellow">Coder食用说明书：从入门到惊艳</span></p>
+    <p>妙记录音：09-07 | WaytoAGI晚8点共学</p>
+    <p>👉 扫码加入<strong>WaytoAGI社区共学群</strong>，关注后续AI编程等领域活动，欢迎投稿和案例更新分享</p>
+  </div>
+  <div class="footer-stamp">
+    <p class="ep-badge">WaytoAGI Community</p>
+    <p>2025.09.07 | Coder AI编程工具深度体验会</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
