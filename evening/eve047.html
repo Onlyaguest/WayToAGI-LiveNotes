@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>豆包应用创作挑战赛冲20万大奖指南 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回首页</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVE-CONTEST/2025-11-12/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">豆包应用创作挑战赛<span class="hl">冲20万大奖指南</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">讲师：许键</span>
+    <span class="hero-meta">时间：2025年11月12日 19:54-21:58</span>
+  </div>
+  <div class="hero-meta-row">
+    <span class="ep-badge">WaytoAGI晚8点共学</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section class="data-block" data-coord="赛事核心机制">
+  <h2 class="sec-header">赛事核心机制</h2>
+  <div class="sec-coord">零门槛创意竞赛 | 多元奖励体系</div>
+  
+  <p><strong>办赛理念：</strong>不写一行代码，无需编程基础，只要有想法和创意就能参与。无论学生、新人还是职场人员，都可将奇思妙想转化为实际作品。</p>
+  
+  <p><strong>参赛方向：</strong></p>
+  <ul>
+    <li><span class="hl-yellow">创意类</span>：无主题门槛，纯比拼创意</li>
+    <li><span class="hl-yellow">公益类</span>：乡村课堂教学、银发数字友好、青少年健康成长三大赛道</li>
+  </ul>
+  
+  <p><strong>奖励设置：</strong></p>
+  <ul>
+    <li>金奖5名：1万元 + 火箭发射观礼 + 创作派对邀请函</li>
+    <li>银奖：5000元 + 迪士尼&环球影城双人票</li>
+    <li>铜奖15名：创作派对邀请函</li>
+    <li>盲盒奖励：100-2000元随机掉落（电饼铛、机票等）</li>
+    <li>最佳公益应用奖：Apple Watch</li>
+  </ul>
+</section>
+
+<section class="data-block" data-coord="应用创作三大方法">
+  <h2 class="sec-header">应用创作三大方法</h2>
+  <div class="sec-coord">模板 | 工具提示词 | 生活场景</div>
+  
+  <p><strong>方法一：模板快速搭建</strong></p>
+  <ul>
+    <li>多种预设模板（偶像应援站、小飞机大战、像素游戏等）</li>
+    <li>点击即用，仅需替换风格和背景</li>
+    <li>适合零基础用户，快速降低开发成本</li>
+  </ul>
+  
+  <p><strong>方法二：工具+提示词优化</strong></p>
+  <ul>
+    <li>参考图功能：上传UI参考图帮助大模型理解</li>
+    <li>画板功能：手绘界面 + 文字说明辅助需求表达</li>
+    <li>提示词宜清晰简洁，利用优化按钮让大模型按软件工程方式改进</li>
+    <li>问题修复：通过截图反馈让大模型一件件修复（避免同时修复多个问题）</li>
+  </ul>
+  
+  <p><strong>方法三：从生活场景挖掘创意</strong></p>
+  <ul>
+    <li>血糖管理计算器、温度穿搭推荐、食谱规划器等解决实际问题</li>
+    <li>参考他人创意激发灵感，但着眼于未被满足的生活需求</li>
+  </ul>
+</section>
+
+<section class="data-block" data-coord="投稿全流程">
+  <h2 class="sec-header">投稿全流程（1小时搞定）</h2>
+  <div class="sec-coord">应用编辑 → 选择分类 → 投稿发布 → 表单提交</div>
+  
+  <p><strong>第一步：应用编辑</strong></p>
+  <ul>
+    <li>选择历史版本中的应用进行投稿</li>
+    <li>编辑名称和描述，增加吸引力</li>
+    <li>利用豆包生成相关封面图</li>
+  </ul>
+  
+  <p><strong>第二步：分类确认</strong></p>
+  <ul>
+    <li>选择应用分类（创意类/公益类）</li>
+    <li>确认参加创作挑战赛并同意赛事规则</li>
+  </ul>
+  
+  <p><strong>第三步：投稿发布</strong></p>
+  <ul>
+    <li>点击投稿发布到创作广场</li>
+    <li>在投稿界面获取投稿链接</li>
+  </ul>
+  
+  <p><strong>第四步：表单提交</strong></p>
+  <ul>
+    <li>将投稿链接填入活动页表单</li>
+    <li>填写昵称、联系方式、邮箱、应用名称等信息</li>
+    <li>每天最多提交3次，无总次数限制，可多次提交不同应用</li>
+  </ul>
+</section>
+
+<section class="data-block" data-coord="实战案例与优化迭代">
+  <h2 class="sec-header">实战案例与优化迭代</h2>
+  <div class="sec-coord">双人连线游戏 | SmartTodo待办应用 | 多类型应用包装</div>
+  
+  <p><strong>案例一：双人连线游戏</strong></p>
+  <ul>
+    <li>创作：画板手绘九宫格 + 简单提示词"做一个双人连线游戏"</li>
+    <li>迭代：通过截图反馈不断增加规则（限制棋子数、随机删除等）</li>
+    <li>优化：修改游戏名称和规则说明，提升趣味性和可玩性</li>
+  </ul>
+  
+  <p><strong>案例二：SmartTodo待办事项</strong></p>
+  <ul>
+    <li>功能：任务管理、过滤、SMART原则检查</li>
+    <li>问题修复：按钮不可点 → 过滤无效 → 界面中英双语化</li>
+    <li>启示：版本一虽有缺陷，但通过逐步修复可达可用状态</li>
+  </ul>
+  
+  <p><strong>多类型应用的公益包装方案：</strong></p>
+  <ul>
+    <li>英语错题集 → 乡村课堂教学场景</li>
+    <li>数字冒险游戏 → 结合教学调动学生积极性</li>
+    <li>消消乐游戏 → 老年人智力开发（银发友好赛道）</li>
+  </ul>
+</section>
+
+<div class="quote">
+  <p class="golden-quote">💡 <span class="hl">不写一行代码也能冲20万大奖的核心秘诀：用生活中的真实问题作创意源头，通过与大模型的多轮对话快速迭代，最后根据公益赛道灵活包装应用方向。组队+界面设计+迭代优化=获奖高概率。</span></p>
+  <p class="quote-author">— 许键</p>
+</div>
+
+<section class="takeaways">
+  <h2 class="sec-header">核心收获（5条）</h2>
+  <ol>
+    <li><strong>零门槛参赛：</strong>不需要代码基础，有想法就能用豆包应用创作挑战赛平台快速实现，模板+提示词+画板三大工具覆盖所有创作需求。</li>
+    
+    <li><strong>多轮迭代是核心：</strong>首版应用即使有bug也不要放弃，通过截图反馈、逐项修复，大模型可以逐步优化功能和界面，提升应用完成度和可玩性。</li>
+    
+    <li><strong>公益赛道是加分项：</strong>同样的应用创意（如游戏、工具），包装成乡村教学、银发友好或青少年成长场景，获奖机会大幅提升。</li>
+    
+    <li><strong>组队参赛效率高：</strong>理想配置为1名创意产品经理+2-3名执行力强的技术/内容人员，分工协作能有效提升作品质量和投稿效率。</li>
+    
+    <li><strong>投稿全流程仅需1小时：</strong>从应用编辑→分类选择→投稿发布→表单提交的完整流程标准化，每天可投3次，无总数限制，鼓励多次尝试不同创意。</li>
+  </ol>
+</section>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议列表</a>
+  </div>
+  <div class="footer-stamp">
+    <p>WaytoAGI 11-12 会议纪要 | 豆包应用创作挑战赛</p>
+    <p>讲师：许键 | 时间：2025年11月12日晚8点</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
