@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIPO训练营 AI搭子实战 · 从 0-1 聚焦校园场景搭建自己的AI 搭子 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">←</a>
+  <span class="ep-badge">AIPO Camp</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">AIPO / CAMP03 / 2025-10-30 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">从 0-1 聚焦<span class="hl">校园场景</span>搭建自己的<br><span class="hl">AI 搭子</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">WaytoAGI 晚 8 点共学</div>
+    <div class="hero-meta">20:24 - 22:26</div>
+  </div>
+  <div class="hero-rule">第三届 AIPO 校园 AI 创投 · 2025.10.30</div>
+</div>
+
+<section class="sec-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    <h2>AIPO 活动升级：重塑校园学习生活</h2>
+  </div>
+  
+  <p>第三届 AIPO 校园创投活动以<span class="hl">"搭建我的校园搭子"</span>为主题，由主办方与飞书联合发起。相比第一届，本届活动扩展了线上训练营（含两场直播课）与线下工作坊（11 月 8 日举办）的融合模式，配备解答老师、促学习小助手和自习室全方位支持学员。</p>
+
+  <div class="data-block" data-coord="活动激励">
+    <strong>结业证书与流量曝光</strong>
+    <ul>
+      <li>官方颁发 AIPO 创造营结业证书（线下校区提供纸质版）</li>
+      <li>优秀作品获飞书官方奖杯、周边礼品</li>
+      <li>作品有机会收录至飞书多维表格官方应用库、飞行社 MVP 俱乐部、飞书大讲堂频道，获超 <span class="hl-yellow">12 万流量</span>曝光</li>
+      <li>活跃度高的学员可成为<span class="hl-yellow">多维表格金牌 Mapper</span>，赢得多重福利</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    <h2>多维表格进化：从数据工具到 AI 创意平台</h2>
+  </div>
+
+  <p>飞书多维表格已成为 Excel 的强力替代品。与传统表格软件相比，它通过<span class="hl">字段标签系统</span>实现数据结构化，支持看板视图、甘特图、日历视图、画册视图等多维可视化。今年 7 月的更新进一步升级了仪表盘功能，新增更多专业数据呈现组件。</p>
+
+  <div class="quote">
+    <p>"多维表格的 AI 能力可通过新建一列，在探索字段捷径中调用，接入多种 AI 模型（DeepSeek、豆包、即梦 4.0），具有批量生成、搭建 AI 工作流等优势。"</p>
+    <div class="quote-author">— 卢宇轩 | 飞书讲师</div>
+  </div>
+
+  <div class="data-block" data-coord="功能更新">
+    <strong>2025 年核心升级</strong>
+    <ul>
+      <li><strong>仪表盘专业化</strong> — 组件丰富，数据呈现更直观</li>
+      <li><strong>AI 工具箱</strong> — 升视频、升海报、小红书文案生成、短剧创作、卡路里计算、植物识别等</li>
+      <li><strong>应用模式</strong> — 无需代码搭建网页（如飞行社网站、黑客松大赛页面），11 月开放免费使用</li>
+      <li><strong>AI Agent 功能</strong> — 直接调用 DeepSeek 进行内容二创，一键发布</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    <h2>四大校园场景：从论文到就业的完整闭环</h2>
+  </div>
+
+  <p>多维表格的 AI 能力在校园生活中具有实战价值。讲师展示了四个核心应用场景，覆盖学术、就业、内容创作的全链路。</p>
+
+  <div class="data-block" data-coord="场景-01">
+    <strong>文献阅读 — 批量化智能提取</strong><br>
+    上传大量论文 PDF → Kimi 阅读助手转文本 → 使用 AI 提取标题、摘要、核心论点、理论机制 → DeepSeek 论文总结。打破"逐篇精读"的时间限制。
+  </div>
+
+  <div class="data-block" data-coord="场景-02">
+    <strong>科研检索 — 工作流自动化写作</strong><br>
+    全网搜索（AI 搜索字段捷径）→ DeepSeek 生成论文初稿 → 云文 AI 美化格式 → 自动化推送飞书消息。从灵感到初稿的一键闭环。
+  </div>
+
+  <div class="data-block" data-coord="场景-03">
+    <strong>就业准备 — 企业背调与面试决策</strong><br>
+    上传企业名称 → AI 自动补全企业简介、成立时间、规模、上市状态；上传岗位要求 → AI 提取关键信息、生成面试建议。数据驱动的求职加速器。
+  </div>
+
+  <div class="data-block" data-coord="场景-04">
+    <strong>自媒体创作 — 从想法到发布的全栈工具</strong><br>
+    输入点子 → DeepSeek 小红书文案 → 提取封面提示词 → 即梦 4.0 生成封面 → 豆包生成动态海报/视频 → 自动化推送 → AI Agent 二创并直接发布。内容创作工业化流程。
+  </div>
+
+  <div class="golden-quote">
+    <p>"用 AI 和飞书多维表格去重塑你的学习和生活"</p>
+    <div class="quote-author">— AIPO 第三届主题口号</div>
+  </div>
+</section>
+
+<section class="sec-content">
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    <h2>后续行动与学习资源</h2>
+  </div>
+
+  <p>本次训练营采用"线上学习+线下实战+社群支持"的完整生态。第二场直播将于周六晚间举办，讲师将根据学员表单反馈进行进阶分享。所有课程资料已放入文档供学员跟学，内推信息指向字节跳动官网。</p>
+
+  <div class="data-block" data-coord="待办清单">
+    <strong>运营团队后续支持</strong>
+    <ul>
+      <li>✓ 发送多维表格 AI 能力的完整模板到飞书群（直播后体验）</li>
+      <li>✓ 发送校园场景应用文档至 WaytoAGI 和 AIPO 社群（对照操作）</li>
+      <li>✓ 发放 TOKEN 大礼包至群内</li>
+      <li>✓ 收集周六直播选题表单，动态调整内容</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">核心 Takeaways</div>
+  <ul>
+    <li><span class="label">活动设计</span>AIPO 第三届完成了从"展示平台"到"完整生态"的升级，线上训练营+线下工作坊+社群支持构成闭环，结业证书+流量曝光+官方认证提供多维激励。</li>
+    <li><span class="label">工具演进</span>多维表格不再只是数据管理工具，7 月后的仪表盘升级和 AI 工具箱集成使其成为"创意到发布"的一站式平台，支持批量生成、工作流编排、Agent 自主执行。</li>
+    <li><span class="label">校园破题</span>四大场景（文献、科研、就业、内容创作）覆盖大学生核心痛点，通过 AI 工作流将"重复性手工任务"转变为"一键自动化流程"，边际成本趋近于零。</li>
+    <li><span class="label">技术栈</span>讲师充分展示了多模型协作的实践：Kimi（阅读）→ DeepSeek（分析/写作）→ 即梦 4.0（视觉生成）→ 豆包（动态内容）→ 小红书 API，形成完整的 AI 编排范式。</li>
+    <li><span class="label">社群运营</span>提供表单反馈机制、群内答疑、深度学习文档和内推通道，将参与者从"被动听众"转变为"主动共创者"，建立长期粘性。</li>
+    <li><span class="label">流量变现</span>优秀作品直接获得 12 万+流量曝光（官方应用库、MVP 俱乐部、大讲堂频道），金牌 Mapper 身份为后续创业/就业创造品牌溢价，形成"才华→认可→机会"的正反馈。</li>
+    <li><span class="label">落地保障</span>发送完整模板、详细文档和 TOKEN 礼包至社群，降低从"理论理解"到"动手实操"的转化成本，确保学员能在直播后快速上手。</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI 晚 8 点共学</span>
+    <span>2025-10-30</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
