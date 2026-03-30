@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何和大语言模型进行对话？0基础小白极速入门版 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回首页</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/EVEXX/2025-10-03/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">如何和大语言模型进行对话？<span class="hl">0基础小白极速入门版</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">📅 2025年10月3日 19:55-23:34</span>
+    <span class="ep-badge">WaytoAGI晚8点共学</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<!-- 第一部分：提示词的本质与进化 -->
+<section class="sec-block">
+  <h2 class="sec-header">提示词的本质与四阶段进化</h2>
+  <div class="sec-coord">01:02:58 → 01:09:57</div>
+  
+  <p>提示词的本质是<span class="hl-yellow">为AI提供完整上下文的指令集</span>。泛泛而言，跟AI说的每一个字都叫提示词，但专业的提示词是能指导AI工作、可一键复制的成系统文字。</p>
+  
+  <p>提示词经历了四个发展阶段：</p>
+  <div class="data-block" data-coord="01:09:57">
+    <ul style="margin-left: 20px; line-height: 1.8;">
+      <li><strong>第一阶段</strong>：近似代码引导（GPT-2时代）</li>
+      <li><strong>第二阶段</strong>：规则设定（GPT-3.5时期）</li>
+      <li><strong>第三阶段</strong>：简化阶段（GPT-4时期，许多人认为无需学提示词）</li>
+      <li><strong>第四阶段</strong>：<span class="hl-yellow">上下文阶段</span>（当前主流，从ChatGPT 3.5就开始存在）</li>
+    </ul>
+  </div>
+  
+  <p style="margin-top: 15px;">早期一句话即可解决问题，但如今需要多方面技巧。仅写"有吸引力"这样的简单描述，大概率会"输给"其他更完整的提示词。</p>
+</section>
+
+<!-- 第二部分：提示词撰写的核心框架 -->
+<section class="sec-block">
+  <h2 class="sec-header">四要素提问法与常见陷阱</h2>
+  <div class="sec-coord">01:15:01</div>
+  
+  <div class="quote" style="margin: 20px 0; padding: 15px; background: #f9f5ed; border-left: 4px solid #d4a574;">
+    <p style="margin: 0 0 10px 0;"><strong>提示词的四要素框架：</strong></p>
+    <div class="data-block" data-coord="01:15:01" style="margin: 10px 0;">
+      <ul style="margin: 0 0 0 20px; line-height: 1.8;">
+        <li><strong>身份</strong>：明确你需要什么身份的AI来解决问题</li>
+        <li><strong>任务</strong>：写清执行步骤和具体的任务内容</li>
+        <li><strong>要求</strong>：对输出质量的具体要求</li>
+        <li><strong>格式</strong>：指定输出格式（表格、列表、段落等）</li>
+      </ul>
+    </div>
+  </div>
+  
+  <p><strong>常见陷阱需要避免：</strong>标准过时、术语混淆、逻辑断层、实践脱节。应对策略包括分步骤提问、精简修改、加入案例说明、多轮对话改善等。</p>
+</section>
+
+<!-- 第三部分：与AI对话的核心技巧 -->
+<section class="sec-block">
+  <h2 class="sec-header">与AI高效对话的关键要点</h2>
+  <div class="sec-coord">02:30:25 → 02:49:50</div>
+  
+  <div class="golden-quote" style="margin: 20px 0; padding: 20px; background: #fff8e6; border: 2px solid #f0ad4e; border-radius: 4px;">
+    <p style="margin: 0; font-size: 15px; line-height: 1.8; color: #333;">
+      <strong>💡 核心洞察：</strong>人类与AI主要通过文字对话，但文字难以高效传达准确信息。写提示词时要把相关信息<span class="hl-yellow">完整提交给AI</span>，它才能准确判断。这就像人类沟通中的共享信息池——表面需求和隐藏协议往往AI并不知晓。
+    </p>
+  </div>
+  
+  <p><strong>关键行动：</strong></p>
+  <div class="data-block" data-coord="02:30:25">
+    <ul style="margin-left: 20px; line-height: 1.8;">
+      <li>学会向AI<span class="hl-yellow">提问题</span>，将自己知道的所有信息同步给它（可通过附件等形式提供文档）</li>
+      <li>提升自身能力，以判断AI输出的准确性，避免盲目依赖</li>
+      <li>对于多轮沟通，建议经常打开新聊天，使用ChatGPT时关掉记忆功能</li>
+      <li>能够提取上一轮有效上下文，这就是优秀提示词的体现</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 第四部分：零基础入门路径 -->
+<section class="sec-block">
+  <h2 class="sec-header">零基础入门：从模仿到创新</h2>
+  <div class="sec-coord">02:46:10 → 02:51:52</div>
+  
+  <p><strong>推荐入门方法：</strong></p>
+  <div class="data-block" data-coord="02:46:10" style="background: #f0f8ff; padding: 15px; margin: 15px 0;">
+    <ol style="margin: 0 0 0 20px; line-height: 2;">
+      <li>跟AI聊天实践，参考社区提示词并动手修改</li>
+      <li>利用微图AGI等平台的大量提示词，逐个测试</li>
+      <li>先复制他人优质提示词（如猫叔提供的原始提示词），让AI根据不足改进</li>
+      <li>与AI进行多轮对话，指出问题，获取新版本，反复修改打磨</li>
+      <li>关键词：<span class="hl-yellow">折腾</span>——要愿意反复调整，慢慢就会掌握规律</li>
+    </ol>
+  </div>
+  
+  <p><strong>重要提醒：</strong></p>
+  <ul style="margin-left: 20px;">
+    <li>零基础新人先别看李继刚等大咖的最新提示词，容易被复杂性吓到</li>
+    <li>可先复制再修改创新，这是学习的正确顺序</li>
+    <li>将行业知识抽象转化为提示词是利用AI解决问题的核心——需要成为行业专家才能更好地运用</li>
+  </ul>
+</section>
+
+<div class="hero-rule"></div>
+
+<div class="takeaways">
+  <h3 style="margin: 0 0 15px 0; font-size: 16px;">🎯 核心要点</h3>
+  <ol style="margin: 0; padding-left: 20px; line-height: 2;">
+    <li><strong>提示词是完整上下文的指令集</strong>——提供完整信息是AI准确判断的前提，不同发展阶段各有特点，当前处于上下文阶段</li>
+    
+    <li><strong>掌握四要素框架</strong>——身份、任务、要求、格式，其中身份要贴合情境，任务要写清执行步骤，这是结构化提问的基础</li>
+    
+    <li><strong>文字传达有局限性</strong>——必须把所有相关信息同步给AI，包括隐藏协议，才能获得高质量输出，这是与AI高效沟通的前提</li>
+    
+    <li><strong>判断力比依赖力更重要</strong>——提升自身能力判断AI输出的准确性，学会向AI提问题，这比盲目信任AI的输出更关键</li>
+    
+    <li><strong>模仿→修改→创新的学习路径</strong>——零基础应先复制优质提示词，通过与AI多轮对话改进，重点是"折腾"和实践积累</li>
+    
+    <li><strong>行业知识是转化为提示词的基础</strong>——要利用AI解决问题，需要成为行业专家，将专业知识转化为精准的提示词指令</li>
+    
+    <li><strong>不同工具有差异性应用</strong>——推荐用Poe平台测试多个模型，找到适合自己的；避免一开始就学最新、最复杂的提示词</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>📌 WaytoAGI晚8点共学 | 2025-10-03</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
