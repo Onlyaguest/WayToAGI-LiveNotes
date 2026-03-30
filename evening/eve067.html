@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百度AI追热季 AI·生存·宇宙 故事创作视频挑战赛 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+  <span class="ep-badge">WaytoAGI 共学</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/BAIDU/2025-09-24/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">百度AI追热季 <span class="hl">AI·生存·宇宙</span> 故事创作视频挑战赛</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">10万奖池</span>
+    <span class="hero-meta">蒸汽机2.0模型</span>
+    <span class="hero-meta">2025-09-24</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section class="sec-header">
+  <h2>赛事核心机制</h2>
+  <div class="sec-coord">灵感盲盒 × 6,760命题 × AIGC视频创作</div>
+</section>
+
+<p>本次比赛采用创新的<span class="hl-yellow">灵感盲盒命题机制</span>，每个命题由AI相关词+生活词+场景词组成，共6,760个不同组合。参赛者需投稿不少于60秒的AIGC视频（AIGC部分≥80%），前100+高质量作品有望打包成AIGC单元剧。投稿时间：9月20日-10月15日，获奖公布于11月。</p>
+
+<div class="data-block" data-coord="奖励结构">
+  <strong>五档奖励体系：</strong>
+  <ul>
+    <li><span class="hl-yellow">大奖</span>：5万元+比亚迪商业合作</li>
+    <li>优胜奖：2×2万元</li>
+    <li>创意奖：15×5千元</li>
+    <li>参与奖：前500名×100元</li>
+  </ul>
+</div>
+
+<hr class="hero-rule">
+
+<section class="sec-header">
+  <h2>百度蒸汽机2.0模型革新</h2>
+  <div class="sec-coord">音视频一体化生成 × 影视级画质 × 复杂镜头语言</div>
+</section>
+
+<p>百度蒸汽机视频生成模型2.0重磅更新<span class="hl-yellow">音视频一体化生成能力</span>，一次性生成包含人物台词、背景音效、环境音的完整视频，完全解决传统"生成无声视频"的痛点。支持多达数十种复杂镜头语言（运镜、推拉、摇移、环绕、跟随等），最高达1080P影视级高清画质。</p>
+
+<div class="data-block" data-coord="模型版本矩阵">
+  <strong>三大版本对应不同需求：</strong>
+  <ul>
+    <li><strong>Turbo版</strong>：720P，单次5秒，约14积分/次（主推）</li>
+    <li><strong>Lite版</strong>：720P，极致性价比，生成速度和价格最优</li>
+    <li><strong>Pro版</strong>：1080P超高清，影视级质感</li>
+    <li><strong>有声版</strong>：最高720P，支持5秒/10秒选项，25-42积分/次</li>
+  </ul>
+</div>
+
+<blockquote class="golden-quote">
+  <p>"特效效果不输百万级电影特效" —— 好莱坞知名视效导演姚奇，评价蒸汽机2.0与其共创的影视级短片《归途》</p>
+  <span class="quote-author">— 姚奇（好莱坞视效导演）</span>
+</blockquote>
+
+<hr class="hero-rule">
+
+<section class="sec-header">
+  <h2>Prompt撰写与创作实战</h2>
+  <div class="sec-coord">结构化提示词 × 多场景适配</div>
+</section>
+
+<p>有效的Prompt应遵循三段式结构：<span class="hl-yellow">主体描述 → 动作方式 → 镜头运动</span>。有声视频需额外说明对话情绪与台词（5秒版推荐≤20字，10秒版≤35字）。多人物场景必须明确指定说话主体，双人对话需标注先后顺序，避免模型困惑。创作建议结合多平台：用吉梦生图处理国风元素，用蒸汽机做视频效果，充分发挥各工具优势。</p>
+
+<div class="data-block" data-coord="积分获取渠道">
+  <strong>免费体验机制：</strong>
+  <ul>
+    <li>本次比赛准备200个×2,000积分免费账号</li>
+    <li>新用户登录即送积分</li>
+    <li>每周四"狂欢星期四"活动获取积分</li>
+    <li>相比主流模型价格低30%</li>
+  </ul>
+</div>
+
+<hr class="hero-rule">
+
+<section class="sec-header">
+  <h2>参赛路径与创作建议</h2>
+  <div class="sec-coord">加群领积分 → 抽命题 → 脚本生成 → AIGC制作 → 多平台发布</div>
+</section>
+
+<p>加入比赛选手群后，立即领取免费积分账号，通过灵感盲盒抽取命题（记录编号）。将命题交由大语言模型生成脚本分镜，提高创作效率。使用蒸汽机模型按Prompt指南制作视频，配合多个AI工具协同。最后发布至百家号和其他自媒体平台，带上"#AI追热季 #AI生存宇宙"话题标签完成投稿。</p>
+
+<p>社区选手已验证的<span class="hl-yellow">高效创作流程</span>：科幻类题材配合蒸汽机模型的复杂镜头语言效果最佳。如"知识库-死亡-月球"的命题，AI可生成宇航员在月球发现由死亡数据维持知识库的独特情节，前16人成为燃料的反转设定富有张力。</p>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>💡 核心收获</h3>
+  <ol>
+    <li><span class="hl-yellow">创新命题机制激发创意</span>：6,760个精心设计的盲盒组合，致敬《爱死机》含隐藏彩蛋命题</li>
+    <li><span class="hl-yellow">音视频一体化破解痛点</span>：蒸汽机2.0一次生成完整视频（画面+台词+音效），彻底消除后期配音压力</li>
+    <li><span class="hl-yellow">影视级画质可商业化</span>：好莱坞导演认可的1080P质量，100+作品有机会打包成正式单元剧</li>
+    <li><span class="hl-yellow">差异化工具组合策略</span>：吉梦生图+蒸汽机视频，分工协作提升细节控制度</li>
+    <li><span class="hl-yellow">Prompt结构化减少试错</span>：三段式提示词模板+字数控制规则，提高一次成功率</li>
+    <li><span class="hl-yellow">低成本高激励的参赛设计</span>：免费积分+百元参与奖+分级奖励，降低创作门槛</li>
+    <li><span class="hl-yellow">AI脚本生成缩短前期筹备</span>：用LLM将命题转脚本，快速进入制作阶段</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回会议列表</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI · 2025-09-24 | 音视频生成 × 创意竞赛</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
