@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code/CodeX+Skills安装配置全攻略 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="ep-badge">会议纪要</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/CLAUDE-CODE/2024-12-16/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">Claude Code/<span class="hl">CodeX+Skills</span>安装配置全攻略</h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">🗓️ 2024年12月16日 19:55-22:44</div>
+    <div class="hero-meta">👥 Ben | 木里 | 彭程</div>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<section>
+  <h2 class="sec-header">Claude Code 安装与配置核心方案</h2>
+  <div class="sec-coord">01 | 环境部署</div>
+  <p>Claude Code 提供<span class="hl-yellow">两种安装方式</span>：有梯子可直接配置代理安装；无梯子需安装nodejs依赖并通过命令行复制安装。账号模式分为官方账号（易被封）、中转账号（解决账号网络问题）、国产大模型（能力有差距）三种，可根据需求选择。API配置以DeepSeek为例，通过获取API key并用CC Switch工具便捷配置。</p>
+  <div class="data-block" data-coord="安装配置">
+    <strong>三层账号解决方案：</strong>
+    <ul>
+      <li>官方账号 → 中国不友好易被封</li>
+      <li>中转账号 → 解决账号和网络问题（推荐）</li>
+      <li>国产大模型 → 能力有差距但可用</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">Claude Code 功能与技能体系</h2>
+  <div class="sec-coord">02 | 应用实践</div>
+  <p>Claude Code插件界面友好，避免命令行恐惧。提供Plan、Bypass permission、Ask before Edit等多种模式切换。<span class="hl-yellow">Skill是Claude Code的技能包</span>，可将任务打包（如做PPT、写文章），分为官方技能和自编写技能两类。演示包括创建待办清单、迭代页面样式和功能、使用Git进行版本管理等实战操作。</p>
+  <div class="data-block" data-coord="Skills应用">
+    <strong>Skill类型与用途：</strong>
+    <ul>
+      <li>📊 官方做PPT技能 → 直接读取技能文档执行</li>
+      <li>✍️ 写作技能 → 按风格生成高质量文章</li>
+      <li>🎲 自建掷骰子skill → 通过Skills Creator创建娱乐功能</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">无代码开发实战案例与AI训练营</h2>
+  <div class="sec-coord">03 | 生态建设</div>
+  <p>许松展示的穿衣橱应用集衣服分类筛选、抠图、记录穿搭、洗衣提醒、虚拟试衣和AI拼图等功能。从10月开始接触AI，通过与Gemini和Claude交流学习，逐步迭代完成。<span class="hl-yellow">AI CODING训练营第四期即将开营</span>，致力消除知识鸿沟、连接全球人才，已开展N8N、智能体、AI短剧三期。</p>
+  <div class="data-block" data-coord="训练营规划">
+    <strong>AI CODING训练营：</strong>
+    <ul>
+      <li>🎯 使命：消除知识鸿沟，实践教学为主</li>
+      <li>📅 第四期：1月开营，课程根据学员需求定制</li>
+      <li>🤝 预报名已启动，配置搭子团互帮互助</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">Cloud Skills方法与生态推广</h2>
+  <div class="sec-coord">04 | 工具生态</div>
+  <p>Cloud Skills方法相比搭建MCP Server和AI Agent工作流更便捷，只需会写文档即可编排。已验证效果良好，但因用户了解不足导致普及率低。彭程计划开展系列直播课讲解Claude code、CodeX的快速入门、配置、MCP和Skills使用及实战技巧，展示Claude code在编程外做文章、PPT等多场景应用。</p>
+  <blockquote class="golden-quote">
+    "Claude code不仅可用于编程，还能做写文章、做PPT等其他事。Cloud Skills方法好用且简单，比搭建MCP Server更便捷——只要会写文档就能编排。"
+  </blockquote>
+</section>
+
+<div class="takeaways">
+  <h3>💡 核心要点</h3>
+  <ol>
+    <li><strong>双轨安装方案</strong>：有梯子直接代理，无梯子用nodejs+命令行，中转账号是最实用选择</li>
+    <li><strong>Skill是核心生产力</strong>：官方和自编技能可大幅提效，不仅限编程场景</li>
+    <li><strong>无代码应用可行</strong>：零基础通过与AI交互可完成完整App开发（如穿衣橱应用）</li>
+    <li><strong>Git版本管理必学</strong>：如同游戏存档系统，可回滚版本，适用团队协作</li>
+    <li><strong>AI CODING训练营开放报名</strong>：第四期1月开营，课程定制化，提供搭子团支持</li>
+    <li><strong>Cloud Skills普及机会</strong>：低门槛高效率，需持续科普推广</li>
+    <li><strong>多模式切换灵活</strong>：Plan/Ask before Edit等模式满足不同开发场景需求</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <span>WaytoAGI 晚8点共学</span>
+    <span>2024-12-16</span>
+  </div>
+</div>
+</div>
+</body>
+</html>
