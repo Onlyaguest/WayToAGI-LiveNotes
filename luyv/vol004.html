@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vol.004 · OpenCreator内容创作者的一站式画布 | 鹿演 WayToAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<nav class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回索引</a>
+  <span class="ep-badge">鹿演 Vol.004</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-coord">LUYV / VOL-004 / 2025-08-21 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">OpenCreator<br><span class="hl">内容创作者</span>的<br>一站式画布</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">主讲：陈筱漫</span>
+    <span class="hero-meta">时长：约 93 分钟</span>
+    <span class="hero-meta">616 位参会者</span>
+  </div>
+  <div class="hero-rule">鹿演 Vol.004 · 2025.08.21</div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    产品核心理念
+  </div>
+
+  <div class="golden-quote">心流不应被工具切换打断——从生成到剪辑，一处完成所有创作</div>
+
+  <div class="data-block" data-coord="PAIN-POINT">
+    <p>创作者的真实痛点在于：<span class="hl-yellow">创作流程碎片化</span>。想出一个镜头概念，要在 Midjourney 出图、Runway 生视频、PR 剪辑、再回到 ChatGPT 改文案……每一次切换都是一次心流的中断。OpenCreator 的回答是：把所有创意原子放进同一块画布。</p>
+  </div>
+
+  <blockquote class="quote">
+    Two one idea, all your needs — 一个创意，一张画布，全部搞定。
+    <span class="quote-author">— 陈筱漫，OpenCreator 联合创始人</span>
+  </blockquote>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    画布交互与核心功能
+  </div>
+
+  <div class="data-block" data-coord="CANVAS-INTERACTION">
+    <p><strong>基础交互：拖拽 + 连线</strong><br>
+    左侧原子库按 <span class="hl-yellow">文图 / 视频 / 语音 / 剪辑</span> 分类，拖拽节点到画布上连线即构成工作流。每个 AI 模块可独立切换底层模型，一键测试提示词对比效果。</p>
+  </div>
+
+  <div class="data-block" data-coord="RUN-MODES">
+    <p><strong>两种运行模式</strong></p>
+    <ul>
+      <li>🔬 <span class="hl-yellow">单节点运行</span>：点击原子右上角小按钮，单任务测试，调参选型用</li>
+      <li>🚀 <span class="hl-yellow">全局批量运行</span>：点击右上角大 Run，整条工作流批量产出，专业团队批量制素材首选</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="ABILITY-MATRIX">
+    <p><strong>能力矩阵</strong></p>
+    <ul>
+      <li>文字：文生文、文本分裂（脚本→镜头提示词）</li>
+      <li>图片：文生图、图生图、风格一致生图、去背景、高清化、图片描述</li>
+      <li>视频：文生视频、图生视频+音效、视频高清化、对口型</li>
+      <li>音频：背景音乐生成、TTS 人声（接入 Eleven Labs、Fish Audio）</li>
+      <li>剪辑器：轨道裁剪、音画合成、标题添加、平台尺寸适配</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="MODELS">
+    <p><strong>已接入模型</strong>：GPT-5 等文字模型 · Flux / 集梦 等图像模型 · 多家视频模型 · Eleven Labs / Fish Audio 语音模型</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    二创生态与资产管理
+  </div>
+
+  <blockquote class="quote">
+    Let me remix it — 把工作流分享给队友，创作不再从零开始。
+    <span class="quote-author">— 陈筱漫</span>
+  </blockquote>
+
+  <div class="data-block" data-coord="ASSET-SYSTEM">
+    <p><strong>资产区域（Assets）</strong>支持三类存储：</p>
+    <ul>
+      <li>📁 历史生成结果：视觉 / 音频 / 文本，全部可溯源</li>
+      <li>🔧 工作流模板：保存原子组合及参数，下次直接拖入画布复用</li>
+      <li>🔄 <span class="hl-yellow">二创分享</span>：团队成员基于同一工作流修改参数，无需重新搭建</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="COMMUNITY-VISION">
+    <p><strong>社区化愿景</strong>：团队希望 OpenCreator 成为<span class="hl-yellow">创意工作流交流平台</span>，让创作者可以分享、交易和 Remix 彼此的工作流，形成创意飞轮。</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    定价策略与实战成本
+  </div>
+
+  <div class="data-block" data-coord="PRICING">
+    <p><strong>三梯度低价方案</strong>（按素材生成量区分）</p>
+    <ul>
+      <li>第一梯度参考量：约 <span class="hl-yellow">40 个 0.16s 视频 + 135 个 Flux 图像</span></li>
+      <li>建议新手先单节点测试调参，确认效果后再批量运行，兼顾效果与成本控制</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="COST-CASE">
+    <p><strong>典型工作流成本拆解</strong>（经典视频创作流）</p>
+    <ul>
+      <li>声图声纹单元：token 消耗极低</li>
+      <li>文生图：有价格梯度，可选型控制</li>
+      <li>图生视频：因厂商 API 不同，成本差异较大</li>
+      <li>全流程合计：<span class="hl-yellow">约 2–3 美元/次</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-05</span>
+    团队、上手路径与招聘
+  </div>
+
+  <div class="golden-quote">模型接入不是壁垒，场景泛化与工作流复用才是真正的护城河</div>
+
+  <div class="data-block" data-coord="TEAM">
+    <p><strong>三人团队（"三角形"）</strong>：陈筱漫 · 小艺 · 大海<br>
+    源于自身创作痛点——纽约广告公司案例与创意比赛经历，决心为创作者打造包容、接纳的一站式平台。<br>
+    当前招聘方向：<span class="hl-yellow">全栈开发 / 市场 / 运维</span>，简历投递见 waytoagi.com 鹿演第四期文档。</p>
+  </div>
+
+  <div class="data-block" data-coord="ONBOARDING">
+    <p><strong>新用户入手路径</strong></p>
+    <ol>
+      <li>访问 <span class="hl-yellow">opencreator.io</span>，点击 Start for Free</li>
+      <li>从 Templates 模板开始，点击 Make it Yours 修改参数</li>
+      <li>熟悉后选 Start from Scratch，自建工作流</li>
+      <li>官方 YouTube（Open Creator）及微信视频号持续更新教程</li>
+    </ol>
+    <p>支持 QQ 邮箱 / 谷歌邮箱注册，<span class="hl-yellow">无需翻墙</span>，推荐 Chrome 浏览器。</p>
+  </div>
+</section>
+
+<section class="takeaways">
+  <div class="takeaways-header">核心要点 Takeaways</div>
+  <ul>
+    <li><span class="label">产品定位</span>OpenCreator 是面向内容创作者的一站式 AI 画布，以 Workflow 形态将文图视频音频剪辑全流程整合，消灭工具切换造成的心流断裂。</li>
+    <li><span class="label">核心交互</span>拖拽原子节点 + 连线构建工作流，支持单节点调试与全局批量运行两种模式，兼顾探索与规模化生产。</li>
+    <li><span class="label">二创壁垒</span>工作流可保存为模板分享给队友，支持 Remix 二创，团队协作不再从零开始，形成创意复用飞轮。</li>
+    <li><span class="label">成本控制</span>典型视频创作全流程约 2–3 美元；建议先单节点测试选型，调好参数后再批量，兼顾质量与预算。</li>
+    <li><span class="label">Workflow vs Agent</span>当前选择 Workflow 形态是因其更直觉还原心流交互，可灵活调整单一节点参数，未来不排除结合 Agent 能力。</li>
+    <li><span class="label">真正护城河</span>模型接入是基础，核心壁垒在于场景泛化——让用户因效果好或工作流复用提效而形成使用粘性。</li>
+    <li><span class="label">上手建议</span>新手从模板入手，基于成熟 SOP 快速出效果；进阶用户从空白画布自建，先粗测原子能力再批量运行。</li>
+    <li><span class="label">团队招聘</span>三人小团队，急需全栈开发、市场与运维，感兴趣可至 waytoagi.com 鹿演第四期文档查看联系方式。</li>
+  </ul>
+</section>
+
+<footer class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← WaytoAGI 鹿演索引</a><br>
+    OpenCreator · opencreator.io
+  </div>
+  <div class="footer-stamp">鹿演 Vol.004 · 2025.08.21 · STRUCTURED BY AI</div>
+</footer>
+</div>
+</body>
+</html>
