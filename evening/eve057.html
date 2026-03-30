@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【提示未来】AI视频赛事创作指南 — 以故事为核心的创作理念 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+  <span class="ep-badge">EVE/WTAGIXX/2025-10-18/TRANSCRIPT→STRUCTURED</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WTAGIXX/2025-10-18/赛事解读</div>
+  <h1 class="hero-title">【提示未来】<span class="hl">AI视频赛事创作指南</span> — 以故事为核心的创作理念</h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">📅 2025年10月18日 19:55-21:50 (GMT+08)</div>
+    <div class="hero-meta">👥 4位嘉宾 | 极视未来嘉定故事赛</div>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">赛事核心信息</h2>
+  <div class="sec-coord">赛题设置 · 奖金结构 · 评审标准</div>
+  
+  <div class="data-block" data-coord="赛事规则">
+    <strong>赛题特点：</strong>开放主题"极视未来·嘉定故事"，鼓励虚构、幻想、纪实等多元表达；分为<span class="hl-yellow">专业组（奖金丰厚）</span>和<span class="hl-yellow">高校组</span>；故事时长≥3分钟；每人仅能选择一个组别投稿。
+  </div>
+
+  <div class="data-block" data-coord="奖金池">
+    <strong>奖励设置（总计41万元）：</strong>
+    <ul>
+      <li>专业组：一等奖10万 | 二等奖6万×2 | 三等奖2万×3 | 入围奖10名</li>
+      <li>高校组：一等奖3万 | 二等奖2万×2 | 三等奖1万×3 | 入围奖10名(1000元卡)</li>
+      <li>人气奖：前20名获购物卡+专业会员</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="评审维度">
+    <strong>评分构成：</strong>叙事表达<span class="hl-yellow">40%</span> + 技术完成度30% + 创新性30%
+    <br><em>→ 故事内核与表达能力是核心竞争力</em>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">创作黄金法则：故事至上</h2>
+  <div class="sec-coord">4位导师共识 · 避坑指南</div>
+
+  <div class="quote">
+    <p><span class="hl-yellow">"很多AI创作者为了突破视觉表达上限而忽略传统故事表达，导致作品炫技。建议创作者以故事为核心，塌下心来把故事讲清楚、讲明白、讲好。"</span></p>
+    <div class="quote-author">— 小开老师 · 资深编导</div>
+  </div>
+
+  <div class="data-block" data-coord="故事创作方法论">
+    <strong>✓ 三步故事创作法：</strong>
+    <ol>
+      <li><span class="hl-yellow">确定故事内核</span> — 先定故事类别（喜剧/爱情/科幻等），围绕内核补充情节细节</li>
+      <li><span class="hl-yellow">技术逻辑约束</span> — 有想象力但需符合逻辑，避免与故事无关的镜头和花哨转场</li>
+      <li><span class="hl-yellow">叙事节奏打磨</span> — 注重镜头间的配合，高级剪辑应让观众感觉不到剪辑存在</li>
+    </ol>
+  </div>
+
+  <div class="data-block" data-coord="时间分配建议">
+    <strong>短片制作时间分配：</strong>前期分镜和后期剪辑相对重要，为剪辑留充足时间反复打磨；故事亮点部分需重点打磨；各环节比例应相近但倾向前期和后期。
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">嘉定元素融入艺术</h2>
+  <div class="sec-coord">地域特色 · 场景运用 · 避免刻板</div>
+
+  <div class="data-block" data-coord="融入核心原则">
+    <strong>🎯 关键建议（马哲元导演）：</strong>
+    <ul>
+      <li><span class="hl-yellow">不要刻意提及"嘉定"二字</span> — 让故事自然与嘉定产生关联，通过情感传递而非文旅介绍</li>
+      <li><span class="hl-yellow">发挥想象力</span> — 虚构故事也能与嘉定建立关联，场景设定灵活多样</li>
+      <li><span class="hl-yellow">强调故事灵魂</span> — 不要揣测评委标准，否则作品易失灵魂</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="嘉定特色资源">
+    <strong>可利用的场景与产业：</strong>
+    <ul>
+      <li>中华老街 · 赛车场 · 游戏产业 — 古典/赛车/游戏题材背景</li>
+      <li>中式古建筑 · 园林 — 历史故事发生地</li>
+      <li>文化积淀 · 非遗特色 — 人物故事切入点</li>
+    </ul>
+    <em>* 官方提供嘉定宣传片、政府网站资源供参考</em>
+  </div>
+
+  <div class="golden-quote">
+    <p><span class="hl-yellow">"做片子的公式：人物情感 + 嘉定元素 + 未来科技。可以将小故事串联，从时间或空间维度布局，让嘉定的人和事在未来场景中产生情感链接。"</span></p>
+    <div class="quote-author">— 麦摄老师 · AI创意总监</div>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">工具与技术支持</h2>
+  <div class="sec-coord">推荐工具 · 算力扶持 · 工作流分享</div>
+
+  <div class="data-block" data-coord="推荐工具清单">
+    <strong>🛠️ 嘉宾推荐工具：</strong>
+    <ul>
+      <li><span class="hl-yellow">威度海螺</span> — 动作表现优秀（小开老师推荐）</li>
+      <li><span class="hl-yellow">智灵心境</span> — 整合字节模型，提供大厂API算力，成本低（马哲元推荐）</li>
+      <li><span class="hl-yellow">Libra 2.0</span> — 整合平台，充会员解决多数创作问题，官方整理图像模型清单和爆款showcase（延川推荐）</li>
+      <li><span class="hl-yellow">Open Banana模型</span> — 比Nano Banana更好地兼顾创造力与细节（马哲元分享）</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="后续资源共享">
+    <strong>📚 将发布到知识库/飞书的资源：</strong>
+    <ul>
+      <li>电影工作流 · 自动做海报 · 自动做分镜工具</li>
+      <li>视听语言运用与剪辑方法详细PPT</li>
+      <li>嘉定区历史、文化、产业介绍网站</li>
+      <li>各位评委老师资料汇总</li>
+      <li>Libra 2.0 图像模型清单与爆款案例</li>
+    </ul>
+    <em>* 有人使用智灵心境可联系马哲元获算力扶持</em>
+  </div>
+</section>
+
+<hr class="hero-rule">
+
+<div class="takeaways">
+  <h3>💡 核心要点速记（5大Takeaways）</h3>
+  <ul>
+    <li><strong>故事为王：</strong>避免炫技，以故事内核为中心，讲清楚、讲明白、讲好是成功的基础</li>
+    <li><strong>故事逻辑约束：</strong>技术运用需符合逻辑，镜头、转场、首尾帧都要服从叙事节奏，而非花哨展示</li>
+    <li><strong>嘉定融入自然化：</strong>不刻意提及地名，让故事自然与嘉定产生关联，通过情感链接而非堆砌元素</li>
+    <li><strong>时间分配重前期与后期：</strong>留充足时间打磨剪辑和叙事节奏，特别是故事亮点部分需反复精进</li>
+    <li><strong>不揣测评委意图：</strong>专注讲好故事赋予作品灵魂，41万奖金池竞争激烈，尽早完成投稿争取优先评审</li>
+  </ul>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回索引</a>
+  </div>
+  <div class="footer-stamp">
+    <em>智能纪要生成 | 2025-10-18 | 极视未来AI视频挑战赛 · 第二期赛题解读直播</em>
+  </div>
+</div>
+</div>
+</body>
+</html>
