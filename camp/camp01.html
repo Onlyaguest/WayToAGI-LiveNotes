@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills爆改训练营 Day1 · Claude Code 能力解锁Skills 工作流重塑 | WayToAGI 训练营</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+  <span class="ep-badge">CAMP</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">CAMP / SKILLS爆改 / 2026-01-21 / STRUCTURED</div>
+  <h1 class="hero-title">Claude Code <span class="hl">能力解锁</span><br>Skills <span class="hl">工作流</span>重塑</h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">主讲：橘子 (Listenhub CEO) / 向阳乔木</div>
+    <div class="hero-meta">参与：Max (CMO) / 歸藏</div>
+  </div>
+  <div class="hero-rule">Skills爆改训练营 · 2026.01.21</div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    Claude Code：从工具到智能体的蜕变
+  </div>
+  
+  <p>Claude Code 不是传统的图形界面软件，而是运行在终端中的 <span class="hl">智能体接口（Agentic Interface）</span>。橘子将其定义为比 Manus 更具通用性的超级智能体——能写代码、处理财务数据、生成 PPT、分析数据，甚至结合 Listenhub API 生成音频和图片。</p>
+
+  <div class="data-block" data-coord="核心特性">
+    <strong>三大核心特性</strong>
+    <ul>
+      <li><span class="hl-yellow">文件夹作为上下文</span>：简单拖拽，让 AI 读取海量文件</li>
+      <li><span class="hl-yellow">多模态交互</span>：直接粘贴图片（Ctrl/Cmd+V），利用 Vision 能力分析截图</li>
+      <li><span class="hl-yellow">多线程并行</span>：同时开启多个终端窗口，让不同 Agent 并行处理</li>
+    </ul>
+  </div>
+
+  <p><strong>环境搭建的关键决策</strong>：摒弃官方 Anthropic 服务（易封中国 IP、成本高），转而通过 API 连接国产大模型。<span class="hl">强烈推荐 GLM 4.7（智谱）</span>，Coding 能力已突破阈值，备选方案包括 Minimax 2.1 和 Kimi k2，极大降低 Token 消耗成本。</p>
+
+  <div class="data-block" data-coord="灵魂文件">
+    <strong>Claude.md：Agent 的「大脑皮层」</strong>
+    <p>在工作目录下创建 <code>Claude.md</code> 或 <code>memory.md</code>，存储用户的偏好、身份设定、输出风格及固定的工作流（SOP）。下次启动时，Agent 会自动读取，实现「记忆永存」，无需每次重复输入背景信息。</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    Skills：将复杂工作流封装为一句话指令
+  </div>
+
+  <p>Skill 是被封装的标准化作业程序（SOP），将一系列复杂的 Prompt 和工具调用链固化为简短指令。任何高频重复的动作都应转化为 Skill。</p>
+
+  <div class="quote">
+    <p>「指令：下载《被讨厌的勇气》，解读并配图，发布到 Twitter。」向阳乔木演示的全自动知识内化流程展示了 Skills 的真正力量——从选版本下载、格式转换、AI 深度阅读、风格仿写，到关键词配图、自动排版，整个过程完全无需人工干预。</p>
+    <div class="quote-author">— 向阳乔木，硬核玩家</div>
+  </div>
+
+  <div class="data-block" data-coord="应用场景">
+    <strong>四大实战案例</strong>
+    <ul>
+      <li><strong>电子书全自动内化</strong>：Z-Library 下载 → Markdown 转换 → AI 解读 → 配图生成 → Twitter 发布</li>
+      <li><strong>视频生产流水线</strong>：Listenhub API（语音）+ Manim/生图工具（画面）→  自动合成解说视频，解决「音画同步」痛点</li>
+      <li><strong>信息流套利</strong>：Daily Topic Selector Skill 自动爬取 40+ 海外 Newsletter，翻译标题、总结摘要，生成本地日报</li>
+      <li><strong>论文智能化处理</strong>：自动下载论文、格式转换、图表识别并配图、生成学习笔记</li>
+    </ul>
+  </div>
+
+  <p><strong>工具联动的最优范式</strong>：以 Obsidian 为容器。AI 处理完的数据直接落库为本地 Markdown，既安全又便于二次编辑，还能自动生成 Canvas 知识图谱。这种本地优先的架构成为了 Skills 生态的最佳搭档。</p>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    Listenhub：从 TTS 到视频自动化的杀手级功能
+  </div>
+
+  <p>Listenhub 的定位从最初的「播客工具」演进到「全能创意平台」。其 Pro 用户可访问 API，支持 TTS（语音合成）、BGM 混音及关键的<span class="hl">字幕时间轴输出</span>——这是区别于其他语音模型的杀手级功能，彻底解决了视频自动化中的「音画同步」难题。</p>
+
+  <div class="data-block" data-coord="功能矩阵">
+    <strong>Listenhub 的三层能力</strong>
+    <ul>
+      <li><strong>第一层</strong>：语音朗读、播客生成、解说视频</li>
+      <li><strong>第二层</strong>：智能配图、生成精美 PPT 设计</li>
+      <li><strong>第三层</strong>：API 调用，与 Claude Code Skills 深度联动</li>
+    </ul>
+  </div>
+
+  <div class="golden-quote">
+    <p>「从传统的软件交互转向以自然语言驱动的 Agent 协作。」这不仅是技术升级，更是工作方式的本质转变——个人价值不再体现于「执行过程」，而在于「设计流程」。</p>
+  </div>
+
+  <p><strong>春节福利活动</strong>：Listenhub 在春节期间推出签到免费畅玩、Pro 账号发放及折扣码申请，降低用户入门成本。</p>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    个人生产力的分水岭：从执行者到流工程师
+  </div>
+
+  <p>这场直播揭示了 2025 年的核心分化——一边是继续手动操作软件的传统工作者，另一边是掌握「Flow Engineering」（流工程）的超级个体。</p>
+
+  <div class="data-block" data-coord="成本收益对标">
+    <strong>经济学计算</strong>
+    <ul>
+      <li>官方 API：易封中国 IP、成本高企、风险大</li>
+      <li>国产模型套餐：包月 40 元（新手优惠），月成本控制在极低水平</li>
+      <li>Claude Code 启动器开源项目：GitHub 已获 400+ Star，验证了非技术人员对低门槛工具的渴望</li>
+    </ul>
+  </div>
+
+  <p><strong>差异化场景应用</strong>：</p>
+  <ul>
+    <li><strong>内容创作者</strong>：打造「全自动睡后内容工厂」，实现一份素材、多账号矩阵化运营</li>
+    <li><strong>职场行政</strong>：成为企业内的「流程自动化架构师」，将一天的工作压缩到 30 秒</li>
+    <li><strong>独立开发者</strong>：从 App 开发转向 Skill/Plugin 开发，抢占 AI 生态早期位置</li>
+  </ul>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">核心行动清单</div>
+  <ul>
+    <li><span class="label">安装</span>Claude Code 环境搭建必须基于 Node.js 最新版；Windows 用户需额外配置；推荐使用开源启动器（400+ Star）降低操作门槛</li>
+    <li><span class="label">配置</span>选择国产大模型 API（GLM 4.7 首选）而非官方服务，通过智谱平台新手优惠（40 元/月）实现成本最优</li>
+    <li><span class="label">优化</span>创建 Claude.md 灵魂文件，注入用户偏好、身份设定及工作流 SOP，实现 Agent 的「记忆永存」</li>
+    <li><span class="label">实战</span>按需安装 Skills（不建议过多），通过 @ 或模糊描述调用；强烈推荐 Superpower 插件生态</li>
+    <li><span class="label">流工程</span>将高频重复动作封装为 Skill，从「执行者」转向「流程设计师」，实现工作流的自动化和可复用化</li>
+    <li><span class="label">组合拳</span>Listenhub API（字幕时间轴）+ Claude Code（文件处理）+ Obsidian（本地容器），构建「虚拟团队」完整闭环</li>
+    <li><span class="label">未来</span>掌握 API 调用与组合能力远比单纯学习 Prompt 更具护城河，抢占 Skill Market 早期生态位</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    Skills爆改训练营 | Day 1 · 2026.01.21 | 19:55-21:41 GMT+08
+  </div>
+</div>
+</div>
+</body>
+</html>
