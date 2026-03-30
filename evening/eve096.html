@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源多模态Agent工具 Jaaz 首发路演 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+  <span class="ep-badge">WaytoAGI晚8点共学</span>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/JAAZ/2025-07-16/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">开源多模态Agent工具 <span class="hl">Jaaz</span> 首发路演</h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">445位参会者</span>
+    <span class="hero-meta">19:49 - 21:21 (GMT+08)</span>
+    <span class="hero-meta">2025年7月16日 周三</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<section>
+  <h2 class="sec-header">路演栏目全新启航</h2>
+  <div class="sec-coord">00:07 - 开源项目JAAZ路演及魔法画布功能展示</div>
+  <p>WaytoAGI社区推出全新栏目"路演"，旨在<span class="hl-yellow">让好项目被看见</span>。该栏目将定期举办（每两周一次），为社区内的优质开源项目提供展示平台，吸引开发者和投资人，推动创新项目落地。栏目名称源于"通往AGI之路"的谐音梗，融合了社区AI CODING、AI Agent等活动积累的创新实践。</p>
+  <p>栏目设置专业审核与包装机制，严格控制时间在90分钟内完成，确保展示质量。同时对接投资人资源，为项目提供商业合作机会。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">Jaaz项目核心竞争力</h2>
+  <div class="sec-coord">30:34 - AI创作工具功能演示、优势及发展规划介绍</div>
+  <p><strong>全球首个开源本地多模态Agent</strong>，Jaaz融合了Canva、Lovart和ComfyUI的能力，专注于多模态创作领域。核心优势包括：</p>
+  <ul>
+    <li><span class="hl-yellow">速度领先</span>：1-2分钟完成批量出图（20张），输入到生成仅需2-4分钟</li>
+    <li><span class="hl-yellow">一致性强</span>：通过可自定义系统提示词和Agent，保持垂直场景的风格统一</li>
+    <li><span class="hl-yellow">多模态支持</span>：图片、视频、声音、文本、3D等，支持本地-云端混合使用</li>
+    <li><span class="hl-yellow">魔法画布</span>：全球首创的AI多模态交互产品，无需提示词即可通过勾画完成创作</li>
+  </ul>
+  <p>用户可拖入本地文件作为参考或素材，界面即将优化。一次最多生成30张图片，上限可根据需求调整。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">应用场景与商业模式</h2>
+  <div class="sec-coord">01:01:36 - 赛博狐工具介绍、答疑及路演项目展望</div>
+  <p><strong>典型应用场景</strong>包括儿童绘本制作、T恤印花素材生成、Q版表情包制作、科幻短片分镜制作和IP设计。用户可通过简单提示词快速批量生成高质量作品，相比传统方式效率提升显著。</p>
+  <p><strong>商业模式</strong>：本地模型免费下载使用（Mac/Windows），网上API按官方价格收费无差价。未来上线订阅制服务，预计价格更优惠。参考成本：制作1分30秒MV约需100-200元。近期将开展折扣活动。</p>
+  <p><strong>技术栈</strong>：Agent Sync采用LongGraph模型，画笔拼图基于OpenAI能力实现。支持ComfyUI本地工作流，下一步计划接入Codefine、飞书、多维表格、剪映等线上工作流。</p>
+</section>
+
+<div class="quote">
+  <p class="golden-quote">"让想法直接变成现实" —— Jaaz项目愿景。通过开源本地多模态Agent，降低创意工作者的技术门槛，加速从想象到产出的全流程。</p>
+  <p class="quote-author">—— 赛博狐（Jaaz主创）</p>
+</div>
+
+<section>
+  <h2 class="sec-header">团队招募与后续规划</h2>
+  <div class="sec-coord">01:29:57 - 路演报名方式说明及时间要求预告</div>
+  <p><strong>现状</strong>：团队不足10人，包括开发、设计和AI创作者。目前以业余和自愿时间贡献，遵循GitHub开源精神。</p>
+  <p><strong>招募需求</strong>：寻找有IGC/ComfyUI/生图生视频经验的全栈开发和海外运营同学作为项目合伙人，2-3年工作经验为佳。项目正寻找投资和合作赞助，欢迎商业合作咨询。</p>
+  <p><strong>发展计划</strong>：优化本地素材管理界面、上线插件和模板、提供一键同款功能、持续加强Agent能力、对画笔拼图功能进行权重处理后放开使用。</p>
+  <p><strong>路演报名</strong>：扫码或访问3W.vtoagi.com进入飞书知识库"共创项目基地-路演栏目"获取链接。报名后进行审核，确保项目质量。下一期路演为下周三。</p>
+</section>
+
+<div class="takeaways">
+  <h3>核心要点（Takeaways）</h3>
+  <ol>
+    <li><strong>路演新栏目</strong>：WaytoAGI推出"路演"栏目，每两周举办一次，为优质开源项目提供展示、融资和商业对接机会</li>
+    <li><strong>Jaaz领先优势</strong>：开源本地多模态Agent，批量出图速度业界领先（1-2分钟20张），一致性和易用性突出</li>
+    <li><strong>魔法画布创新</strong>：全球首创AI多模态交互产品，无需复杂提示词，拖拽勾画即可创作，交互体验行业领先</li>
+    <li><strong>商业模式清晰</strong>：本地免费+云端API付费+未来订阅制，支持本地-云端混合使用灵活搭配，成本控制合理</li>
+    <li><strong>应用场景丰富</strong>：涵盖绘本、印花、表情包、分镜、IP设计等多领域，用户忠诚度高，日活使用率高</li>
+    <li><strong>开源协议友好</strong>：基于开源协议，支持用户集成工作流或生图，尊重开源精神，但不建议直接复制做新工具</li>
+    <li><strong>融资与合作机会</strong>：团队主动寻找全栈开发、海外运营合伙人和投资方，商业合作窗口开放</li>
+  </ol>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>生成时间：2025年7月16日 | 会议时长：92分钟 | 参会人数：445位</p>
+    <p>纪要来源：WaytoAGI晚8点共学 | 路演栏目首期</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
