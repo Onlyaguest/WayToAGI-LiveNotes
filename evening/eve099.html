@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07-07 | WaytoAGI晚8点共学海螺02创作工坊 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WAYTOAGI/2025-07-07/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">07-07 | WaytoAGI晚8点共学<span class="hl">海螺02创作工坊</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">📅 2025年7月7日 19:56-22:14</div>
+    <div class="hero-meta">👥 520+参会者</div>
+    <span class="ep-badge">海螺AI联合活动</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">活动概览与规则</h2>
+  <div class="sec-coord">社区与海螺AI联合整合创意计划</div>
+  
+  <div class="data-block" data-coord="活动设置">
+    <p><strong>主题设定：</strong>包含海星老师出题的"动物界忍术大赛"及自由创意主题</p>
+    <p><strong>作品要求：</strong>需带特定水印和tag，多平台分发，上传分享链接；<span class="hl-yellow">视频最少需3个镜头</span>，清晰度768P或1080P均可</p>
+    <p><strong>积分福利：</strong>活动发放积分和会员权益（1080P视频体验仅限活动期）；<span class="hl-yellow">今日为领积分最后一天</span></p>
+    <p><strong>奖励机制：</strong>现金奖励、证书、积分及海螺超创机会</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">海螺02核心能力剖析</h2>
+  <div class="sec-coord">三位老师深度分享使用体验</div>
+  
+  <div class="quote">
+    <p>"海螺02对物理变化的表现很棒，能将人类动作迁移到不同物种并添加特效"</p>
+    <span class="quote-author">— 海星老师</span>
+  </div>
+
+  <div class="data-block" data-coord="物理引擎与时间理解">
+    <p><strong>物理表现出色：</strong>特效和体术细节呈现优秀，动作迁移与特效叠加能力强</p>
+    <p><strong>时间理解能力：</strong>通过时间标注精确控制主体运动和镜头变化，支持分时段动作指定</p>
+    <p><strong>风格多样化：</strong>除写实风格外，莫比乌斯、线条画等风格化表现突出</p>
+  </div>
+
+  <div class="data-block" data-coord="提示词与运镜系统">
+    <p><strong>提示词遵从度高：</strong>按顺序描述的提示词执行准确度高，<span class="hl-yellow">按顺序描述动作避免画面撕裂</span></p>
+    <p><strong>电影级运镜：</strong>升视频界面预设大量大师级运镜提示词（如左环移、上升加下摇、登场运镜），可直接使用</p>
+    <p><strong>复杂指令响应：</strong>能完成推进上升、穿梭树冠、俯拍等复杂指令，光影捕捉能力自然逼真</p>
+  </div>
+
+  <div class="quote golden-quote">
+    <p>海螺02能高概率保持创作过程中的风格一致性，虽可能有崩坏情况，但可通过剪辑手段有效处理</p>
+    <span class="quote-author">— 路西（Susie老师）</span>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">创作技法与灵感系统</h2>
+  <div class="sec-coord">从提示词到最终呈现的完整工艺链</div>
+
+  <div class="data-block" data-coord="提示词创作工艺">
+    <p><strong>分时段描述法：</strong>根据时间顺序逐段描述动作，提高模型理解和执行准确度</p>
+    <p><strong>工具优化利用：</strong>使用海螺内置提示词优化功能，或借助Gemini/Google AI Studio分析参考视频生成提示词</p>
+    <p><strong>自然语言表达：</strong>避免过于抽象词汇，用流畅自然的顺序描述画面效果</p>
+  </div>
+
+  <div class="data-block" data-coord="运镜运用秘诀">
+    <p><strong>内置运镜充分利用：</strong>登场运镜（左移+推进+右摇组合）、透视变形等预设方案效果惊艳</p>
+    <p><strong>参考学习：</strong>在Hickfield网站获取电影级运镜灵感，在X平台搜"海螺02"筛选优秀案例</p>
+    <p><strong>提示词融合：</strong>在描述中加入推进、聚焦等运镜控制指令，增强视频表现力</p>
+  </div>
+
+  <div class="data-block" data-coord="灵感获取与剪辑加工">
+    <p><strong>多渠道灵感源：</strong>X平台搜索、Gemini视频分析、前期未用素材二次利用</p>
+    <p><strong>剪辑掩盖瑕疵：</strong>运用镜头速移转场、曲线变速、倒放、加速等技巧处理AI生成缺陷</p>
+    <p><strong>配乐选择考量：</strong>兼顾音乐审美与画风契合度，参考《星际牛仔》等风格作品，在剪映搜索素材</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">高阶案例与创作洞察</h2>
+  <div class="sec-coord">从实践中总结的工程化方法论</div>
+
+  <div class="data-block" data-coord="图生视频黄金公式">
+    <p><strong>基础结构：</strong>图生视频主要通过动作变化和镜头运动呈现效果，该公式适用于多数AI视频生成工具</p>
+    <p><strong>三制作模式：</strong>Agent（文生/图生）、纯文生视频、纯图生视频，灵活选择应对不同创意需求</p>
+  </div>
+
+  <div class="data-block" data-coord="复杂动作处理经验">
+    <p><strong>高难度指令案例：</strong>假装开枪、吹枪管烟等复杂动作配大幅度仰拍镜头，海螺生成动作结构好但可能中间变形</p>
+    <p><strong>手部细节优势：</strong>手部动作丝滑度高，可通过剪辑、加速等手段修正瑕疵后直接使用</p>
+    <p><strong>一致性维护：</strong>坐骑、背景一致性主要依靠PR（Premiere）等后期合成工具处理</p>
+  </div>
+
+  <div class="data-block" data-coord="特色创意演示">
+    <p>• 极限骑行的跟随镜头运用（建议用海螺尝试骑行不同物体）</p>
+    <p>• 小猫涂鸦自己、海螺写字等趣味内容生成</p>
+    <p>• 复刻小女孩用口红在镜子写"i love you"的5镜头登场运镜创意</p>
+  </div>
+</section>
+
+<div class="takeaways">
+  <h3>💡 核心要点提炼</h3>
+  <ol>
+    <li><span class="hl-yellow">提示词黄金法则：</span>按时间顺序分段描述动作，利用海螺内置优化工具和Gemini分析，确保高遵从度执行</li>
+    <li><span class="hl-yellow">运镜即品质：</span>充分利用内置的大师级运镜预设（登场、透视等），辅以X平台与Hickfield网站灵感，显著提升视频质感</li>
+    <li><span class="hl-yellow">瑕疵容错策略：</span>AI生成素材先勿弃置，通过剪映镜头速移、曲线变速、倒放等后期手段有效掩盖崩坏细节</li>
+    <li><span class="hl-yellow">风格一致性保障：</span>海螺02在创作全程能高概率维持风格统一，部分不符预期可用剪辑与PR合成处理</li>
+    <li><span class="hl-yellow">图生视频公式可迁移：</span>动作变化+镜头运动的基础结构适用于多款AI工具，投资学习运镜技巧ROI最高</li>
+    <li><span class="hl-yellow">多模式灵活组合：</span>Agent、文生、图生三种制作路径可混搭，根据创意需求选择最优方案</li>
+    <li><span class="hl-yellow">复杂指令可控性强：</span>海螺02对推进上升、穿梭树冠、俯拍等高难指令响应优秀，手部细节与光影捕捉业界领先</li>
+  </ol>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <p>会议回放已上传至通往AGI之路官方视频号 | 资料文档整理中（预计次日发布）</p>
+    <p>后续答疑：三位老师将在活动群内持续解答相关问题</p>
+  </div>
+  <div class="footer-stamp">
+    📊 WaytoAGI Community | 海螺AI联合活动 | 2025-07-07 20:00-22:14<br>
+    🎬 内容结构化整理 | 520+创意工作者参与
+  </div>
+</div>
+</div>
+</body>
+</html>
