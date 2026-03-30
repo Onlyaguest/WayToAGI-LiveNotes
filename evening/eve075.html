@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用Cursor+Zion搭建AI应用MVP 即刻变现 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/WaytoAGI/2025-09-11/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">用Cursor+Zion搭建AI应用MVP <span class="hl">即刻变现</span></h1>
+  <div class="hero-meta-row">
+    <div class="hero-meta">WaytoAGI晚8点共学</div>
+    <div class="hero-meta">2025年9月11日 19:55-22:05</div>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<!-- 第一部分：问题背景与解决方案 -->
+<section>
+  <div class="sec-header">
+    <h2>从痛点到方案</h2>
+    <div class="sec-coord">SECTION 1: Problem & Solution</div>
+  </div>
+  <p>开发者在应用开发后面临两大难题：<span class="hl-yellow">支付接入繁琐、新手难以跨越从编码到商业化的鸿沟</span>。尤其是前端相对容易，但后端和数据库对接的调试与部署问题让许多新手望而却步。</p>
+  <p>本次活动推出的解决方案是：<strong>前端使用Cursor（AI编程工具）+ 后端使用Zion（可视化无代码平台）的组合</strong>，配合Zebra云部署平台解决备案问题，形成完整的"低门槛商业应用开发闭环"。</p>
+  <div class="quote">
+    <p>"简单的prompt即可接入支付，让AI编程新手跨越到商业化应用开发者。"</p>
+    <div class="quote-author">—— AJ，活动主讲</div>
+  </div>
+</section>
+
+<!-- 第二部分：核心工具与工作流 -->
+<section>
+  <div class="sec-header">
+    <h2>三大工具协同体系</h2>
+    <div class="sec-coord">SECTION 2: Tools & Workflow</div>
+  </div>
+  <div class="data-block" data-coord="TOOLS">
+    <h3>工具功能分工</h3>
+    <p><strong>Cursor：</strong>前端开发引擎，基于自然语言生成React代码。需在空白文件夹创建项目，优先使用Claude Sonnet 4模型，支持auto模式自动生成完整项目架构。</p>
+    <p><strong>Zion：</strong>全栈无代码后端平台。提供可视化数据库管理、行为流配置（支付宝支付回调、订单创建、查询等）、权限管理系统。支持AI Agent配置，可轻松切换不同业务场景。</p>
+    <p><strong>Zebra：</strong>全球可访问云部署平台，解决国内备案困扰。部署周期约4分钟，支持Git集成，可绑定自定义域名。</p>
+  </div>
+  <p>工作流为：复制Prompt → 在Cursor中生成前端 → 在Zion配置后端与支付 → 通过Zebra部署上线。</p>
+</section>
+
+<!-- 第三部分：实战操作与优化 -->
+<section>
+  <div class="sec-header">
+    <h2>从项目创建到上线部署</h2>
+    <div class="sec-coord">SECTION 3: Implementation & Optimization</div>
+  </div>
+  <div class="data-block" data-coord="WORKFLOW">
+    <h3>关键操作步骤</h3>
+    <p><strong>1. 项目初始化：</strong>在Zion平台注册并创建项目（选择"Cursor的AI商业应用MVP"模板），配置AI Agent场景（如"AI烹饪专家"、"旅行规划助手"等）。</p>
+    <p><strong>2. Prompt生成与前端开发：</strong>在Zion复制Agent信息 → 回到落地页生成属于自己项目的Prompt → 在Cursor新建文件夹、新建Chat、粘贴Prompt → 等待Claude Sonnet 4自动生成完整项目。</p>
+    <p><strong>3. 后端配置：</strong>在Zion平台设置数据库表结构、支付宝支付回调行为流、权限管理（区分游客/已登录用户，设定付费后才开通AI功能）。</p>
+    <p><strong>4. MCP与Rules扩展：</strong>在Cursor中添加Zion MCP配置，使AI能与数据库交互，支持新增功能自动创建表字段。</p>
+    <p><strong>5. 样式优化：</strong>推荐使用bits.dev和21st.dev的React UI组件库，复制代码到Cursor让AI集成。<strong>关键：先跑通业务逻辑，再做样式优化</strong>。</p>
+    <p><strong>6. 部署上线：</strong>在Zebra选择"从Cursor部署" → 输入项目名称、选择地区 → 自动生成可访问的线上域名。</p>
+  </div>
+  <div class="quote">
+    <p>"项目后端流程跑通后再进行样式优化，可避免影响业务逻辑。"</p>
+    <div class="quote-author">—— Tim，讲师</div>
+  </div>
+</section>
+
+<!-- 第四部分：学习路径与福利 -->
+<section>
+  <div class="sec-header">
+    <h2>持续学习与社区支持</h2>
+    <div class="sec-coord">SECTION 4: Learning Path & Community</div>
+  </div>
+  <p>系统学习建议：观看直播回放 → 参考详细文档 → 在飞书群与社区交流心得 → 学习代码基础与Git版本管理。</p>
+  <p><strong>活动福利：</strong>完成完整项目（如旅游管理网站、校园网站）并将开发笔记发布在小红书/知乎等平台，分享到飞书群，即可获得<span class="hl-yellow">一个月Zion专业版赠送</span>。</p>
+  <p><strong>持续课程：</strong>每周四晚8-10点Zion直播，新手系列由胡建老师讲授；双周四进阶系列介绍服务号通知、代码组件编写等高阶功能。可关注B站和视频号账号"ZION无代码全平台"获取直播链接。</p>
+</section>
+
+<div class="hero-rule"></div>
+
+<!-- 核心洞察 -->
+<div class="golden-quote">
+  <p class="hl">🌟 核心洞察</p>
+  <p>Cursor+Zion+Zebra形成的"AI编程+无代码后端+云部署"三角形框架，<strong>彻底降低了AI应用商业化的门槛</strong>。从0到1的MVP开发周期从数周压缩到数小时，支付能力的内置集成让新手无需面对复杂的商户接入流程，真正实现"即刻变现"的诺言。关键在于理解各工具的分工定位，以及先通逻辑、后优样式的工程实践。</p>
+</div>
+
+<!-- 要点总结 -->
+<div class="takeaways">
+  <h3>💡 五大要点速记</h3>
+  <ol>
+    <li><strong>工具矩阵：</strong>Cursor负责前端代码生成，Zion处理后端可视化搭建和支付流程，Zebra解决部署和备案难题——三者缺一不可。</li>
+    <li><strong>Prompt驱动：</strong>完整的Prompt包含Agent配置、支付行为流、用户权限管理等，是自动化生成整个项目的关键钥匙。</li>
+    <li><strong>支付即插即用：</strong>通过Zion的行为流配置支付宝回调，用户支付成功后自动解锁AI功能，无需手动编码支付逻辑。</li>
+    <li><strong>权限分层管理：</strong>游客仅查看，登录用户需付费体验AI功能，系统自动拦截未授权访问——后端权限控制确保商业闭环。</li>
+    <li><strong>迭代优化顺序：</strong>先确保数据流、支付流、权限流等业务逻辑跑通（黑盒测试），再进行UI样式优化，可显著降低后期改动成本。</li>
+  </ol>
+</div>
+
+<!-- 待办项 -->
+<div class="data-block" data-coord="ACTIONITEMS">
+  <h3>📋 关键待办事项</h3>
+  <ul>
+    <li>修复线上问题：解决Cursor本地可运行但线上出现502的Bug，重新部署并分享修复方案到群聊</li>
+    <li>文档补充：将bits.dev和21st.dev添加到官方文档中作为UI组件库推荐</li>
+    <li>直播链接：发送Zion新手系列和进阶系列直播课程链接到飞书群</li>
+    <li>社区分享：根据直播回放完成1个完整项目，发布开发笔记到小红书/知乎换取Zion专业版赠送</li>
+  </ul>
+</div>
+
+<div class="hero-rule"></div>
+
+<footer class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回首页</a>
+  </div>
+  <div class="footer-stamp">
+    <p>WaytoAGI | 2025-09-11 | AI应用MVP快速开发与变现实战</p>
+  </div>
+</footer>
+</div>
+</body>
+</html>
