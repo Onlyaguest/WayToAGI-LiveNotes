@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专为视频创作设计的 AI 智能助手 Medeo | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/MEDEO/2025-12-22/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">专为视频创作设计的 AI 智能助手 <span class="hl">Medeo</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">🎙️ 晨然 / 歸藏 / Mona</span>
+    <span class="hero-meta">📅 2025-12-22</span>
+    <span class="hero-meta">⏱️ 19:54 - 21:36 (GMT+08)</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">产品核心定位</h2>
+  <div class="sec-coord" data-coord="MEDEO/定位-功能">
+    <p><span class="hl-yellow">陪创作者聊出一个好的视频</span>——通过自然语言交互，让不同水平的创作者无需关心底层技术，就能制作出自己想要的视频。</p>
+    <p>名称由 <strong>Meta</strong> 和 <strong>video</strong> 组合而成，发音为 medeo，也可念成 vidu。</p>
+    <div class="data-block" data-coord="功能矩阵">
+      <strong>核心功能：</strong>
+      <ul>
+        <li>🎬 模板丰富 — 真实质感、动漫OP、科普、动画等多种风格</li>
+        <li>💬 对话式创作 — 与AI逐步迭代，确定视觉风格与叙事结构</li>
+        <li>⚡ 多任务并行 — 同时运行多个视频生成任务</li>
+        <li>📚 素材库 — 近百万素材库，降低制作成本</li>
+        <li>🔧 即时调整 — 随时修改音频、文案、声音大小等</li>
+        <li>🔗 模型接入 — 集成可灵、海螺等所有先进模型</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">多角色应用场景</h2>
+  <div class="sec-coord" data-coord="MEDEO/应用案例">
+    <h3>📖 英语教师视角</h3>
+    <p><strong>痛点解决：</strong> 不再需要花费大量时间搜寻与课文相符的视频素材，直接与AI聊天生成包含教学目标和语言的视频。</p>
+    <p><strong>实践案例：</strong> 用教材文本+卡通人物生成视频、BBC风格科普、儿童故事英文视频等，英文表达自然，可直接用于口语训练。</p>
+
+    <h3>✍️ 提示词创作者视角</h3>
+    <p><strong>方法论：</strong> 从优质视频（如香水广告）提取分镜、画面风格、口播风格，编写通用提示词，减少用户调整工作量。</p>
+    <p><strong>泛化能力：</strong> 小说剧情介绍、真实事件科普、电商产品介绍、Meme角色视频等多场景均表现出色。</p>
+  </div>
+
+  <div class="quote">
+    <p>"创作者更关注想法能否实现，Medeo 支持对话式迭代创作，<span class="hl-yellow">降低创作门槛是核心竞争力</span>"</p>
+    <p class="quote-author">— 宁晨然 (Medeo 产品负责人)</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">对创意产业的影响与未来</h2>
+  <div class="sec-coord" data-coord="MEDEO/未来方向">
+    <h3>🎯 与其他工具的核心差异</h3>
+    <ul>
+      <li><strong>创作方式：</strong> 对话式迭代 vs 传统线性流程</li>
+      <li><strong>模型整合：</strong> 一站式使用所有先进模型，用户无需关心技术细节</li>
+      <li><strong>人为本：</strong> 放大个体差异化，完善风格模板与角色存储</li>
+    </ul>
+
+    <h3>🚀 迭代方向</h3>
+    <div class="data-block" data-coord="产品路线">
+      <ul>
+        <li>放大创作者个体差异化，让Medeo更懂用户</li>
+        <li>辅助创作流程改变 — 人与AI像伙伴般对话完成创作</li>
+        <li>完善风格模板库与角色风格存储功能</li>
+      </ul>
+    </div>
+
+    <h3>💡 对创作者生态的启示</h3>
+    <p><strong>不会替代人类：</strong> 现阶段生成技术仍有不足，人的灵感和创造力不可替代，工具将<span class="hl-yellow">扩大视频创作人群范围</span>。</p>
+    <p><strong>赚钱案例：</strong> 大学经科普博主通过Medeo提高效率，全网几百万粉丝，播放量达两亿+，许多视频在平台完成制作。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">用户福利与后续支持</h2>
+  <div class="sec-coord" data-coord="MEDEO/运营">
+    <div class="data-block" data-coord="活动信息">
+      <p>🎁 <strong>福袋抽奖：</strong> 通往AGI之路视频号发放，中奖加群截图领500 credits</p>
+      <p>⭐ <strong>会员双倍积分：</strong> 12月30号前加入可享双倍积分，5天内发放</p>
+      <p>📱 <strong>资料获取：</strong> 关注"ONE2X STUDIO"公众号获取使用文档、教程和优秀作品</p>
+    </div>
+  </div>
+</section>
+
+<div class="golden-quote">
+  <p>"创作流程变为：先获取灵感图 → 迭代想法 → 生成视频，<span class="hl-yellow">这与传统制作流程完全不同，AI改变的是创意实现的方式</span>"</p>
+  <p class="quote-author">— 会议核心洞察</p>
+</div>
+
+<div class="takeaways">
+  <h3>📌 核心要点提取</h3>
+  <ol>
+    <li><strong>对话式创作是核心创新</strong> — Medeo通过自然语言交互降低创作门槛，让想法能够被快速迭代和实现</li>
+    <li><strong>多模型一体化集成</strong> — 用户在单一平台即可使用可灵、海螺等所有先进模型，无需切换</li>
+    <li><strong>场景适配性强</strong> — 从教育到电商，从科普到娱乐，证明了Medeo的泛化能力和一致性输出</li>
+    <li><strong>成本优势明显</strong> — 近百万素材库使快速高效制作成为可能，比纯AI生成成本更低</li>
+    <li><strong>不替代而是赋能</strong> — 扩大创作人群而非挤压现有从业者，创作门槛大幅降低</li>
+    <li><strong>个性化是未来方向</strong> — 风格模板、角色存储等功能完善将让Medeo更懂每个创作者</li>
+    <li><strong>创作流程正在重塑</strong> — 从获取灵感、迭代想法到生成视频的新模式，改变了传统制作逻辑</li>
+  </ol>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <p>📋 <a href="../index.html">查看更多会议纪要</a></p>
+  </div>
+  <div class="footer-stamp">
+    <p>智能纪要 | WaytoAGI 晚8点共学</p>
+    <p>2025-12-22 | Medeo 产品分享会</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
