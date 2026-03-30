@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海外营销增长的底层思维模式     WaytoAGI晚8点共学 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回首页</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/OVERSEAS-GROWTH/2025-09-06/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">
+    <span class="hl">海外营销增长的底层思维模式</span>
+    <span class="ep-badge">WaytoAGI晚8点共学</span>
+  </h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">2025年9月6日 (周六) 19:53-21:51 GMT+08</span>
+  </div>
+  <hr class="hero-rule">
+</div>
+
+<div class="sec-header">
+  <span class="sec-coord">第一节 | 营销本质与海外增长定义</span>
+</div>
+<p>营销的核心在于<span class="hl-yellow">让产品在用户内心上架</span>——当用户想到某个关键词时能联想到该产品。所有营销动作的终极目标是让用户知道产品如何助其变得更好。</p>
+<p>海外增长则需满足三个条件：①面向海外市场和场景；②以增长为导向，解决国内内卷问题；③产品是核心，需满足海外特定人群的需求。这是从国内市场寻求突破的关键思路。</p>
+
+<div class="sec-header">
+  <span class="sec-coord">第二节 | 需求挖掘与增长方法论</span>
+</div>
+<p>针对不同类型的人群，存在三种需求挖掘策略：</p>
+<ul>
+  <li><strong>接单获取</strong>：缺乏想法的人可通过闲鱼、朋友介绍接单，为B端客户服务，积累经验，将项目转化为可持续的资产</li>
+  <li><strong>洞察观察</strong>：有敏锐观察力的人可基于目标人群的行为，发现潜在需求并开发产品（如发现职业肖像照需求后开发AI产品）</li>
+  <li><strong>复制差异化</strong>：既无挖掘能力又不擅长接单的人，可复制已被验证的流量大市场，针对用户差评进行差异化定位</li>
+</ul>
+
+<blockquote class="golden-quote">
+  <p>"出海要打出海而非逃出海，发掘自身在国内不受重视但在海外有价值的技能，利用优势在海外市场实现降维打击。"</p>
+  <span class="quote-author">— Nixy（投资专家）</span>
+</blockquote>
+
+<div class="sec-header">
+  <span class="sec-coord">第三节 | 海外增长手段与国内差异</span>
+</div>
+<p>国内营销因流量平台高度集中化，更依赖巨头平台获客，SEO效率相对较低。而海外生态分散，<span class="hl-yellow">搜索引擎（SEO、GEO）仍占重要地位</span>。</p>
+<p>海外增长手段分为五大类：</p>
+<table style="width:100%; border-collapse:collapse; margin:1em 0;">
+  <tr style="background:#f5f5f5;">
+    <td style="border:1px solid #ddd; padding:8px;"><strong>内容营销</strong></td>
+    <td style="border:1px solid #ddd; padding:8px;">SEO、GEO、EDM、TikTok、Instagram视频、Newsletter</td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;"><strong>渠道分销</strong></td>
+    <td style="border:1px solid #ddd; padding:8px;">达人营销、联盟营销</td>
+  </tr>
+  <tr style="background:#f5f5f5;">
+    <td style="border:1px solid #ddd; padding:8px;"><strong>付费推广</strong></td>
+    <td style="border:1px solid #ddd; padding:8px;">广告投放、PR渠道发稿</td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;"><strong>社媒社区</strong></td>
+    <td style="border:1px solid #ddd; padding:8px;">Twitter、Reddit、Discord社区运营</td>
+  </tr>
+  <tr style="background:#f5f5f5;">
+    <td style="border:1px solid #ddd; padding:8px;"><strong>产品机制</strong></td>
+    <td style="border:1px solid #ddd; padding:8px;">自身功能的增长驱动</td>
+  </tr>
+</table>
+
+<div class="sec-header">
+  <span class="sec-coord">第四节 | 不同市场特点与本地化策略</span>
+</div>
+<div class="data-block" data-coord="MARKET-ANALYSIS">
+  <p><strong>日本市场</strong>：获客成本高、达人费用贵，但用户忠诚度高，一旦认可会持续使用并推荐，长期收益可观</p>
+  <p><strong>韩国市场</strong>：用户新鲜度要求高、易转移、生命周期价值低，获客成本相对日本较低</p>
+  <p><strong>中东市场</strong>：价值高但本地化要求严格，需支持阿拉伯语及从右向左的书写习惯，AI工具可大幅降低适配难度</p>
+  <p><strong>欧美市场</strong>：用户注重"关于我们"、招聘信息、创始人故事和隐私政策，欧盟尤其重视数据隐私保护法规</p>
+</div>
+
+<div class="sec-header">
+  <span class="sec-coord">第五节 | AI赋能营销的实战应用</span>
+</div>
+<p>AI在海外营销中的应用已从理论走向实践：</p>
+<ul>
+  <li>自动化生成SEO/GEO内容，需持续优化提示词降低AI痕迹检测</li>
+  <li>快速生产广告投放素材，替代外包团队降低成本（2023年起抖音、TikTok已大量采用）</li>
+  <li>充当销售角色，在用户未付款时发送邮件和折扣挽留，提高转化率</li>
+  <li>GEO处于当前红利期，产品对比、长尾问题内容等已被验证有效</li>
+</ul>
+
+<div class="takeaways">
+  <h3>核心要点总结</h3>
+  <ol>
+    <li><span class="hl-yellow">明确北极星指标</span>：小红书、推特等平台的增长策略需先确定目标（涨粉vs获客），再根据目标调整内容和运营路径</li>
+    <li><span class="hl-yellow">冷启动从SEO开始</span>：海外产品从出海第一天就应做SEO和GEO，这是可持续产生复利的基础策略</li>
+    <li><span class="hl-yellow">找到愿意买单的人</span>：无论采取哪种需求挖掘方式，核心是先验证市场需求，找到首批付费用户</li>
+    <li><span class="hl-yellow">发挥本地优势降维</span>：出海的成功不在于逃离竞争，而在于发掘自身在国内不值钱但海外有需求的技能</li>
+    <li><span class="hl-yellow">多渠道分发放大效果</span>：将SEO/GEO内容转化为推特长推文、Newsletter等多种形式分发，实现规模效应</li>
+    <li><span class="hl-yellow">克服英语心理障碍</span>：借助AI辅助表达，通过持续实践和与国外用户交流逐步提升英语能力</li>
+    <li><span class="hl-yellow">普通人可行路径</span>：推荐软件获分成、维护英文站做SEO、运营YouTube等都是低成本入门方式</li>
+  </ol>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <p>信息获取渠道：</p>
+    <ul style="margin:0.5em 0;">
+      <li>关注公众号「<strong>向阳乔木推荐看</strong>」，回复"进群"加入讨论社群</li>
+      <li>微图AGI视频号有完整会议回放</li>
+      <li>推荐订阅讲者杨毅的小报童付费专栏（产品与增长话题）</li>
+    </ul>
+  </div>
+  <div class="footer-stamp">
+    <p><strong>下期预告</strong></p>
+    <p>"未来归世界"栏目每两周举办一期，下期焦点：<strong>营销增长与AI辅助实战</strong></p>
+    <p style="font-size:0.9em; color:#999; margin-top:1em;">会议时间：2025-09-06 | 类型：共学交流 | 难度：入门友好</p>
+  </div>
+</div>
+</div>
+</body>
+</html>
