@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>月入万刀的 Agent 开发者经验分享 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回</a>
+</div>
+
+<div class="ep-badge">直播会议</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/MYSHELL/2025-07-31/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">月入万刀的 <span class="hl">Agent 开发者经验分享</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">2025-07-31 | 19:56-22:38 GMT+8</span>
+    <span class="hero-meta">参会人数 556+</span>
+  </div>
+</div>
+
+<hr class="hero-rule">
+
+<section>
+  <h2 class="sec-header">技术体系与开发方法</h2>
+  <div class="sec-coord">彬子code模式讲解 × 火火扫盲 × 安仔工作流类比</div>
+  
+  <p><strong>Code 模式核心能力：</strong>支持 Python、JS 基础语法，可在 function call 返回 JSON 格式时提取对应 value 值。以 SUB maker 为例，通过 JSON 解析实现元素结构化展示。</p>
+  
+  <p><strong>Machine vs Bot 区分：</strong>Machine 是装工具的箱子（接入 GPT、DeepSeek 等），Bot 应用是封装工作流的小应用。平台提供 2.0 内测全自动、1.0 简单创建、本地部署三种方式。</p>
+  
+  <p><strong>工作流三要素类比：</strong>安仔提出"牛马员工"概念——<span class="hl-yellow">有什么（用户输入）、做什么（具体操作）、交付什么（输出结果）</span>。以图片编辑工作流为例，用户上传→选择功能→对应节点处理（去水印、创意设计等）→交付结果。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">创作者激励与平台福利</h2>
+  <div class="sec-coord">算力提升 × 橱窗收益 × 学习资源生态</div>
+  
+  <blockquote class="golden-quote">
+    <p>成为 MyShell 创作者后，算力从 60 提升到 600，每次运作消耗 5 积分；平台承担新手培训、围炉会议等全部费用，创作者无需参与收费项目——这是真正的<span class="hl">开放共赢</span>模式。</p>
+    <span class="quote-author">— 平台方周俣博</span>
+  </blockquote>
+  
+  <div class="data-block" data-coord="创作者权益对比">
+    <p><strong>算力与成本：</strong>创作者通行证激励机制，算力充足支持各类工作流测试，包括 GPT、DeepSeek 等高端功能调用。</p>
+    <p><strong>收益模式：</strong>平台提供橱窗展示（类似淘宝橱窗），创作者需优化应用展示；月结形式公布收益排行榜，展示前三名详细数据与前十名排行。</p>
+    <p><strong>学习生态：</strong>每周围炉会议由大佬分享制作经验，社区提供教程、文档、新人教程，支持与大佬一对一技术问答。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec-header">改图 Agent 实战与大模型内化</h2>
+  <div class="sec-coord">从状态机到 GPT 能力融合</div>
+  
+  <p><strong>状态机核心：</strong>Shell Agent 1.0 改图神器搭建基于状态机设计。用户点击"开始编辑"上传图片→向导展示交互按钮→选择功能后触发对应"牛马员工"节点处理。</p>
+  
+  <p><strong>大模型能力内化：</strong>GPT 出现前，改图需求需前置大模型进行意图识别（困难重重）。如今大模型能力内化，可通过添加翻译节点（解决 Context 中文不支持）、结合 GPT 节点提升智能性。强调挖掘被忽略的用户需求——以海报场景为例，大模型能优化节点、提升用户交互量与出图评级。</p>
+  
+  <p><strong>功能拓展策略：</strong>可增加 GPT 生成按钮解决模型效果问题；换装、换脸等创意玩法受欢迎。鼓励创作者大胆创新，结合 1.0 基础概念有助于 2.0 版本调试。</p>
+</section>
+
+<section>
+  <h2 class="sec-header">新手创作学习路径</h2>
+  <div class="sec-coord">循序渐进 × 云端优先 × 动手实践</div>
+  
+  <p><strong>学习阶梯：</strong></p>
+  <ul style="margin: 12px 0; padding-left: 20px; line-height: 1.8;">
+    <li>第一步：用彬子 Code 方法，以较少节点跑通首个工作流（快速成功感）</li>
+    <li>第二步：尝试安仔方法，利用 MyShell 原生节点搭建（系统理解）</li>
+    <li>第三步：有 Confui 基础可尝试 Runninghub 复刻工作流（深度拓展）</li>
+  </ul>
+  
+  <p><strong>云端优先原则：</strong>新手推荐使用云端方式创作，避免本地部署环境复杂性和 API 对接难度。马帅已将 Share Agent 和 Config UI 搭建过程云端化，社区经验同学可迁移经验到 Share 建设。</p>
+  
+  <p><strong>动手创作驱动：</strong>讲师鼓励先做出一个简单作品，获得正反馈后加入开发者群与他人交流。强调 1.0 版本是基础——掌握概念便于 2.0 版本调试。</p>
+</section>
+
+<div class="takeaways">
+  <h3>✨ 核心要点总结</h3>
+  <ol style="line-height: 2; padding-left: 20px;">
+    <li><span class="hl-yellow">三要素工作流思维</span>：设计任何 Agent 时牢记"有什么→做什么→交付什么"，这是理解 ShareAgent 与 CostAgent 本质区别的关键</li>
+    <li><strong>算力充足 + 免费生态</strong>：创作者算力从 60→600 十倍跃升，平台全额补贴培训费用，真正零成本启动</li>
+    <li><strong>大模型能力内化是核心竞争力</strong>：不再是前置意图识别的低效模式，而是直接在工作流中融合 GPT、翻译、评级优化等能力</li>
+    <li><strong>云端优先避免踩坑</strong>：新手从云端版本开始（无需本地环保配置），再逐步掌握 1.0→2.0 迭代逻辑</li>
+    <li><strong>围炉会议 + 一对一问答</strong>：社区学习路径清晰，从教程文档到大佬直播再到技术问答，完整的知识传递闭环</li>
+    <li><strong>橱窗收益模式明确</strong>：月结排行榜激励机制清晰可见，应用优化→用户增长→收益提升的正向循环</li>
+    <li><strong>邀请码 + 直播截屏</strong>：2.0 内测通过视频号评论区打"MyShell"截屏发放，降低入场门槛，促进开发者生态繁荣</li>
+  </ol>
+</div>
+
+<hr class="hero-rule">
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">← 返回索引</a>
+  </div>
+  <div class="footer-stamp">
+    <small>会议时间：2025-07-31 | 参会：556+ | 智能纪要已生成 | 仅供参考</small>
+  </div>
+</div>
+</div>
+</body>
+</html>
