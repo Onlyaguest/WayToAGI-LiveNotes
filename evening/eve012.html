@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百度智能云 OpenClaw 部署完全指南｜模型配置、费用查询、应用场景实战 | WayToAGI 晚8点共学</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="nav-bar">
+  <a href="../index.html" class="nav-back">← 回到首页</a>
+</div>
+
+<div class="hero">
+  <div class="hero-coord">EVE/BAIDU/2026-02-03/TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">百度智能云 OpenClaw 部署完全指南<span class="hl">｜模型配置、费用查询、应用场景实战</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">2026年2月3日 17:51-19:07</span>
+    <span class="hero-meta">百度智能云 × OpenClaw/moltbot/clawdbot</span>
+  </div>
+</div>
+
+<div class="hero-rule"></div>
+
+<section data-coord="sec-01">
+  <h2 class="sec-header">模型选择与配置快速上手</h2>
+  <div class="sec-coord">百度千帆 → 模型服务 → 接入点ID复制</div>
+  
+  <p>本次演示使用 <span class="hl-yellow">DeepSeek 3.1 模型</span>，但百度千帆支持文本、图像、视频、语音等多种服务类型可自由选择。配置时需通过百度千帆页面点击"模型服务"，选择所需模型后复制接入点ID，粘贴至 open call 配置文件中即可完成对接。</p>
+  
+  <div class="data-block" data-coord="config-deepseek">
+    <strong>⚙️ 配置要点：</strong><br>
+    • 参考千帆示例文档正确填写 API ID<br>
+    • API ID 错误会导致 API 不通<br>
+    • 支持多模型切换，可在模型管理界面操作
+  </div>
+</section>
+
+<section data-coord="sec-02">
+  <h2 class="sec-header">费用透明化查询与服务部署</h2>
+  <div class="sec-coord">模型服务 → 在线推理 → 计费方式查看</div>
+  
+  <p>担心费用问题？回到模型服务页面点击"在线推理"子选项，选择具体服务和模型后可查看当前计费方式。<span class="hl-yellow">免费额度会有明显指引</span>，点击详情可查看按量付费的调用量和费用。</p>
+  
+  <div class="quote">
+    <p class="quote-text">传统方式用 Vim 编辑配置文件修改 API key 较复杂，我们提供了更友好的方式——直接复制文档中的两条命令，无需编辑文件即可完成修改，只需填写 API key 和模型 ID。</p>
+    <p class="quote-author">— 李璐</p>
+  </div>
+
+  <div class="data-block" data-coord="deployment-methods">
+    <strong>🚀 部署方式对比：</strong><br>
+    <strong>传统方式：</strong>Vim 编辑器 → 修改配置文件路径(~/call_bot) → 填写 API key<br>
+    <strong>简易方式：</strong>复制命令 → 填写 API key + 模型 ID → 完成配置
+  </div>
+</section>
+
+<section data-coord="sec-03">
+  <h2 class="sec-header">六大应用场景驱动生产力升级</h2>
+  <div class="sec-coord">个人 → 商业 → 技术 → 生活 → 社交 → 开发</div>
+
+  <div class="data-block" data-coord="use-case-1">
+    <strong>📅 个人生产力：晨间智能助理</strong><br>
+    设置定时任务每天早上7点自动：查看日程表、整理邮箱紧急未读邮件、汇总天气情况，生成文档发至飞书/通信软件。
+  </div>
+
+  <div class="data-block" data-coord="use-case-2">
+    <strong>📊 商业智能：夜间竞对分析</strong><br>
+    夜间自动搜索竞争对手官网、社交媒体、自媒体渠道资料，分析价格优惠、套餐、爆款内容、用户痛点，自动生成 PDF 报告供决策参考。
+  </div>
+
+  <div class="data-block" data-coord="use-case-3">
+    <strong>💻 技术开发：无人开发流程</strong><br>
+    晚间自动遍历代码库执行 review、测试、创建分支、写 PR 等操作，早上提交审批，<span class="hl-yellow">实现全程无人类干扰的开发</span>，显著提升开发效率。
+  </div>
+
+  <div class="data-block" data-coord="use-case-4">
+    <strong>🏠 智能家居：模糊指令精准控制</strong><br>
+    结合 Home Assistant 集成组件，精确调控暖光灯、恒温器、保湿器等设备参数，检查门锁和闹钟设置，提供便捷生活服务。
+  </div>
+
+  <div class="data-block" data-coord="use-case-5">
+    <strong>🤖 AI 社交网络：MO book</strong><br>
+    由 OpenClaw 作者创建的"人类禁止入内"的 AI 社交网络——所有帖子和评论均由 AI 代理发出，引发对 AI 发展方向的深度思考。
+  </div>
+
+  <div class="data-block" data-coord="use-case-6">
+    <strong>🛠️ 应用开发：AI 指挥 AI</strong><br>
+    指挥百度秒搭通过自然语言开发小程序或网页应用，发布到应用市场。云海博主已通过 OpenClaw 搭建年会抽奖系统。
+  </div>
+
+  <div class="golden-quote">
+    <p>🌟 <strong>最具前瞻性的应用：</strong>一个人 + OpenClaw = 一个小团队。OpenClaw 将个人生产力从被动执行推进到主动规划阶段，晚上自动化处理复杂任务，早上收获完整成果，这种"睡觉也在工作"的效率模式正在改变创意工作者和企业运营方式。</p>
+  </div>
+</section>
+
+<section data-coord="sec-04">
+  <h2 class="sec-header">核心问答：服务器、备案、技能 API 完全解答</h2>
+  <div class="sec-coord">实操困扰 → 专家解答</div>
+
+  <div class="data-block" data-coord="faq-server">
+    <strong>❓ 服务器如何选择？</strong><br>
+    <strong>原则：</strong>根据模型地区选择——使用海外模型建议海外部署；追求性价比+国产模型首选国内部署。<br>
+    <strong>好消息：</strong>百度智能云提供免费服务器（每人1台），配置为 2 CPU、4G 内存、4M 带宽、200G 硬盘，需从活动链接购买，可能需切换地域。
+  </div>
+
+  <div class="data-block" data-coord="faq-icp">
+    <strong>❓ 今晚部署需要 ICP 备案吗？</strong><br>
+    <span class="hl-yellow">无需备案。</span>本次只是在云里部署服务器供个人使用，而非搭建网站供他人访问，因此无需 ICP 备案。
+  </div>
+
+  <div class="data-block" data-coord="faq-skill">
+    <strong>❓ Skill 如何调用？</strong><br>
+    <strong>方式一（显式）：</strong>直接告知 AI 使用某个 Skill<br>
+    <strong>方式二（隐式）：</strong>AI 自动理解需求并调用相应 Skill<br>
+    <strong>成本优化：</strong>国内有多个免费 Skill API，百度智能云也提供体验额度，新用户额度较多，每天凌晨 0 点刷新额度。
+  </div>
+
+  <div class="data-block" data-coord="faq-token">
+    <strong>❓ TOKEN 购买如何最划算？</strong><br>
+    <strong>方案一：</strong>按 TOKEN 包/增量包购买——额度大、划算，适用于多个模型<br>
+    <strong>方案二：</strong>按需付费——适合测试新模型或对比模型能力
+  </div>
+</section>
+
+<ul class="takeaways">
+  <li><strong>配置零失误：</strong>复制文档命令 + 填写 API key 和模型 ID 是最简单上手方式，避免 Vim 编辑器带来的错误风险</li>
+  <li><strong>费用全透明：</strong>百度千帆提供免费额度查询和按量付费明细，新用户每天凌晨额度刷新，可多地区尝试降低成本</li>
+  <li><strong>服务器有福利：</strong>百度智能云为每人免费提供一台配置合理的云服务器，适合个人部署 OpenClaw 而无需担心费用</li>
+  <li><strong>应用场景全覆盖：</strong>从个人晨间简报到企业竞对分析、再到全自动开发流程，OpenClaw 已落地 6 大核心应用场景，改变工作方式</li>
+  <li><strong>Skill 双调用模式：</strong>显式/隐式调用灵活组合，结合多个免费 API 源可实现零成本技能扩展，每日额度自动刷新</li>
+  <li><strong>部署无后顾之忧：</strong>云端部署无需 ICP 备案，只需配置好服务器地区即可正常查看实例，新手也能顺利部署</li>
+  <li><strong>体验持续迭代：</strong>官方承诺持续推出新部署方式和应用，所有更新实时公布在官网文档，建议关注百度智能云最新活动获取优惠</li>
+</ul>
+
+<div class="hero-rule"></div>
+
+<div class="footer">
+  <div class="footer-left">
+    <p>💡 <strong>核心价值：</strong>OpenClaw 不仅是一个 AI 代理框架，更是生产力范式转移的起点——从"我用 AI 工作"演进到"AI 在我睡觉时工作"。通过百度智能云的开放生态和免费资源扶持，个人创意工作者和小型企业可以以零成本构建"一人公司"级别的自动化运营体系。</p>
+  </div>
+  <div class="footer-stamp">
+    <span>会议日期：2026年2月3日</span>
+    <span>平台：百度智能云 × WaytoAGI</span>
+    <span><a href="../index.html">← 返回全部笔记</a></span>
+  </div>
+</div>
+</div>
+</body>
+</html>
