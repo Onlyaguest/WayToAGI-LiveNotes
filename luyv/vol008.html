@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vol.008 · AOE：不只是Claude Cowork而是 Vibe Working | 鹿演 WayToAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<nav class="nav-bar">
+  <a class="nav-back" href="../index.html">← 返回目录</a>
+  <span class="ep-badge">Vol.008</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-coord">LUYV / VOL-008 / 2026-01-13 / TRANSCRIPT→STRUCTURED</div>
+  <h1 class="hero-title">AOE：不只是<br>Claude Cowork<br>而是 <span class="hl">Vibe Working</span></h1>
+  <div class="hero-meta-row">
+    <span class="hero-meta">谭少卿 · AOE CEO & Co-Founder</span>
+    <span class="hero-meta">李俊 · AOE 增长负责人 & Co-Founder</span>
+    <span class="hero-meta">WaytoAGI 晚8点共学</span>
+  </div>
+  <div class="hero-rule">鹿演 Vol.008 · 2026.01.13</div>
+</div>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-01</span>
+    产品定位：为什么要造 AOE
+  </div>
+
+  <div class="data-block" data-coord="D-01">
+    <p>AOE = <span class="hl-yellow">AI Office Environment</span>，类比 Cursor for Developer，AOE 是 <strong>生产者的集成办公环境</strong>。</p>
+    <p>当前办公软件仍停留在 Office 三件套时代，知识工作者每天在多个 Agent 和 SaaS 工具间疲于奔命，做大量"人肉搬运"。AOE 的核心目标：<span class="hl-yellow">把智能从极客释放给广大生产者</span>。</p>
+  </div>
+
+  <div class="quote">
+    当下 AI 工具的本质困境：AI 失忆、人肉 API、隐性知识无处安放——知识工作者被迫成为上下文的搬运工。
+    <div class="quote-author">— 谭少卿</div>
+  </div>
+
+  <div class="data-block" data-coord="D-02">
+    <p><strong>三大核心痛点</strong></p>
+    <ul>
+      <li><span class="hl-yellow">记忆鸿沟</span>：每次对话从零开始，AI 无法积累工作经验</li>
+      <li><span class="hl-yellow">认知过载</span>：多工具切换，注意力碎片化</li>
+      <li><span class="hl-yellow">隐性知识流失</span>：专家经验无法被 AI 感知和复用</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-02</span>
+    设计哲学：一切可编程
+  </div>
+
+  <div class="golden-quote">一切可被编程的问题都可被编程解决</div>
+
+  <div class="data-block" data-coord="D-03">
+    <p><strong>核心架构理念</strong>：将用户的聊天记录、操作行为抽象成<span class="hl-yellow">文件流</span>，让 AI 通过编程方式理解和操作，真正做到 <strong>Everything is a File</strong>。</p>
+    <p>端云结合方案：<span class="hl-yellow">本地端</span>负责环境感知与执行，<span class="hl-yellow">云端</span>负责连接模型。用户上下文存储在本地硬盘，操作需经用户授权，服务端不拷贝用户文件。</p>
+  </div>
+
+  <div class="data-block" data-coord="D-04">
+    <p><strong>产品三大设计原则</strong></p>
+    <ul>
+      <li>动态感知本机与云盘文档，自动构建上下文</li>
+      <li>操作全部可回撤，历史版本可视化管理</li>
+      <li>普通用户开箱即用，高阶用户有充分自由度</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-03</span>
+    核心功能：Combo Skills & 多模态
+  </div>
+
+  <div class="data-block" data-coord="D-05">
+    <p><strong>Combo Skills 工作流引擎</strong></p>
+    <p>AOE 能记录用户工作流程，自动生成可复用的 Combo。用户无需手动拖拉拽，根据项目或文档<span class="hl-yellow">一键运行工作流</span>。未来开放 COMBO Store 平台，支持分享与下载。</p>
+  </div>
+
+  <div class="data-block" data-coord="D-06">
+    <p><strong>三大应用场景演示</strong></p>
+    <ul>
+      <li><span class="hl-yellow">视频→图文</span>：下载视频、理解音频、抽取关键画面，多任务并行生成爆款图文</li>
+      <li><span class="hl-yellow">营销素材生成</span>：读取产品文档，理解目标人群，输出营销日历、素材与视频</li>
+      <li><span class="hl-yellow">合同智审</span>：打开合同自动识别风险条款，对比版本差异</li>
+    </ul>
+  </div>
+
+  <div class="quote">
+    AOE 的多模态能力比 Claude 更强——我们集成了多种模型，让 AI 能力在真实场景中主动显现，而不是等用户去发现。
+    <div class="quote-author">— 谭少卿</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-04</span>
+    选择 AOE 的三个理由 & 产品规划
+  </div>
+
+  <div class="data-block" data-coord="D-07">
+    <p><strong>核心差异化优势（李俊）</strong></p>
+    <ul>
+      <li><span class="hl-yellow">从文件快速启动</span>：告别空白聊天窗，利用已有材料立即加速</li>
+      <li><span class="hl-yellow">一次搭建，反复复用</span>：Skills 跨场景复用，一键交付满意结果</li>
+      <li><span class="hl-yellow">简单默认 + 深度可拓展</span>：普通用户低门槛，专业用户可深挖强大功能</li>
+    </ul>
+  </div>
+
+  <div class="data-block" data-coord="D-08">
+    <p><strong>近期产品路线图</strong></p>
+    <ul>
+      <li>上线多项目任务合并功能，彻底贯彻"Everything is a File"</li>
+      <li>逐步支持 Google Docs / Google Drive 云端连接与同步</li>
+      <li>推出中文版及多语言官网</li>
+      <li><span class="hl-yellow">全量内测开放</span>，不设邀请码，试用一周赠送约 $10 credits</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-coord">SEC-05</span>
+    Mission & 定价
+  </div>
+
+  <div class="golden-quote">我们的使命：更好地保存、建设和使用人类经验与智慧</div>
+
+  <div class="data-block" data-coord="D-09">
+    <p><strong>定价模式</strong>：订阅制，按使用量消耗积分（月费 / 年费）。</p>
+    <p>提供<span class="hl-yellow">免费版</span>，可通过浏览器调用第三方免费服务。预期未来实现按结果付费，当前暂不承诺。Mac 用户可调用本地软件（Numbers、Keynote 等）。</p>
+  </div>
+
+  <div class="data-block" data-coord="D-10">
+    <p><strong>隐私与安全承诺</strong></p>
+    <ul>
+      <li>上下文存储在<span class="hl-yellow">本地硬盘或用户云端</span>，服务端不拷贝文件</li>
+      <li>所有操作需经用户授权，按操作系统规范请求权限</li>
+      <li>操作可回撤，历史版本完整保留</li>
+    </ul>
+  </div>
+</section>
+
+<div class="takeaways">
+  <div class="takeaways-header">核心要点 Takeaways</div>
+  <ul>
+    <li><span class="label">定位</span>AOE = AI Office Environment，Cursor for Developer 的生产者版本，打造全新办公范式</li>
+    <li><span class="label">痛点</span>解决 AI 失忆鸿沟、人肉 API、认知过载三大核心痛点，让 AI 真正懂你的工作上下文</li>
+    <li><span class="label">哲学</span>"一切可编程"——将聊天记录与操作抽象为文件流，AI 通过编程方式理解与操作</li>
+    <li><span class="label">技术</span>端云结合：本地感知执行 + 云端模型调用，文件不上传服务器，隐私有保障</li>
+    <li><span class="label">核心功能</span>Combo Skills 自动记录工作流，下次一键复用；多模态能力集成多种模型，超越单一 Claude</li>
+    <li><span class="label">差异化</span>从文件快速启动、跨场景复用、低门槛默认 + 高自由度专业模式三重优势</li>
+    <li><span class="label">内测</span>全量放开，不设邀请码，试用一周赠 $10 credits，内测后全量上线</li>
+    <li><span class="label">使命</span>让工具真正为人打工——保存、建设和使用人类经验与智慧，推动人类智能发展</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <a href="../index.html">WaytoAGI 鹿演系列</a> · Vol.008 · AOE Vibe Working
+  </div>
+  <div class="footer-stamp">2026.01.13</div>
+</div>
+</div>
+</body>
+</html>
